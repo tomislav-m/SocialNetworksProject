@@ -50,7 +50,7 @@ namespace SocialNetworks.Controllers
             return new OkObjectResult(artist);
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/Artists/5
         [HttpDelete("{id}")]
         public void Delete(string id)
         {

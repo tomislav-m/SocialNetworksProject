@@ -25,5 +25,13 @@ namespace SocialNetworks.Models
                 return _context.GetCollection<Artist>("Artist");
             }
         }
+
+        public IMongoCollection<Album> Albums
+        {
+            get
+            {
+                return _context.GetCollection<Album>("Album");
+            }
+        }
     }
 }
