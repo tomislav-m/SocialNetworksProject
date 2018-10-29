@@ -20,21 +20,21 @@ namespace SocialNetworks.Controllers
             _albumRepository = albumRepository;
         }
 
-        // GET: api/Artists
+        // GET: api/Albums
         [HttpGet]
         public async Task<IEnumerable<Album>> Get()
         {
             return await _albumRepository.GetAllAlbums();
         }
 
-        // GET: api/Artists/5
+        // GET: api/Albums/5
         [HttpGet("{id}")]
         public async Task<Album> Get(string id)
         {
             return await _albumRepository.GetAlbum(id);
         }
 
-        // POST: api/Artists
+        // POST: api/Albums
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Album album)
         {
@@ -42,7 +42,7 @@ namespace SocialNetworks.Controllers
             return new OkObjectResult(album);
         }
 
-        // PUT: api/Artists/5
+        // PUT: api/Albums/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, [FromBody] Album album)
         {
@@ -50,7 +50,7 @@ namespace SocialNetworks.Controllers
             return new OkObjectResult(album);
         }
 
-        // DELETE: api/Artists/5
+        // DELETE: api/Albums/5
         [HttpDelete("{id}")]
         public void Delete(string id)
         {
