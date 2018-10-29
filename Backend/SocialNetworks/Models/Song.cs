@@ -2,18 +2,17 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SocialNetworks.Models
 {
-    public class Album
+    public class Song
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string Title { get; set; }
-        public IEnumerable<string> ArtistIds { get; set; }
-        public string CoverUrl { get; set; }
+        //duration in seconds
+        public int DurationS { get; set; }
+        public IEnumerable<string> ArtistsIds { get; set; }
     }
 }
