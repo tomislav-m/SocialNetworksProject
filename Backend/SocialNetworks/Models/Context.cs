@@ -18,11 +18,11 @@ namespace SocialNetworks.Models
                 _context = client.GetDatabase(settings.Value.Database);
         }
 
-        public IMongoCollection<Artist> Artists
+        public IMongoCollection<Movie> Movies
         {
             get
             {
-                return _context.GetCollection<Artist>("Artist");
+                return _context.GetCollection<Movie>("Movies");
             }
         }
 

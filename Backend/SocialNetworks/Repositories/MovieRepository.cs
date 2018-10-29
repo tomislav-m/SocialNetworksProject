@@ -1,28 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using SocialNetworks.Models;
 
 namespace SocialNetworks.Repositories
 {
-    public class ArtistRepository : IArtistRepository
+    public class MovieRepository : IMovieRepository
     {
         private readonly Context _context = null;
 
-        public ArtistRepository(IOptions<Settings> settings)
+        public MovieRepository(IOptions<Settings> settings)
         {
             _context = new Context(settings);
         }
 
-        public async Task<IEnumerable<Artist>> GetAllArtists()
+        public async Task<IEnumerable<Movie>> GetAllMovies()
         {
             try
             {
-                return await _context.Artists.Find(_ => true).ToListAsync();
+                return await _context.Movies.Find(_ => true).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -30,12 +28,12 @@ namespace SocialNetworks.Repositories
             }
         }
 
-        public async Task<Artist> GetArtist(string id)
+        public async Task<Movie> GetMovie(string id)
         {
             try
             {
-                return await _context.Artists
-                                .Find(artist => artist.Id == id)
+                return await _context.Movies
+                                .Find(m => m.Id == id)
                                 .FirstOrDefaultAsync();
             }
             catch (Exception ex)
@@ -44,11 +42,11 @@ namespace SocialNetworks.Repositories
             }
         }
 
-        public async Task AddArtist(Artist artist)
+        public async Task AddMovie(Movie movie)
         {
             try
             {
-                await _context.Artists.InsertOneAsync(artist);
+                await _context.Movies.InsertOneAsync(movie);
             }
             catch (Exception ex)
             {
@@ -56,12 +54,12 @@ namespace SocialNetworks.Repositories
             }
         }
 
-        public async Task<bool> RemoveArtist(string id)
+        public async Task<bool> RemoveMovie(string id)
         {
             try
             {
-                var actionResult = await _context.Artists.
-                DeleteOneAsync(Builders<Artist>.Filter.Eq(a => a.Id, id));
+                var actionResult = await _context.Movies.
+                DeleteOneAsync(Builders<Movie>.Filter.Eq(m => m.Id, id));
 
                 return actionResult.IsAcknowledged && actionResult.DeletedCount > 0;
             }
@@ -71,12 +69,12 @@ namespace SocialNetworks.Repositories
             }
         }
 
-        public async Task<bool> UpdateArtist(string id, Artist artist)
+        public async Task<bool> UpdateMovie(string id, Movie movie)
         {
             try
             {
-                var actionResult = await _context.Artists
-                    .ReplaceOneAsync(a => a.Id.Equals(id), artist);
+                var actionResult = await _context.Movies
+                    .ReplaceOneAsync(m => m.Id.Equals(id), movie);
                 return actionResult.IsAcknowledged && actionResult.ModifiedCount > 0;
             }
             catch (Exception ex)
