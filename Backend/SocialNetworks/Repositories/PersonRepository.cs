@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -7,20 +7,20 @@ using SocialNetworks.Models;
 
 namespace SocialNetworks.Repositories
 {
-    public class MovieRepository : IMovieRepository
+    public class PersonRepository : IPersonRepository
     {
         private readonly Context _context = null;
 
-        public MovieRepository(IOptions<Settings> settings)
+        public PersonRepository(IOptions<Settings> settings)
         {
             _context = new Context(settings);
         }
 
-        public async Task<IEnumerable<Movie>> GetAllMovies()
+        public async Task<IEnumerable<Person>> GetAllPeople()
         {
             try
             {
-                return await _context.Movies.Find(_ => true).ToListAsync();
+                return await _context.People.Find(_ => true).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -28,20 +28,20 @@ namespace SocialNetworks.Repositories
             }
         }
 
-        public async Task<Movie> GetMovie(string id)
+        public async Task<Person> GetPerson(string id)
         {
             try
             {
-                return await _context.Movies
-                    .Find(m => m.Id == id)
+                return await _context.People
+                    .Find(p => p.Id == id)
                     .FirstOrDefaultAsync();
             }
             catch
             {
                 try
                 {
-                    return await _context.Movies
-                        .Find(m => m.TMDbId == id)
+                    return await _context.People
+                        .Find(p => p.TMDbId == id)
                         .FirstOrDefaultAsync();
                 }
                 catch (Exception ex)
@@ -51,11 +51,11 @@ namespace SocialNetworks.Repositories
             }
         }
 
-        public async Task AddMovie(Movie movie)
+        public async Task AddPerson(Person person)
         {
             try
             {
-                await _context.Movies.InsertOneAsync(movie);
+                await _context.People.InsertOneAsync(person);
             }
             catch (Exception ex)
             {
@@ -63,12 +63,12 @@ namespace SocialNetworks.Repositories
             }
         }
 
-        public async Task<bool> RemoveMovie(string id)
+        public async Task<bool> RemovePerson(string id)
         {
             try
             {
-                var actionResult = await _context.Movies.
-                DeleteOneAsync(Builders<Movie>.Filter.Eq(m => m.Id, id));
+                var actionResult = await _context.People.
+                DeleteOneAsync(Builders<Person>.Filter.Eq(p => p.Id, id));
 
                 return actionResult.IsAcknowledged && actionResult.DeletedCount > 0;
             }
@@ -78,12 +78,12 @@ namespace SocialNetworks.Repositories
             }
         }
 
-        public async Task<bool> UpdateMovie(string id, Movie movie)
+        public async Task<bool> UpdatePerson(string id, Person person)
         {
             try
             {
-                var actionResult = await _context.Movies
-                    .ReplaceOneAsync(m => m.TMDbId.Equals(id), movie);
+                var actionResult = await _context.People
+                    .ReplaceOneAsync(p => p.TMDbId.Equals(id), person, new UpdateOptions { IsUpsert = true });
                 return actionResult.IsAcknowledged && actionResult.ModifiedCount > 0;
             }
             catch (Exception ex)

@@ -10,9 +10,10 @@ namespace SocialNetworks.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
+        [BsonIgnoreIfDefault]
         public string Id { get; set; }
+        public string TMDbId { get; set; }
         public string Name { get; set; }
-        public string Country { get; set; }
-        public IEnumerable<Role> Roles { get; set; }
+        public string PictureUrl { get; set; }
     }
 }

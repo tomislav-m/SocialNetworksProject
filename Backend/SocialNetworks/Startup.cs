@@ -41,6 +41,8 @@ namespace SocialNetworks
                     = Configuration.GetSection("MongoConnection:Database").Value;
             });
             services.AddTransient<IMovieRepository, MovieRepository>();
+            services.AddTransient<IPersonRepository, PersonRepository>();
+            services.AddTransient<IGenreRepository, GenreRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -17,5 +17,9 @@ namespace SocialNetworks.Models
         public IEnumerable<string> DirectorsIds { get; set; }
         public IEnumerable<string> ActorsIds { get; set; }
         public IEnumerable<string> SoundtrackIds { get; set; }
+        public int VoteCount { get; set; }
+        public float VoteAverage { get; set; }
+        public float Popularity { get; set; }
+        public string PosterUrl { get; set; }
     }
 }

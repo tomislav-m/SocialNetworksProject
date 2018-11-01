@@ -9,7 +9,7 @@ namespace SocialNetworks.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        public string Type { get; set; }
-        public IEnumerable<string> MoviesIds { get; set; }
+        public string TMDbId { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -30,7 +30,23 @@ namespace SocialNetworks.Models
         {
             get
             {
-                return _context.GetCollection<Album>("Album");
+                return _context.GetCollection<Album>("Albums");
+            }
+        }
+
+        public IMongoCollection<Person> People
+        {
+            get
+            {
+                return _context.GetCollection<Person>("People");
+            }
+        }
+
+        public IMongoCollection<Genre> Genres
+        {
+            get
+            {
+                return _context.GetCollection<Genre>("Genres");
             }
         }
     }
