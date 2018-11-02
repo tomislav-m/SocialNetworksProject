@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using SocialNetworks.Models;
+using System.Linq;
 
 namespace SocialNetworks.Repositories
 {
@@ -16,11 +17,14 @@ namespace SocialNetworks.Repositories
             _context = new Context(settings);
         }
 
-        public async Task<IEnumerable<Person>> GetAllPeople()
+        public async Task<IEnumerable<Person>> GetAllPeople(int pageNum, int pageSize)
         {
             try
             {
-                return await _context.People.Find(_ => true).ToListAsync();
+                return await _context.People
+                    .Find(_ => true)
+                    .Skip((pageNum - 1) * pageSize).Limit(pageSize)
+                    .ToListAsync(); ;
             }
             catch (Exception ex)
             {
@@ -85,6 +89,26 @@ namespace SocialNetworks.Repositories
                 var actionResult = await _context.People
                     .ReplaceOneAsync(p => p.TMDbId.Equals(id), person, new UpdateOptions { IsUpsert = true });
                 return actionResult.IsAcknowledged && actionResult.ModifiedCount > 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<IEnumerable<Person>> SearchPeople(string query)
+        {
+            try
+            {
+                var queryList = query.Split(' ').Select(x => x.ToLower()).ToList();
+                var list = await _context.People
+                        .Find(x => x.Name.ToLower().Contains(queryList[0])).ToListAsync();
+                queryList.RemoveAt(0);
+                foreach (var q in queryList)
+                {
+                    list = list.Where(x => x.Name.ToLower().Contains(q)).ToList();
+                }
+                return list;
             }
             catch (Exception ex)
             {

@@ -22,9 +22,9 @@ namespace SocialNetworks.Controllers
 
         // GET: api/Movies/
         [HttpGet]
-        public async Task<IEnumerable<Movie>> Get()
+        public async Task<IEnumerable<Movie>> Get(int pageNum = 1, int pageSize = 50)
         {
-            return await _movieRepository.GetAllMovies();
+            return await _movieRepository.GetAllMovies(pageNum, pageSize);
         }
 
         // GET: api/Movies/5
@@ -55,6 +55,13 @@ namespace SocialNetworks.Controllers
         public void Delete(string id)
         {
             _movieRepository.RemoveMovie(id);
+        }
+
+        [HttpGet]
+        [Route("search/{query}")]
+        public async Task<IEnumerable<Movie>> Search(string query)
+        {
+            return await _movieRepository.SearchMovies(query);
         }
     }
 }

@@ -22,9 +22,9 @@ namespace SocialNetworks.Controllers
 
         // GET: api/People/
         [HttpGet]
-        public async Task<IEnumerable<Person>> Get()
+        public async Task<IEnumerable<Person>> Get(int pageNum = 1, int pageSize = 50)
         {
-            return await _personRepository.GetAllPeople();
+            return await _personRepository.GetAllPeople(pageNum, pageSize);
         }
 
         // GET: api/People/5
@@ -55,6 +55,13 @@ namespace SocialNetworks.Controllers
         public void Delete(string id)
         {
             _personRepository.RemovePerson(id);
+        }
+
+        [HttpGet]
+        [Route("search/{query}")]
+        public async Task<IEnumerable<Person>> Search(string query)
+        {
+            return await _personRepository.SearchPeople(query);
         }
     }
 }

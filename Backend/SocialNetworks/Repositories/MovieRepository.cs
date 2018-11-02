@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -16,11 +17,15 @@ namespace SocialNetworks.Repositories
             _context = new Context(settings);
         }
 
-        public async Task<IEnumerable<Movie>> GetAllMovies()
+        public async Task<IEnumerable<Movie>> GetAllMovies(int pageNum, int pageSize)
         {
             try
             {
-                return await _context.Movies.Find(_ => true).ToListAsync();
+                return await _context.Movies
+                    .Find(_ => true)
+                    //.SortByDescending(x => x.VoteAverage)
+                    .Skip((pageNum - 1) * pageSize).Limit(pageSize)
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -85,6 +90,26 @@ namespace SocialNetworks.Repositories
                 var actionResult = await _context.Movies
                     .ReplaceOneAsync(m => m.TMDbId.Equals(id), movie);
                 return actionResult.IsAcknowledged && actionResult.ModifiedCount > 0;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<IEnumerable<Movie>> SearchMovies(string query)
+        {
+            try
+            {
+                var queryList = query.Split(' ').Select(x => x.ToLower()).ToList();
+                var list = await _context.Movies
+                        .Find(x => x.Title.ToLower().Contains(queryList[0])).ToListAsync();
+                queryList.RemoveAt(0);
+                foreach (var q in queryList)
+                {
+                    list = list.Where(x => x.Title.ToLower().Contains(q)).ToList();
+                }
+                return list.OrderByDescending(x => x.Popularity);
             }
             catch (Exception ex)
             {
