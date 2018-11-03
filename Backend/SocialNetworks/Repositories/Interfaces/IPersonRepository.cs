@@ -12,6 +12,6 @@ namespace SocialNetworks.Repositories
         Task AddPerson(Person person);
         Task<bool> RemovePerson(string id);
         Task<bool> UpdatePerson(string id, Person person);
-        Task<IEnumerable<Person>> SearchPeople(string query);
+        Task<IEnumerable<Person>> SearchPeople(string query, int pageNum, int pageSize);
     }
 }

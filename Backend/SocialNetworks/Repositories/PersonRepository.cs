@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using SocialNetworks.Models;
 using System.Linq;
+using SocialNetworks.Helpers;
 
 namespace SocialNetworks.Repositories
 {
@@ -96,7 +97,7 @@ namespace SocialNetworks.Repositories
             }
         }
 
-        public async Task<IEnumerable<Person>> SearchPeople(string query)
+        public async Task<IEnumerable<Person>> SearchPeople(string query, int pageNum, int pageSize)
         {
             try
             {
@@ -108,7 +109,7 @@ namespace SocialNetworks.Repositories
                 {
                     list = list.Where(x => x.Name.ToLower().Contains(q)).ToList();
                 }
-                return list;
+                return list.Skip((pageNum - 1) * pageSize).Take(pageSize);
             }
             catch (Exception ex)
             {

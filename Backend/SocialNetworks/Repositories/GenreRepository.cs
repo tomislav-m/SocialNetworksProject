@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using SocialNetworks.Helpers;
 using SocialNetworks.Models;
 
 namespace SocialNetworks.Repositories

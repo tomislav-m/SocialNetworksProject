@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using SocialNetworks.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,14 @@ namespace SocialNetworks.Models
             get
             {
                 return _context.GetCollection<Genre>("Genres");
+            }
+        }
+
+        public IMongoCollection<User> Users
+        {
+            get
+            {
+                return _context.GetCollection<User>("Users");
             }
         }
     }

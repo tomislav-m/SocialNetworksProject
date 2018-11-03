@@ -59,9 +59,9 @@ namespace SocialNetworks.Controllers
 
         [HttpGet]
         [Route("search/{query}")]
-        public async Task<IEnumerable<Movie>> Search(string query)
+        public async Task<IEnumerable<Movie>> Search(string query, int pageNum = 1, int pageSize = 50)
         {
-            return await _movieRepository.SearchMovies(query);
+            return await _movieRepository.SearchMovies(query, pageNum, pageSize);
         }
     }
 }

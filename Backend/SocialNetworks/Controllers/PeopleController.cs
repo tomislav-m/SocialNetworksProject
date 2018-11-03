@@ -59,9 +59,9 @@ namespace SocialNetworks.Controllers
 
         [HttpGet]
         [Route("search/{query}")]
-        public async Task<IEnumerable<Person>> Search(string query)
+        public async Task<IEnumerable<Person>> Search(string query, int pageNum, int pageSize)
         {
-            return await _personRepository.SearchPeople(query);
+            return await _personRepository.SearchPeople(query, pageNum, pageSize);
         }
     }
 }

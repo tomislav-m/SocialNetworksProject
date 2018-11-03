@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using SocialNetworks.Helpers;
 using SocialNetworks.Models;
 
 namespace SocialNetworks.Repositories
@@ -97,7 +98,7 @@ namespace SocialNetworks.Repositories
             }
         }
 
-        public async Task<IEnumerable<Movie>> SearchMovies(string query)
+        public async Task<IEnumerable<Movie>> SearchMovies(string query, int pageNum, int pageSize)
         {
             try
             {
@@ -109,7 +110,8 @@ namespace SocialNetworks.Repositories
                 {
                     list = list.Where(x => x.Title.ToLower().Contains(q)).ToList();
                 }
-                return list.OrderByDescending(x => x.Popularity);
+                return list.OrderByDescending(x => x.Popularity)
+                    .Skip((pageNum - 1) * pageSize).Take(pageSize);
             }
             catch (Exception ex)
             {
