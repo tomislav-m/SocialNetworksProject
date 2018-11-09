@@ -11,6 +11,8 @@ namespace SocialNetworks.Helpers
             CreateMap<UserDto, User>();
             CreateMap<User, FacebookUserData>();
             CreateMap<FacebookUserData, User>();
+            CreateMap<User, GoogleUserData>();
+            CreateMap<GoogleUserData, User>();
         }
     }
 }

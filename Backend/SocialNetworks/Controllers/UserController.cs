@@ -32,12 +32,12 @@ namespace SocialNetworks.Controllers
             IUserRepository userRepository,
             IMapper mapper,
             IOptions<Settings> appSettings,
-            FacebookAuthSettings fbAuthSettings)
+            IOptions<FacebookAuthSettings> fbAuthSettings)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _appSettings = appSettings.Value;
-            _fbAuthSettings = fbAuthSettings;
+            _fbAuthSettings = fbAuthSettings.Value;
         }
 
         [AllowAnonymous]
@@ -130,6 +130,20 @@ namespace SocialNetworks.Controllers
                 return BadRequest("Invalid facebook token.");
             }
 
+            return externalLogin(userData);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("google")]
+        public async Task<IActionResult> Google([FromBody]GoogleUserData body)
+        {
+            var response = await Client.GetStringAsync($"https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={body.AccessToken}");
+            var userData = JsonConvert.DeserializeObject<GoogleUserData>(response);
+            return externalLogin(userData);
+        }
+
+        private IActionResult externalLogin(dynamic userData)
+        {
             var user = _userRepository.GetByEmail(userData.Email);
 
             if (user == null)
