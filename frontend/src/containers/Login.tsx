@@ -8,12 +8,13 @@ export default class Login extends React.Component<{ history?: any }>{
     }
 
     public responseGoogle=() => {
-        this.props.history.push("/");
+        this.props.history.push("/movies");
     }
     public render() {
+        const clientId = "559727149142-nk8h7to43174uadf0ajh66u524480g6q.apps.googleusercontent.com";
         return(
             <div>
-                <GoogleLogin onSuccess={this.responseGoogle} onFailure={this.failure} clientId="909186931033-hv70f57pr1ijg3v72aqq0bu8hoeqkb1h.apps.googleusercontent.com" buttonText="Login"/>                
+                <GoogleLogin onSuccess={this.responseGoogle} onFailure={this.failure} clientId={clientId} buttonText="Login"/>         
             </div>
         );
     }
