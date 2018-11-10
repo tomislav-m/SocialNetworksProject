@@ -4,7 +4,7 @@ export default class GenreModal extends React.Component {
     public render() {
         return (
             <div>
-               
+               blabla
             </div>
         );
     }

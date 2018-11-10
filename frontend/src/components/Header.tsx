@@ -1,12 +1,33 @@
 import * as React from 'react';
 import { Navbar, Nav, NavDropdown, MenuItem, Glyphicon } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
 
-export default class Header extends React.Component<{ history?: any }>{
+interface IState {
+    redirect: boolean;
+}
 
+export default class Header extends React.Component<{}, IState>{
 
-    public logout=() => {
-        this.props.history.push("/");
+    public componentWillMount() {
+        this.setState({redirect: false})
     }
+
+    // public logout=() => {
+    //     // this.props.history.push("/");
+    //     return <Redirect to='/' />
+    // }
+      public setRedirect = () => {
+        this.setState({
+          redirect: true
+        })
+      }
+      public renderRedirect() {
+        if (this.state.redirect) {
+          return <Redirect to='/' />
+        }
+        return null
+      }
+
     public render() {
         const navDropdownTitle = (<Glyphicon glyph="menu-hamburger" />);
         return (
@@ -25,10 +46,11 @@ export default class Header extends React.Component<{ history?: any }>{
                             <MenuItem >My Profile</MenuItem>
                             <MenuItem >Select genres</MenuItem>
                             <MenuItem divider />
-                            <MenuItem onSelect={this.logout}>Logout</MenuItem>
+                            <MenuItem onSelect={this.setRedirect}>Logout</MenuItem>
                         </NavDropdown>
                     </Nav>
                 </Navbar>
+                {this.renderRedirect()}
             </div>
         );
     }
