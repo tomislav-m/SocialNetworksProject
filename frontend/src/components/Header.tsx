@@ -17,6 +17,7 @@ export default class Header extends React.Component<{}, IState> {
 
     public renderRedirect() {
         if (this.state.redirect) {
+            gapi.auth2.getAuthInstance().disconnect();
             return <Redirect to="/" />;
         }
         return null;
