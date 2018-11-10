@@ -5,7 +5,7 @@ export default class Profile extends React.Component {
     public render() {
         return (
             <div>
-               <Header/>
+                <Header/>
             </div>
         );
     }
