@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
+import Movies from './Movies';
 import Login from './containers/Login';
 import Profile from './containers/Profile';
 import Movie from './containers/Movie';
@@ -13,9 +13,9 @@ ReactDOM.render((
     <BrowserRouter>
         <div>
           <Route exact path={"/"} component={Login}/>
-          <Route exact path={"/movies"} component={App}/>
-          <Route exact path={"/profile/:userID"} component={Profile}/>
+          <Route exact path={"/movies"} component={Movies}/>
           <Route exact path={"/movies/:movieID"} component={Movie}/>
+          <Route exact path={"/profile"} component={Profile}/>
         </div>
     </BrowserRouter>
 ),

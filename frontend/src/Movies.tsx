@@ -3,7 +3,7 @@ import Header from './components/Header'
 import Search from './components/Search';
 import MovieTabs from './components/MovieTabs';
 
-class App extends React.Component {
+class Movies extends React.Component {
   public render() {
     return (
       <div>
@@ -15,4 +15,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default Movies;
