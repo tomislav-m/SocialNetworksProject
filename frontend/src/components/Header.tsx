@@ -62,9 +62,9 @@ export default class Header extends React.Component<{}, IState> {
                 {this.profileRedirect()}
                 {this.state.showGenreModal && <GenreModal onClose={this.closeGenreModal} onSave={this.closeGenreModal}/>}
                 <Navbar inverse>
-                    <Navbar.Header>
+                    <Navbar.Header >
                         <Navbar.Brand>
-                            <a href="/movies">Ime aplikacije</a>
+                            <a href="/movies" ><Glyphicon glyph="home" /> Ime aplikacije</a>
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav pullRight={true}>
