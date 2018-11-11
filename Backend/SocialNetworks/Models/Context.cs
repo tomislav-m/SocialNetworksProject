@@ -51,6 +51,14 @@ namespace SocialNetworks.Models
             }
         }
 
+        public IMongoCollection<Song> Songs
+        {
+            get
+            {
+                return _context.GetCollection<Song>("Songs");
+            }
+        }
+
         public IMongoCollection<User> Users
         {
             get

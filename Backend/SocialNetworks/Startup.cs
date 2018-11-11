@@ -84,6 +84,7 @@ namespace SocialNetworks
             services.AddTransient<IMovieRepository, MovieRepository>();
             services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<IGenreRepository, GenreRepository>();
+            services.AddTransient<ISongRepository, SongRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
         }
 

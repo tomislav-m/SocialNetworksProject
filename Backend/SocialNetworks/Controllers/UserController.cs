@@ -142,6 +142,13 @@ namespace SocialNetworks.Controllers
             return externalLogin(userData);
         }
 
+        [HttpPut("add-ratings/{id}")]
+        public async Task<IActionResult> AddRatings(string id, [FromBody]Dictionary<string, int> ratings)
+        {
+            await _userRepository.AddRatings(id, ratings);
+            return Ok();
+        }
+
         private IActionResult externalLogin(dynamic userData)
         {
             var user = _userRepository.GetByEmail(userData.Email);

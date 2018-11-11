@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace SocialNetworks.Models
 {
     public class UserDto
@@ -7,5 +9,6 @@ namespace SocialNetworks.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public Dictionary<string, int> MovieRatings { get; set; }
     }
 }

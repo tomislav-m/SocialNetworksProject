@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using SocialNetworks.Helpers;
@@ -17,6 +18,7 @@ namespace SocialNetworks.Repositories
         User Create(User user, string password, bool isExternal = false);
         void Update(User user, string password = null);
         void Delete(string id);
+        Task AddRatings(string id, Dictionary<string, int> ratings);
     }
 
     public class UserRepository : IUserRepository
@@ -67,7 +69,10 @@ namespace SocialNetworks.Repositories
                 {
                     password = createRandomString(8);
                 }
-                throw new AppException("Password is required");
+                else
+                {
+                    throw new AppException("Password is required");
+                }
             }
 
             if (_context.Users.Find(x => x.Email == user.Email).Any())
@@ -80,6 +85,7 @@ namespace SocialNetworks.Repositories
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
+            user.MovieRatings = new Dictionary<string, int>();
 
             _context.Users.InsertOne(user);
 
@@ -161,6 +167,22 @@ namespace SocialNetworks.Repositories
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        public async Task AddRatings(string id, Dictionary<string, int> ratings)
+        {
+            try
+            {
+                var filter = Builders<User>.Filter.Eq(x => x.Id, id);
+                var update = Builders<User>
+                    .Update.AddToSetEach(x => x.MovieRatings, ratings);
+
+                await _context.Users.FindOneAndUpdateAsync(filter, update);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
