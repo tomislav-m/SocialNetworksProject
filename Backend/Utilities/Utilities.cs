@@ -160,5 +160,47 @@ namespace Utilities
                 await client.PostAsync("http://localhost:5000/api/Genres", content);
             }
         }
+
+        public static async Task GetAndSaveSoundtrack()
+        {
+            var response = await client.GetStringAsync("http://localhost:5000/api/Movies");
+            var movies = JsonConvert.DeserializeObject<IEnumerable<Movie>>(response);
+            foreach(var movie in movies.Skip(2))
+            {
+                var year = movie.ReleaseDate.Year;
+                var searchUrl = $"https://api.discogs.com/database/search?q={movie.Title}&style=soundtrack&year={year}";
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Discogs", "key=EujhPvhRDMCgptbPCece, secret=AMUIkVJHwXYjanhOymvvOeCyJLKeCCls");
+                client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("snapp", "0.1"));
+                var searchResponse = await client.GetStringAsync(searchUrl);
+                var o = JObject.Parse(searchResponse);
+                var albumUrl = o.SelectToken("results[0].master_url");
+                var albumResponse = await client.GetStringAsync(albumUrl.ToString());
+                var album = JsonConvert.DeserializeObject<Album>(albumResponse);
+                album.CoverUrl = o.SelectToken("results[0].cover_image").ToString();
+                album.DiscogsId = o.SelectToken("results[0].id").ToString();
+                var songs = JObject.Parse(albumResponse).SelectToken("tracklist").Children();
+                var songsArray = new List<Song>();
+                foreach(var songObject in songs)
+                {
+                    var song = JsonConvert.DeserializeObject<Song>(songObject.ToString());
+                    JEnumerable<JToken> artists;
+                    try
+                    {
+                        artists = songObject.SelectToken("artist").Children();
+                        var artistsAray = new List<string>();
+                        foreach(var artist in artists)
+                        {
+                            artistsAray.Add(artist.SelectToken("name").ToString());
+                        }
+                        song.ArtistsList = artistsAray;
+                    }
+                    catch{}
+                    songsArray.Add(song);
+                }
+                album.Songs = songsArray;
+                Console.WriteLine(JsonConvert.SerializeObject(album));
+                break;
+            }
+        }
     }
 }
