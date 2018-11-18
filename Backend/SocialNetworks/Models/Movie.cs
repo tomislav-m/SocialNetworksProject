@@ -21,5 +21,12 @@ namespace SocialNetworks.Models
         public float VoteAverage { get; set; }
         public float Popularity { get; set; }
         public string PosterUrl { get; set; }
+        public string IMDbId { get; set; }
+        public float IMDbRating { get; set; }
+        public double IMDbVotes { get; set; }
+        public string Plot { get; set; }
+        public string Runtime { get; set; }
+        public string Metascore { get; set; }
+        public int RTRating { get; set; }
     }
 }

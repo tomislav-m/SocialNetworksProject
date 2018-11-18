@@ -23,6 +23,23 @@ namespace Utilities
         public string Poster_Path { get; set; }
     }
 
+    public class OMDMovie
+    {
+        public string ImdbId { get; set; }
+        public float ImdbRating { get; set; }
+        public double ImdbVotes { get; set; }
+        public string Plot { get; set; }
+        public string Runtime { get; set; }
+        public string Metascore { get; set; }
+        public Rating[] Ratings { get; set; }
+    }
+
+    public class Rating
+    {
+        public string Source { get; set; }
+        public string Value { get; set; }
+    }
+
     public class Cast
     {
         public string Id { get; set; }
@@ -161,11 +178,54 @@ namespace Utilities
             }
         }
 
+        public static async Task GetMore()
+        {
+            var url = "http://www.omdbapi.com/?apikey=40c521a7&plot=full&t=";
+            var movies = await client.GetStringAsync("http://localhost:5000/api/Movies?pageSize=6393");
+            foreach (var movie in JsonConvert.DeserializeObject<IEnumerable<Movie>>(movies).Where(x => x.IMDbRating == 0))
+            {
+                try
+                {
+                    var response = await client.GetStringAsync(url + movie.Title);
+                    var obj = JObject.Parse(response);
+                    var omdMovie = JsonConvert.DeserializeObject<OMDMovie>(obj.ToString());
+                    movie.IMDbId = omdMovie.ImdbId;
+                    movie.IMDbRating = omdMovie.ImdbRating;
+                    movie.IMDbVotes = omdMovie.ImdbVotes;
+                    try
+                    {
+                        movie.Metascore = omdMovie.Metascore;
+                    }
+                    catch { }
+                    movie.Plot = omdMovie.Plot;
+                    movie.Runtime = omdMovie.Runtime;
+                    try
+                    {
+                        var rtRating = omdMovie.Ratings.FirstOrDefault(x => x.Source == "Rotten Tomatoes");
+                        if (rtRating != null)
+                        {
+                            var rating = Int32.Parse(rtRating.Value.Split('%')[0]);
+                            movie.RTRating = rating;
+                        }
+                    }
+                    catch { }
+                    var json = JsonConvert.SerializeObject(movie);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var postResponse = await client.PutAsync("http://localhost:5000/api/Movies/" + movie.TMDbId, content);
+                    Console.WriteLine(movie.Title + ": " + postResponse.StatusCode);
+                }
+                catch(Exception exc)
+                {
+                    Console.WriteLine(movie.Title + ":" + exc.Message);
+                }
+            }
+        }
+
         public static async Task GetAndSaveSoundtrack()
         {
             var response = await client.GetStringAsync("http://localhost:5000/api/Movies");
             var movies = JsonConvert.DeserializeObject<IEnumerable<Movie>>(response);
-            foreach(var movie in movies.Skip(2))
+            foreach (var movie in movies.Skip(2))
             {
                 var year = movie.ReleaseDate.Year;
                 var searchUrl = $"https://api.discogs.com/database/search?q={movie.Title}&style=soundtrack&year={year}";
@@ -180,7 +240,7 @@ namespace Utilities
                 album.DiscogsId = o.SelectToken("results[0].id").ToString();
                 var songs = JObject.Parse(albumResponse).SelectToken("tracklist").Children();
                 var songsArray = new List<Song>();
-                foreach(var songObject in songs)
+                foreach (var songObject in songs)
                 {
                     var song = JsonConvert.DeserializeObject<Song>(songObject.ToString());
                     JEnumerable<JToken> artists;
@@ -188,13 +248,13 @@ namespace Utilities
                     {
                         artists = songObject.SelectToken("artist").Children();
                         var artistsAray = new List<string>();
-                        foreach(var artist in artists)
+                        foreach (var artist in artists)
                         {
                             artistsAray.Add(artist.SelectToken("name").ToString());
                         }
                         song.ArtistsList = artistsAray;
                     }
-                    catch{}
+                    catch { }
                     songsArray.Add(song);
                 }
                 album.Songs = songsArray;
