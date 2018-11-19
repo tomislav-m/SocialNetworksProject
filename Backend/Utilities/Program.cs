@@ -12,7 +12,8 @@ namespace Utilities
                 Console.WriteLine("2. Get and save cast");
                 Console.WriteLine("3. Get and save genres");
                 Console.WriteLine("4. Get more movies");
-                Console.WriteLine("5. Exit");
+                Console.WriteLine("5. Recommend");
+                Console.WriteLine("6. Exit");
 
                 var key = Console.ReadLine();
                 if(key == "1")
@@ -33,7 +34,11 @@ namespace Utilities
                 {
                     Utilities.GetMore().Wait();
                 }
-                else if(key == "5" || key.ToLower() == "exit")
+                else if (key == "5")
+                {
+                    Utilities.RecommenderTest();
+                }
+                else if(key == "6" || key.ToLower() == "exit")
                 {
                     break;
                 }

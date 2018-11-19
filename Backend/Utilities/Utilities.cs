@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SocialNetworks.Models;
 using System.Linq;
+using Recommender;
 
 namespace Utilities
 {
@@ -260,6 +261,144 @@ namespace Utilities
                 album.Songs = songsArray;
                 Console.WriteLine(JsonConvert.SerializeObject(album));
                 break;
+            }
+        }
+
+        public static void RecommenderTest()
+        {
+            var user1 = new Dictionary<string, int>
+            {
+                { "Titanic", 10 },
+                { "Amelie", 10 },
+                { "Beauty and the beast", 8 },
+                { "Girl with the dragon tattoo", 8 },
+                { "A Star is born", 8 },
+                { "Split", 7 },
+                { "Punch-drunk love", 5 },
+                { "A simple favor", 8 },
+                { "Pretty woman", 7 },
+                { "The place", 7 },
+                { "No string attached", 6 },
+                { "Clueless", 6 },
+                { "Orphan", 7 },
+                { "The shape of water", 7 },
+                { "Lady bird", 7 },
+            };
+            var user2 = new Dictionary<string, int>
+            {
+                { "Titanic", 7 },
+                { "Amelie", 10 },
+                { "Beauty and the beast", 7 },
+                { "Bohemian rhapsody", 8 },
+                { "A Star is born", 9 },
+                { "Split", 7 },
+                { "Punch-drunk love", 6 },
+                { "A simple favor", 7 },
+                { "Pretty woman", 7 },
+                { "The place", 8 },
+                { "No string attached", 5 },
+                { "Clueless", 6 },
+                { "Orphan", 7 },
+                { "Get out", 8 },
+                { "The shape of water", 7 },
+                { "Lady bird", 7 },
+                { "Your name", 7 },
+                { "Mother", 4 }
+            };
+            var user3 = new Dictionary<string, int>
+            {
+                { "Titanic", 10 },
+                { "Amelie", 9 },
+                { "Beauty and the beast", 8 },
+                { "Girl with the dragon tattoo", 6 },
+                { "A Star is born", 8 },
+                { "Split", 6 },
+                { "Punch-drunk love", 7 },
+                { "A simple favor", 6 },
+                { "Pretty woman", 6 },
+                { "The place", 6 },
+                { "Orphan", 6 },
+                { "Get out", 8 },
+                { "The shape of water", 8 },
+                { "Lady bird", 9 },
+                { "Your name", 9 },
+                { "Mother", 7 }
+            };
+            var user4 = new Dictionary<string, int>
+            {
+                { "Titanic", 9 },
+                { "Amelie", 10 },
+                { "Beauty and the beast", 7 },
+                { "Girl with the dragon tattoo", 7 },
+                { "A Star is born", 8 },
+                { "Split", 7 },
+                { "Punch-drunk love", 6 },
+                { "A simple favor", 8 },
+                { "Pretty woman", 7 },
+                { "The place", 7 },
+                { "No string attached", 6 },
+                { "Clueless", 6 },
+                { "Orphan", 7 },
+                { "The shape of water", 7 },
+                { "Lady bird", 7 },
+                { "Get out", 7 },
+                { "Your name", 9 }
+            };
+            var user5 = new Dictionary<string, int>
+            {
+                { "Titanic", 9 },
+                { "Amelie", 10 },
+                { "Beauty and the beast", 7 },
+                { "Girl with the dragon tattoo", 7 },
+                { "A Star is born", 8 },
+                { "Split", 7 },
+                { "Punch-drunk love", 6 },
+                { "A simple favor", 8 },
+                { "Pretty woman", 7 },
+                { "The place", 7 },
+                { "No string attached", 6 },
+                { "Clueless", 6 },
+                { "Orphan", 7 },
+                { "The shape of water", 7 },
+                { "Lady bird", 7 },
+                { "Get out", 7 },
+                { "Your name", 10 }
+            };
+            var user6 = new Dictionary<string, int>
+            {
+                { "Titanic", 10 },
+                { "Amelie", 10 },
+                { "Beauty and the beast", 8 },
+                { "Girl with the dragon tattoo", 7 },
+                { "A Star is born", 8 },
+                { "Split", 7 },
+                { "Punch-drunk love", 6 },
+                { "A simple favor", 8 },
+                { "Pretty woman", 7 },
+                { "The place", 7 },
+                { "No string attached", 6 },
+                { "Clueless", 6 },
+                { "Orphan", 7 },
+                { "The shape of water", 7 },
+                { "Lady bird", 7 },
+                { "Get out", 9 },
+                { "Your name", 8 }
+            };
+            var dict = new Dictionary<string, Dictionary<string, int>>
+            {
+                { "0", user1 },
+                { "1", user2 },
+                { "2", user3 },
+                { "3", user4 },
+                { "4", user5 },
+                { "5", user6 }
+            };
+            var recommender = new UserBasedRecommender(dict, "0", 0.6);
+            var recs = recommender.Recommend();
+            Console.WriteLine("Recommendations for user1:");
+            foreach (var rec in recs)
+            {
+                Console.WriteLine(rec.Key + ": " + rec.Value);
             }
         }
     }
