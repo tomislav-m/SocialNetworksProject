@@ -6,14 +6,26 @@ interface IProps {
     onSave: () => void;
 }
 export default class GenreModal extends React.Component<IProps> {
+
+    public componentWillMount(){
+        this.getGenres();
+    }
+
+    public getGenres = () => {
+        fetch("http://localhost:5000/api/genres")
+        .then(response => response.json())
+        .then(response => console.log("Success:", JSON.stringify(response)))
+        .catch(error => console.error("Error:", error));
+    }
+
     public render() {
         return (
             <Modal show={true} onHide={this.props.onClose}>
                 <Modal.Header closeButton={true}>
-                    <Modal.Title>Modal title</Modal.Title>
+                    <Modal.Title>Select preferred genres</Modal.Title>
                 </Modal.Header>
 
-                <Modal.Body>One fine body...</Modal.Body>
+                <Modal.Body>modal</Modal.Body>
 
                 <Modal.Footer>
                     <Button onClick = {this.props.onClose}>Close</Button>
