@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { Provider } from 'mobx-react';
 import Movies from './Movies';
 import Login from './containers/Login';
 import Profile from './containers/Profile';
@@ -8,16 +9,19 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import { Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
+import state from './states/AppState';
 
 ReactDOM.render((
-    <BrowserRouter>
-        <div>
-          <Route exact path={"/"} component={Login}/>
-          <Route exact path={"/movies"} component={Movies}/>
-          <Route exact path={"/movies/:movieID"} component={Movie}/>
-          <Route exact path={"/profile"} component={Profile}/>
-        </div>
-    </BrowserRouter>
+
+      <BrowserRouter>
+          <div>
+            <Route exact path={"/"} component={Login}/>
+            <Route exact path={"/movies"} component={Movies}/>
+            <Route exact path={"/movies/:movieID"} component={Movie}/>
+            <Route exact path={"/profile"} component={Profile}/>
+          </div>
+      </BrowserRouter>
+
 ),
   document.getElementById('root') as HTMLElement
 );

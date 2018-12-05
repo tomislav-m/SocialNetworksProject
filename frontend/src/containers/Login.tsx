@@ -1,10 +1,12 @@
 import * as React from "react";
+import { observer, inject } from 'mobx-react';
 import GoogleLogin from "react-google-login";
 import "../App.css";
 import { GOOGLE_CLIENT_ID } from "src/components/api-keys/ApiKeys";
+import AppState from '../states/AppState';
 
 interface IUser {
-    Id: string;
+    AccessToken: string;
     Email: string;
     FirstName: string;
     LastName: string;
@@ -13,7 +15,8 @@ interface IState {
     user: IUser;
 }
 
-export default class Login extends React.Component<{ history?: any }, IState> {
+@observer
+export default class Login extends React.Component< { history?: any, state?: AppState }, IState > {
     public failure = () => {
         console.log("Failure");
     };
@@ -23,14 +26,15 @@ export default class Login extends React.Component<{ history?: any }, IState> {
         console.log(response.Zi.id_token);
         this.setState({
             user: {
-                Id: response.Zi.id_token,
+                AccessToken: response.Zi.id_token,
                 Email: response.profileObj.email,
                 FirstName: response.profileObj.givenName,
                 LastName: response.profileObj.familyName
             }
         });
+        this.props.state.firstName = response.Zi.id_token;
         console.log(this.state.user);
-        fetch("http://localhost:5000/api/user/google", {
+        fetch("http://localhost:5000/api/users/google", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -38,7 +42,7 @@ export default class Login extends React.Component<{ history?: any }, IState> {
         body: JSON.stringify(this.state.user),
         })
         .then(res => {
-            console.log(res)
+            console.log(res.json())
         });
         this.props.history.push("/movies");
     };
