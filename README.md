@@ -10,9 +10,9 @@ GET api/movies/search/{query}?pageNum=1&pageSize=50
 GET api/people?pageNum=1&pageSize=50
 GET api/people/{id}
 
-POST api/user/facebook
-POST api/user/google
-POST api/user/add-ratings/userId
+POST api/users/facebook
+POST api/users/google
+POST api/users/add-ratings/userId
 
 # START BACKEND
 cd ~/SocialNetworksProject/Backend/SocialNetworks
