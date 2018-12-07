@@ -5,16 +5,6 @@ import "../App.css";
 import { GOOGLE_CLIENT_ID } from "src/components/api-keys/ApiKeys";
 import AppState from '../states/AppState';
 
-/*interface IUser {
-    AccessToken: string;
-    Email: string;
-    FirstName: string;
-    LastName: string;
-}
-interface IState {
-    user: IUser;
-}*/
-
 @inject('state')
 @observer
 export default class Login extends React.Component< { history?: any, state: AppState } > {
@@ -25,19 +15,16 @@ export default class Login extends React.Component< { history?: any, state: AppS
     public responseGoogle = (response: any) => {
         console.log(response);
         console.log(response.Zi.id_token);
-        /*this.setState({
-            user: {
-                AccessToken: response.Zi.id_token,
-                Email: response.profileObj.email,
-                FirstName: response.profileObj.givenName,
-                LastName: response.profileObj.familyName
-            }
-        });*/
         this.props.state.firstName = response.profileObj.givenName;
         this.props.state.lastName = response.profileObj.familyName;
         this.props.state.email = response.profileObj.email;
         this.props.state.accessToken = response.Zi.id_token;
-        const data = JSON.stringify({AccessToken: this.props.state.accessToken, Email: this.props.state.email, FirstName: this.props.state.firstName, LastName: this.props.state.lastName});
+        const data = JSON.stringify({
+            AccessToken: this.props.state.accessToken, 
+            Email: this.props.state.email, 
+            FirstName: this.props.state.firstName, 
+            LastName: this.props.state.lastName
+        });
     
         fetch("http://localhost:5000/api/users/google", {
         method: "POST",
@@ -46,8 +33,9 @@ export default class Login extends React.Component< { history?: any, state: AppS
         },
         body: data,
         })
-        .then(res => {
-            console.log(res.json())
+        .then((res) => res.json())
+        .then((res) => {
+            this.props.state.token = res.token;
         });
         this.props.history.push("/movies");
     };

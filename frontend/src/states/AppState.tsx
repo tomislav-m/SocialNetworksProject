@@ -5,7 +5,8 @@ class AppState {
     @observable public lastName: string = '';
     @observable public email: string = '';
     @observable public imageUrl: string = '';
-    @observable public accessToken: string = ''; // ovo pamtiti jer se salje u svakom requestu prema bazi?
+    @observable public accessToken: string = ''; // token koji dobivamo od googlea
+    @observable public token: string = ''; // token koji se šalje u headeru, sami generiramo
 }
 
 export default AppState;
