@@ -12,6 +12,10 @@ interface IState {
     genres: IGenres[];
 }
 export default class GenreModal extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
+        super(props);
+        this.state = { genres: []};
+    }
 
     public componentWillMount(){
         this.getGenres();
