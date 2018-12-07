@@ -2,7 +2,7 @@ import * as React from "react";
 import { observer, inject } from 'mobx-react';
 import GoogleLogin from "react-google-login";
 import "../App.css";
-import { GOOGLE_CLIENT_ID } from "src/components/api-keys/ApiKeys";
+import { GOOGLE_CLIENT_ID } from "src/components/utils/ApiKeys";
 import AppState from '../states/AppState';
 
 @inject('state')
@@ -36,7 +36,8 @@ export default class Login extends React.Component< { history?: any, state: AppS
         .then((res) => res.json())
         .then((res) => {
             this.props.state.token = res.token;
-        });
+        })
+        .catch((error) => console.error("Error:", error));
         this.props.history.push("/movies");
     };
 
