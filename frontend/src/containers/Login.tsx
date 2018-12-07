@@ -13,8 +13,6 @@ export default class Login extends React.Component< { history?: any, state: AppS
     };
 
     public responseGoogle = (response: any) => {
-        console.log(response);
-        console.log(response.Zi.id_token);
         this.props.state.firstName = response.profileObj.givenName;
         this.props.state.lastName = response.profileObj.familyName;
         this.props.state.email = response.profileObj.email;
