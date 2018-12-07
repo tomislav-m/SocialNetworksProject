@@ -12,7 +12,7 @@ import { BrowserRouter } from 'react-router-dom';
 import state from './states/AppState';
 
 ReactDOM.render((
-
+  <Provider state = {state}>
       <BrowserRouter>
           <div>
             <Route exact path={"/"} component={Login}/>
@@ -21,7 +21,7 @@ ReactDOM.render((
             <Route exact path={"/profile"} component={Profile}/>
           </div>
       </BrowserRouter>
-
+  </Provider>
 ),
   document.getElementById('root') as HTMLElement
 );

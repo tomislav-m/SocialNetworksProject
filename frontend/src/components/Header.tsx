@@ -2,14 +2,14 @@ import * as React from "react";
 import { Navbar, Nav, NavDropdown, MenuItem, Glyphicon } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import GenreModal from 'src/containers/GenreModal';
+import AppState from 'src/states/AppState';
 
 interface IState {
     logoutRedirect: boolean;
     profileRedirect: boolean;
     showGenreModal: boolean;
 }
-
-export default class Header extends React.Component<{}, IState> {
+export default class Header extends React.Component<{state: AppState }, IState> {
 
     public componentWillMount() {
         this.setState({
@@ -68,7 +68,7 @@ export default class Header extends React.Component<{}, IState> {
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav pullRight={true}>
-                        <Navbar.Text>Hi, user!</Navbar.Text>
+                        <Navbar.Text>Hi, {this.props.state.firstName}!</Navbar.Text>
                         <NavDropdown title={navDropdownTitle} id="basic-nav-dropdown">
                             <MenuItem onSelect={this.openProfile}>My Profile</MenuItem>
                             <MenuItem onSelect={this.openGenreModal}>Select genres</MenuItem>
