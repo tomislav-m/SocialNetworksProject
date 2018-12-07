@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Checkbox } from 'react-bootstrap';
 import * as _ from 'lodash'; 
+import "../App.css";
 import IGenres from '../components/utils/Typings';
 
 interface IProps {
@@ -39,8 +40,10 @@ export default class GenreModal extends React.Component<IProps, IState> {
         _.forEach(this.state.genres, (i) => {
             console.log(i.name)
             forecast.push(
-                <div key={key}>
-                    {i.name}
+                <div key={key} className="genres">
+                    <Checkbox>
+                        {i.name}
+                    </Checkbox>
                 </div>
             )
             key++;
@@ -50,16 +53,12 @@ export default class GenreModal extends React.Component<IProps, IState> {
 
     public render() {
         return (
-            <Modal show={true} onHide={this.props.onClose}>
+            <Modal show={true} onHide={this.props.onClose} bsSize="small">
                 <Modal.Header closeButton={true}>
-                    <Modal.Title>Select preferred genres</Modal.Title>
+                    <Modal.Title>Select favourite genres</Modal.Title>
                 </Modal.Header>
 
-                <Modal.Body>
-                {
-                    this.renderBody()
-                }
-                </Modal.Body>
+                <Modal.Body>{this.renderBody()}</Modal.Body>
 
                 <Modal.Footer>
                     <Button onClick = {this.props.onClose}>Close</Button>
