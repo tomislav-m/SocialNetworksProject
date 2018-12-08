@@ -2,12 +2,16 @@ import * as React from 'react';
 import Header from './components/Header'
 import Search from './components/Search';
 import MovieTabs from './components/MovieTabs';
+import AppState from './states/AppState';
+import { inject, observer } from 'mobx-react';
 
-class Movies extends React.Component {
+@inject('state')
+@observer
+class Movies extends React.Component< { state: AppState }> {
   public render() {
     return (
       <div>
-         <Header/>
+         <Header state = { this.props.state }/>
          <Search/>
          <MovieTabs/>
       </div>

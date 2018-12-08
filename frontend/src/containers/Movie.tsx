@@ -1,11 +1,15 @@
 import * as React from 'react';
 import Header from '../components/Header';
-
-export default class Movie extends React.Component {
+import { inject, observer } from 'mobx-react';
+import AppState from '../states/AppState';
+  
+@inject('state')
+@observer
+export default class Movie extends React.Component<{ state: AppState }> {
     public render() {
         return (
             <div>
-                <Header/>
+                <Header state = {this.props.state}/>
             </div>
         );
     }

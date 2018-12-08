@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 interface IState {
     movies: IMovies[];
 }
-export default class TopWatched extends React.Component<{}, IState>{
+export default class TopRated extends React.Component<{}, IState>{
     constructor(props: any) {
         super(props);
         this.state = { movies: [] };
@@ -16,7 +16,7 @@ export default class TopWatched extends React.Component<{}, IState>{
     }
 
     public getTopWatched(){
-        fetch('https://api.themoviedb.org/3/movie/popular?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US')
+        fetch('https://api.themoviedb.org/3/movie/top_rated?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US')
         .then(response => response.json())
         .then(response => response.results)
         .then((response: IMovies[]) => {
