@@ -39,6 +39,12 @@ namespace SocialNetworks.Controllers
             return await _movieRepository.GetAllMovies(pageNum, pageSize);
         }
 
+        [HttpGet("top-rated")]
+        public async Task<IEnumerable<Movie>> GetTopRated(int pageNum = 1, int pageSize = 50)
+        {
+            return await _movieRepository.GetTopRatedMovies(pageNum, pageSize);
+        } 
+
         // GET: api/Movies/5
         [HttpGet("{id}")]
         public async Task<Movie> Get(string id)

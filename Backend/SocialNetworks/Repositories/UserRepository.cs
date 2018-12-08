@@ -86,6 +86,7 @@ namespace SocialNetworks.Repositories
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
             user.MovieRatings = new Dictionary<string, int>();
+            user.FavoriteGenres = new List<string>();
 
             _context.Users.InsertOne(user);
 

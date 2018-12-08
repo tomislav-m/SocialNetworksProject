@@ -130,7 +130,7 @@ namespace SocialNetworks.Controllers
                 return BadRequest("Invalid facebook token.");
             }
 
-            return externalLogin(userData);
+            return ExternalLogin(userData);
         }
 
         [AllowAnonymous]
@@ -139,7 +139,7 @@ namespace SocialNetworks.Controllers
         {
             var response = await Client.GetStringAsync($"https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={body.AccessToken}");
             var userData = JsonConvert.DeserializeObject<GoogleUserData>(response);
-            return externalLogin(userData);
+            return ExternalLogin(userData);
         }
 
         [HttpPut("add-ratings/{id}")]
@@ -149,9 +149,9 @@ namespace SocialNetworks.Controllers
             return Ok();
         }
 
-        private IActionResult externalLogin(dynamic userData)
+        private IActionResult ExternalLogin(dynamic userData)
         {
-            var user = _userRepository.GetByEmail(userData.Email);
+            User user = _userRepository.GetByEmail(userData.Email);
 
             if (user == null)
             {
@@ -162,11 +162,14 @@ namespace SocialNetworks.Controllers
 
             return Ok(new
             {
-                Id = user.Id,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Token = tokenString
+                user.Id,
+                user.Email,
+                user.FirstName,
+                user.LastName,
+                Token = tokenString,
+                user.FavoriteGenres,
+                user.MovieRatings,
+                user.PictureUrl
             });
         }
 

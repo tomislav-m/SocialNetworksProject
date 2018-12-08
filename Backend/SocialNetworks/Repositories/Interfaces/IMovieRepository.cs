@@ -8,6 +8,7 @@ namespace SocialNetworks.Repositories
     public interface IMovieRepository
     {
         Task<IEnumerable<Movie>> GetAllMovies(int pageNum, int pageSize);
+        Task<IEnumerable<Movie>> GetTopRatedMovies(int pageNum, int pageSize);
         Task<Movie> GetMovie(string id);
         Task AddMovie(Movie movie);
         Task<bool> RemoveMovie(string id);

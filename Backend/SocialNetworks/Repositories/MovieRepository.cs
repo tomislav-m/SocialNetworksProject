@@ -34,6 +34,22 @@ namespace SocialNetworks.Repositories
             }
         }
 
+        public async Task<IEnumerable<Movie>> GetTopRatedMovies(int pageNum, int pageSize)
+        {
+            try
+            {
+                return await _context.Movies
+                    .Find(_ => true)
+                    .SortByDescending(x => x.IMDbRating)
+                    .Skip((pageNum - 1) * pageSize).Limit(pageSize)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<Movie> GetMovie(string id)
         {
             try
