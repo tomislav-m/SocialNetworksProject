@@ -17,12 +17,18 @@
 .genres {
   /*padding-left: 40%;*/
 }
-
 .movieTitle {
   font-size: 1.5em;
 }
-
 .react-rater-star.is-active {
   color: #ffcc00 !important;
   width: 100% !important;
+}
+.rate {
+  font-size: 1.8em;
+  display: inline-block;
+}
+.ratingStars {
+    margin-left: 60px;
+    margin-top: 40px;
 }

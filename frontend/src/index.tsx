@@ -9,10 +9,10 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import { Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-import state from './states/AppState';
+import appState from './states/AppState';
 
 ReactDOM.render((
-  <Provider state = {state}>
+  <Provider appState = {appState}>
       <BrowserRouter>
           <div>
             <Route exact path={"/"} component={Login}/>
