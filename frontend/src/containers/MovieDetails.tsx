@@ -2,7 +2,7 @@ import * as React from 'react';
 import Header from '../components/Header';
 import { inject, observer } from 'mobx-react';
 import { action } from 'mobx';
-import AppState from '../states/AppState';
+import { AppState } from '../states/AppState';
 import { RouteComponentProps } from "react-router-dom";
 
 interface IRouteParams {

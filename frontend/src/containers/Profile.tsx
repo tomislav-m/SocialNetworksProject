@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Header from '../components/Header';
-import AppState from '../states/AppState';
+import { AppState } from '../states/AppState';
 import { observer, inject } from 'mobx-react';
 
 @inject('appState')

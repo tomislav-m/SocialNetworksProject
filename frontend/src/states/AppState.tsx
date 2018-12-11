@@ -1,6 +1,6 @@
 import { observable } from 'mobx';
 
-class AppState {
+export class AppState {
     // user
     @observable public firstName: string = ''; 
     @observable public lastName: string = '';
@@ -25,4 +25,3 @@ class AppState {
     @observable public popularity: number; // kaj je ovo????
 }
 
-export default AppState;

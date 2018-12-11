@@ -9,7 +9,9 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import { Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-import appState from './states/AppState';
+import { AppState } from './states/AppState';
+
+const appState = new AppState();
 
 ReactDOM.render((
   <Provider appState = {appState}>

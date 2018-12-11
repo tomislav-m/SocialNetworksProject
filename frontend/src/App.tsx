@@ -2,7 +2,7 @@ import * as React from 'react';
 import Header from './components/Header'
 import Search from './components/Search';
 import MovieTabs from './components/MovieTabs';
-import AppState from './states/AppState';
+import { AppState } from './states/AppState';
 import { inject, observer } from 'mobx-react';
 
 @inject('appState')
