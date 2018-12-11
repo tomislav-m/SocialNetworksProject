@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { IMovies } from '../utils/Typings';
 import * as _ from 'lodash';
+import { IMovie } from 'src/utils/Typings';
+import MovieInfo from '../MovieInfo';
 
 interface IState {
-    movies: IMovies[];
+    movies: IMovie[];
 }
 export default class TopWatched extends React.Component<{}, IState>{
     constructor(props: any) {
@@ -19,7 +20,7 @@ export default class TopWatched extends React.Component<{}, IState>{
         fetch('https://api.themoviedb.org/3/movie/popular?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US')
         .then(response => response.json())
         .then(response => response.results)
-        .then((response: IMovies[]) => {
+        .then((response: IMovie[]) => {
             this.setState({
                 movies: response
             })
@@ -33,7 +34,7 @@ export default class TopWatched extends React.Component<{}, IState>{
         _.forEach(this.state.movies, (i) => {
             movies.push(
                 <div key = {key}>
-                    {i.title}
+                    <MovieInfo movie = {i}/>
                 </div>
             )
             key++;

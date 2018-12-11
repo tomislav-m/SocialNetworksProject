@@ -3,6 +3,7 @@ import { Tabs, Tab } from 'react-bootstrap';
 import '../App.css';
 import TopWatched from './movie-tabs/TopWatched';
 import TopRated from './movie-tabs/TopRated';
+import Recommended from './movie-tabs/Recommended';
 
 export default class MovieTabs extends React.Component {
     public render() {
@@ -15,7 +16,7 @@ export default class MovieTabs extends React.Component {
                     <TopRated/>
                 </Tab>
                 <Tab eventKey={3} title="Recommended">
-                    Tab 3 content
+                    <Recommended/>
                 </Tab>
             </Tabs>
         );

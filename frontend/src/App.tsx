@@ -7,16 +7,16 @@ import { inject, observer } from 'mobx-react';
 
 @inject('state')
 @observer
-class Movies extends React.Component< { state: AppState }> {
+class App extends React.Component< { state: AppState }> {
   public render() {
     return (
       <div>
-         <Header state = { this.props.state }/>
-         <Search/>
-         <MovieTabs/>
+        <Header state = { this.props.state }/>
+        <Search/>
+        <MovieTabs/>
       </div>
     );
   }
 }
 
-export default Movies;
+export default App;

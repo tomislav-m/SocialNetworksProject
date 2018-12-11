@@ -2,7 +2,7 @@ import * as React from "react";
 import { observer, inject } from 'mobx-react';
 import GoogleLogin from "react-google-login";
 import "../App.css";
-import { GOOGLE_CLIENT_ID } from "src/components/utils/ApiKeys";
+import { GOOGLE_CLIENT_ID } from "src/utils/ApiKeys";
 import AppState from '../states/AppState';
 
 @inject('state')
