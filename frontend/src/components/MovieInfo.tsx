@@ -6,6 +6,7 @@ import 'react-rater/lib/react-rater.css'
 import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {movieInfocontainer, movieInfobox, movieInforating } from 'src/utils/Emotions'
+import EllipsisText from "react-ellipsis-text";
 
 interface IProps{
     movie: IMovie;
