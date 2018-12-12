@@ -67,7 +67,7 @@ export default class Header extends React.Component<IProps, IState> {
                 <Navbar inverse>
                     <Navbar.Header >
                         <Navbar.Brand>
-                            <a href="/movies" ><Glyphicon glyph="home" /> Ime aplikacije</a>
+                            <a href="/movies" ><Glyphicon glyph="home" /> Movie SNApp</a>
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav pullRight={true}>
