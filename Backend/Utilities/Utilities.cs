@@ -401,5 +401,42 @@ namespace Utilities
                 Console.WriteLine(rec.Key + ": " + rec.Value);
             }
         }
+
+        public static async Task CalculateAverageScore()
+        {
+            var response = await client.GetStringAsync("http://localhost:5000/api/Movies?pageSize=6393&pageNum=1");
+            var movies = JsonConvert.DeserializeObject<IEnumerable<Movie>>(response);
+            foreach(var movie in movies)
+            {
+                int count = 0;
+                float score = 0;
+                if (movie.RTRating > 0)
+                {
+                    score += (movie.RTRating / 20f);
+                    ++count;
+                }
+                if (movie.IMDbRating > 0)
+                {
+                    score += movie.IMDbRating / 2;
+                    ++count;
+                }
+                int.TryParse(movie.Metascore, out int result);
+                if (result > 0)
+                {
+                    score += (result / 20f);
+                    ++count;
+                }
+                if (count > 0)
+                {
+                    score /= count;
+
+                    movie.VoteAverage = score;
+                    var movieContent = new StringContent(JsonConvert.SerializeObject(movie), Encoding.UTF8, "application/json");
+                    await client.PutAsync($"http://localhost:5000/api/Movies/{movie.TMDbId}", movieContent);
+                }
+
+                Console.WriteLine(movie.Title + ": " + movie.VoteAverage);
+            }
+        }
     }
 }
