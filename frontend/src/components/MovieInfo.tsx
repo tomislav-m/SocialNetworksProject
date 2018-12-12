@@ -17,17 +17,30 @@ export default class MovieInfo extends React.Component<IProps> {
     public render() {
         const tooltip = (
             <Tooltip id="tooltip">
-              <strong>Number of votes</strong>
+                <strong>Number of votes</strong>
             </Tooltip>
-          );
+        );
+
         return (
             <div className = {movieInfocontainer}>
-                <Link to ={`/movies/${this.props.movie.id}`}>
+                <Link 
+                    to ={{
+                        pathname: `/movies/${this.props.movie.id}`,
+                        state:  { movie: this.props.movie} 
+                    }}
+                >
                     <img src = {`http://image.tmdb.org/t/p/w185/${this.props.movie.poster_path}`} alt = "No image"/>
                 </Link>
                 <div className = {movieInfobox}>
                     <div className = "movieTitle">
-                        <Link to={`/movies/${this.props.movie.id}`}>{this.props.movie.title}</Link>
+                    <Link 
+                        to ={{
+                            pathname: `/movies/${this.props.movie.id}`,
+                            state:  { movie: this.props.movie} 
+                        }}
+                    >
+                        {this.props.movie.title}
+                    </Link>
                     </div>
                     <div>
                     <Truncate lines={3} ellipsis={<span>... <a href='/link/to/article'>Read more</a></span>}>

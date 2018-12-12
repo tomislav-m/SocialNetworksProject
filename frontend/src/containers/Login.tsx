@@ -35,9 +35,12 @@ export default class Login extends React.Component< { history?: any, appState: A
         .then((res) => res.json())
         .then((res) => {
             this.props.appState.token = res.token;
+            this.props.history.push("/movies");
         })
-        .catch((error) => console.error("Error:", error));
-        this.props.history.push("/movies");
+        .catch((error) => {
+            console.error("Error:", error);
+            this.props.history.push("/error");
+        });
     };
 
     public responseFacebook = (response: any) => {
@@ -62,9 +65,12 @@ export default class Login extends React.Component< { history?: any, appState: A
         .then((res) => res.json())
         .then((res) => {
             this.props.appState.token = res.token;
+            this.props.history.push("/movies");
         })
-        .catch((error) => console.error("Error:", error));
-        this.props.history.push("/movies");
+        .catch((error) => {
+            console.error("Error:", error);
+            this.props.history.push("/error");
+        });
     };
 
     public render() {
