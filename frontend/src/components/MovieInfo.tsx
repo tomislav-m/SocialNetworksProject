@@ -5,7 +5,7 @@ import Rater from 'react-rater'
 import 'react-rater/lib/react-rater.css'
 import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import {movieInfocontainer, movieInfobox, movieInforating } from 'src/utils/Emotions';
+import {movieInfoContainer, movieInfoBox, movieInfoRating } from 'src/utils/Emotions';
 import Truncate from 'react-truncate';
 
 interface IProps{
@@ -22,7 +22,7 @@ export default class MovieInfo extends React.Component<IProps> {
         );
 
         return (
-            <div className = {movieInfocontainer}>
+            <div className = {movieInfoContainer}>
                 <Link 
                     to ={{
                         pathname: `/movies/${this.props.movie.id}`,
@@ -31,24 +31,33 @@ export default class MovieInfo extends React.Component<IProps> {
                 >
                     <img src = {`http://image.tmdb.org/t/p/w185/${this.props.movie.poster_path}`} alt = "No image"/>
                 </Link>
-                <div className = {movieInfobox}>
+                <div className = {movieInfoBox}>
                     <div className = "movieTitle">
-                    <Link 
-                        to ={{
-                            pathname: `/movies/${this.props.movie.id}`,
-                            state:  { movie: this.props.movie} 
-                        }}
-                    >
-                        {this.props.movie.title}
-                    </Link>
+                        <Link 
+                            to ={{
+                                pathname: `/movies/${this.props.movie.id}`,
+                                state:  { movie: this.props.movie} 
+                            }}
+                        >
+                            {this.props.movie.title}
+                        </Link>
                     </div>
                     <div>
-                    <Truncate lines={3} ellipsis={<span>... <a href='/link/to/article'>Read more</a></span>}>
+                    <Truncate lines={7} ellipsis={
+                        <span>... 
+                            <Link 
+                                to ={{
+                                    pathname: `/movies/${this.props.movie.id}`,
+                                    state:  { movie: this.props.movie} 
+                                }}
+                            >Read more
+                            </Link>
+                        </span>}>
                         {this.props.movie.overview}
                     </Truncate> 
                     </div>
 
-                    <div className = {movieInforating}>
+                    <div className = {movieInfoRating}>
                         <div>
                             <div>
                                 <div className = "rate">

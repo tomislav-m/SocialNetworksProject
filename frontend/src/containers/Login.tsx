@@ -5,6 +5,8 @@ import FacebookLogin from "react-facebook-login";
 import "../App.css";
 import { GOOGLE_CLIENT_ID, FACEBOOK_APP_ID } from "src/utils/ApiKeys";
 import { AppState } from '../states/AppState';
+import image from '../images/favicon.png';
+import { imageLoginSize, login, appName, loginButtons } from '../utils/Emotions';
 
 @inject('appState')
 @observer
@@ -18,11 +20,12 @@ export default class Login extends React.Component< { history?: any, appState: A
         this.props.appState.lastName = response.profileObj.familyName;
         this.props.appState.email = response.profileObj.email;
         this.props.appState.accessToken = response.Zi.id_token;
+        this.props.appState.imageUrl = response.profileObj.imageUrl;
         const data = JSON.stringify({
             AccessToken: this.props.appState.accessToken, 
             Email: this.props.appState.email, 
             FirstName: this.props.appState.firstName, 
-            LastName: this.props.appState.lastName
+            LastName: this.props.appState.lastName,
         });
     
         fetch("http://localhost:5000/api/users/google", {
@@ -75,21 +78,27 @@ export default class Login extends React.Component< { history?: any, appState: A
 
     public render() {
         return (
-        <div className="login">
-            <GoogleLogin
-                clientId={GOOGLE_CLIENT_ID}
-                onSuccess={this.responseGoogle}
-                onFailure={this.failure}
-                buttonText="Login with Google"
-            />
-            <FacebookLogin
-                appId={FACEBOOK_APP_ID}
-                autoLoad={false}
-                fields="first_name,last_name,email,picture"
-                callback={this.responseFacebook}
-                reAuthenticate={true}
-                onFailure={this.failure}
-            />
+        <div className={login}>
+            <div className = {appName}>Movie SNApp</div>
+            <img className = {imageLoginSize} src = {image}/>
+            <div className = {loginButtons}>
+                <GoogleLogin
+                    clientId={GOOGLE_CLIENT_ID}
+                    onSuccess={this.responseGoogle}
+                    onFailure={this.failure}
+                    buttonText="Login with Google"
+                    className = "btnGoogle"
+                />
+                <FacebookLogin
+                    appId={FACEBOOK_APP_ID}
+                    autoLoad={false}
+                    fields="first_name,last_name,email,picture"
+                    callback={this.responseFacebook}
+                    reAuthenticate={true}
+                    onFailure={this.failure}
+                    cssClass="btnFacebook"
+                />
+            </div>
         </div>
         );
     }
