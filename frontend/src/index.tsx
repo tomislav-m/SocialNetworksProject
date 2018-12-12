@@ -1,23 +1,25 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'mobx-react';
-import Movies from './Movies';
+import App from './App';
 import Login from './containers/Login';
 import Profile from './containers/Profile';
-import Movie from './containers/Movie';
+import MovieDetails from './containers/MovieDetails';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import { Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-import state from './states/AppState';
+import { AppState } from './states/AppState';
+
+const appState = new AppState();
 
 ReactDOM.render((
-  <Provider state = {state}>
+  <Provider appState = {appState}>
       <BrowserRouter>
           <div>
             <Route exact path={"/"} component={Login}/>
-            <Route exact path={"/movies"} component={Movies}/>
-            <Route exact path={"/movies/:movieID"} component={Movie}/>
+            <Route exact path={"/movies"} component={App}/>
+            <Route exact path={"/movies/:movieID"} component={MovieDetails}/>
             <Route exact path={"/profile"} component={Profile}/>
           </div>
       </BrowserRouter>

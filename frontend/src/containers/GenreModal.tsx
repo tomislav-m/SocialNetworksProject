@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Modal, Button, Checkbox } from 'react-bootstrap';
 import * as _ from 'lodash'; 
 import "../App.css";
-import { IGenres } from '../components/utils/Typings';
+import { IGenre } from 'src/utils/Typings';
 
 interface IProps {
     onClose: () => void;
@@ -10,7 +10,7 @@ interface IProps {
 }
 
 interface IState {
-    genres: IGenres[];
+    genres: IGenre[];
 }
 export default class GenreModal extends React.Component<IProps, IState> {
     constructor(props: IProps) {
@@ -25,7 +25,7 @@ export default class GenreModal extends React.Component<IProps, IState> {
     public getGenres = () => {
         fetch("http://localhost:5000/api/genres")
         .then(response => response.json())
-        .then((response: IGenres[]) => {
+        .then((response: IGenre[]) => {
             this.setState({
                 genres: response
             })  

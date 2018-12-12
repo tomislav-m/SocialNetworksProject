@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { IMovies } from '../utils/Typings';
 import * as _ from 'lodash';
+import { IMovie } from 'src/utils/Typings';
+import MovieInfo from '../MovieInfo';
 
 interface IState {
-    movies: IMovies[];
+    movies: IMovie[];
 }
 export default class TopRated extends React.Component<{}, IState>{
     constructor(props: any) {
@@ -12,17 +13,25 @@ export default class TopRated extends React.Component<{}, IState>{
     }
 
     public componentDidMount() {
-        this.getTopWatched();
+        this.getTopRated();
     }
 
-    public getTopWatched(){
-        fetch('https://api.themoviedb.org/3/movie/top_rated?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US')
+    public getTopRated(){
+        fetch(`http://localhost:5000/api/movies/top-rated`)
         .then(response => response.json())
-        .then(response => response.results)
-        .then((response: IMovies[]) => {
-            this.setState({
-                movies: response
-            })
+        .then((response: any[]) => {
+            const movies= response.map(movie => {
+                const mappedMovie: IMovie = {
+                    id: movie.id,
+                    title: movie.title,
+                    overview: movie.plot,
+                    poster_path: movie.posterUrl,
+                    vote_average: movie.voteAverage,
+                    vote_count: movie.voteCount
+                }
+                return mappedMovie;
+            });
+            this.setState({ movies });
         })
         .catch(error => console.error('Error:', error));
     }
@@ -33,7 +42,7 @@ export default class TopRated extends React.Component<{}, IState>{
         _.forEach(this.state.movies, (i) => {
             movies.push(
                 <div key = {key}>
-                    {i.title}
+                    <MovieInfo movie = {i}/>
                 </div>
             )
             key++;
