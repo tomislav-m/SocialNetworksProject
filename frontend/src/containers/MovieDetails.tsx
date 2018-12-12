@@ -34,12 +34,11 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                 <img src = {`http://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt = "No image"/>
                 
                 {movie.title}
-                {/* sta je ovo? */}
-                {movie.plot} 
-                {movie.release_date}
-                {/* sta je ovo? */}
-                {movie.runtime} 
-                {movie.vote_average}
+                {movie.overview} 
+                {movie.release_date} <br/>
+                
+                {/*movie.runtime*/} 
+                {movie.vote_average} <br/>
                 {movie.vote_count}
             </div>
         );
