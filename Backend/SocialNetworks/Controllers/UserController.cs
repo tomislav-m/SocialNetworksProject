@@ -14,6 +14,8 @@ using AutoMapper;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using Recommender;
+using System.Linq;
 
 namespace SocialNetworks.Controllers
 {
@@ -147,6 +149,18 @@ namespace SocialNetworks.Controllers
         {
             await _userRepository.AddRatings(id, ratings);
             return Ok();
+        }
+
+        [HttpGet("recommend/{id}")]
+        public IActionResult Recommend(string id)
+        {
+            if (_userRepository.GetById(id) == null)
+            {
+                return NotFound();
+            }
+            var users = _userRepository.GetAll();
+            var recommender = new UserBasedRecommender(users.ToDictionary(x => x.Id, y => y.MovieRatings), id, 0.5);
+            return Ok(recommender.Recommend());
         }
 
         private IActionResult ExternalLogin(dynamic userData)
