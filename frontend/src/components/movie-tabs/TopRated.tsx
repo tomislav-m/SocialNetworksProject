@@ -13,13 +13,12 @@ export default class TopRated extends React.Component<{}, IState>{
     }
 
     public componentDidMount() {
-        this.getTopWatched();
+        this.getTopRated();
     }
 
-    public getTopWatched(){
-        fetch('https://api.themoviedb.org/3/movie/top_rated?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US')
+    public getTopRated(){
+        fetch(`http://localhost:5000/api/movies/top-rated`)
         .then(response => response.json())
-        .then(response => response.results)
         .then((response: IMovie[]) => {
             this.setState({
                 movies: response

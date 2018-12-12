@@ -1,14 +1,11 @@
 import * as React from 'react';
 import '../App.css';
 import { IMovie } from 'src/utils/Typings';
-
 import Rater from 'react-rater'
 import 'react-rater/lib/react-rater.css'
 import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {movieInfocontainer, movieInfobox, movieInforating } from 'src/utils/Emotions'
-
-
 
 interface IProps{
     movie: IMovie;
@@ -46,7 +43,7 @@ export default class MovieInfo extends React.Component<IProps> {
                             </OverlayTrigger>
                         </div>
                         <div className = "ratingStars">
-                            Rate   <Rater total={10} rating={0} />
+                            Rate   <Rater total={5} rating={0} />
                         </div>
                     </div>
                 </div>

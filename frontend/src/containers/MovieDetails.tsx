@@ -13,12 +13,21 @@ interface IProps extends RouteComponentProps<IRouteParams>{
     appState: AppState;
 }
 
+interface IState {
+    loading: boolean;
+}
+
 @inject('appState')
 @observer
-export default class MovieDetails extends React.Component<IProps> {
+export default class MovieDetails extends React.Component<IProps, IState> {
+    constructor(props: any){
+        super(props);
+        this.state ={ loading: true };
+    }
 
     @action
     public componentDidMount() {
+        this.setState({loading: true});
         fetch(`http://localhost:5000/api/movies/${this.props.match.params.movieID}`)
         .then(response => response.json())
         .then((response) => {
@@ -35,7 +44,7 @@ export default class MovieDetails extends React.Component<IProps> {
             this.props.appState.runtime = response.runtime;
             this.props.appState.voteAverage = response.voteAverage;
             this.props.appState.voteCount = response.voteCount;
-            
+            this.setState({ loading: false });
         })
         .catch(error => console.error("Error:", error));
     }
@@ -43,14 +52,14 @@ export default class MovieDetails extends React.Component<IProps> {
         return (
             <div>
                 <Header firstName = {this.props.appState.firstName}/>
-                <img src = {`http://image.tmdb.org/t/p/w185/${this.props.appState.posterUrl}`} alt = "No image"/>
-
-                {this.props.appState.title}
-                {this.props.appState.plot}
-                {this.props.appState.releaseDate}
-                {this.props.appState.runtime}
-                {this.props.appState.voteAverage}
-                {this.props.appState.voteCount}
+                {!this.state.loading && <img src = {`http://image.tmdb.org/t/p/w185/${this.props.appState.posterUrl}`} alt = "No image"/>}
+                
+                {!this.state.loading && this.props.appState.title}
+                {!this.state.loading && this.props.appState.plot}
+                {!this.state.loading && this.props.appState.releaseDate}
+                {!this.state.loading && this.props.appState.runtime}
+                {!this.state.loading && this.props.appState.voteAverage}
+                {!this.state.loading && this.props.appState.voteCount}
             </div>
         );
     }
