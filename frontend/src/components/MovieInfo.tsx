@@ -5,8 +5,8 @@ import Rater from 'react-rater'
 import 'react-rater/lib/react-rater.css'
 import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import {movieInfocontainer, movieInfobox, movieInforating } from 'src/utils/Emotions'
-import EllipsisText from "react-ellipsis-text";
+import {movieInfocontainer, movieInfobox, movieInforating } from 'src/utils/Emotions';
+import Truncate from 'react-truncate';
 
 interface IProps{
     movie: IMovie;
@@ -29,7 +29,12 @@ export default class MovieInfo extends React.Component<IProps> {
                     <div className = "movieTitle">
                         <Link to={`/movies/${this.props.movie.id}`}>{this.props.movie.title}</Link>
                     </div>
-                    <div>{this.props.movie.overview}</div>
+                    <div>
+                    <Truncate lines={3} ellipsis={<span>... <a href='/link/to/article'>Read more</a></span>}>
+                        {this.props.movie.overview}
+                    </Truncate> 
+                    </div>
+
                     <div className = {movieInforating}>
                         <div>
                             <div>
