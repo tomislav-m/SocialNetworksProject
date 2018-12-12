@@ -1,8 +1,9 @@
 import * as React from "react";
 import { observer, inject } from 'mobx-react';
 import GoogleLogin from "react-google-login";
+import FacebookLogin from "react-facebook-login";
 import "../App.css";
-import { GOOGLE_CLIENT_ID } from "src/utils/ApiKeys";
+import { GOOGLE_CLIENT_ID, FACEBOOK_APP_ID } from "src/utils/ApiKeys";
 import { AppState } from '../states/AppState';
 
 @inject('appState')
@@ -39,14 +40,49 @@ export default class Login extends React.Component< { history?: any, appState: A
         this.props.history.push("/movies");
     };
 
+    public responseFacebook = (response: any) => {
+        this.props.appState.firstName = response.profileObj.givenName;
+        this.props.appState.lastName = response.profileObj.familyName;
+        this.props.appState.email = response.profileObj.email;
+        this.props.appState.accessToken = response.Zi.id_token;
+        const data = JSON.stringify({
+            AccessToken: this.props.appState.accessToken, 
+            Email: this.props.appState.email, 
+            FirstName: this.props.appState.firstName, 
+            LastName: this.props.appState.lastName
+        });
+    
+        fetch("http://localhost:5000/api/users/facebook", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: data,
+        })
+        .then((res) => res.json())
+        .then((res) => {
+            this.props.appState.token = res.token;
+        })
+        .catch((error) => console.error("Error:", error));
+        this.props.history.push("/movies");
+    };
+
     public render() {
         return (
         <div className="login">
             <GoogleLogin
-            clientId={GOOGLE_CLIENT_ID}
-            onSuccess={this.responseGoogle}
-            onFailure={this.failure}
-            buttonText="Login with Google"
+                clientId={GOOGLE_CLIENT_ID}
+                onSuccess={this.responseGoogle}
+                onFailure={this.failure}
+                buttonText="Login with Google"
+            />
+            <FacebookLogin
+                appId={FACEBOOK_APP_ID}
+                autoLoad={false}
+                fields="first_name,last_name,email,picture"
+                callback={this.responseFacebook}
+                reAuthenticate={true}
+                onFailure={this.failure}
             />
         </div>
         );
