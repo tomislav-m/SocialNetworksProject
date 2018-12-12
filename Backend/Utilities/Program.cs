@@ -13,7 +13,8 @@ namespace Utilities
                 Console.WriteLine("3. Get and save genres");
                 Console.WriteLine("4. Get more movies");
                 Console.WriteLine("5. Recommend");
-                Console.WriteLine("6. Exit");
+                Console.WriteLine("6. CalculateAverageScore");
+                Console.WriteLine("7. Exit");
 
                 var key = Console.ReadLine();
                 if(key == "1")
@@ -38,7 +39,11 @@ namespace Utilities
                 {
                     Utilities.RecommenderTest();
                 }
-                else if(key == "6" || key.ToLower() == "exit")
+                else if(key == "6")
+                {
+                    Utilities.CalculateAverageScore().Wait();
+                }
+                else if(key == "7" || key.ToLower() == "exit")
                 {
                     break;
                 }
