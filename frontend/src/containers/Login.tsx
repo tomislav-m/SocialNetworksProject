@@ -47,10 +47,11 @@ export default class Login extends React.Component< { history?: any, appState: A
     };
 
     public responseFacebook = (response: any) => {
-        this.props.appState.firstName = response.profileObj.givenName;
-        this.props.appState.lastName = response.profileObj.familyName;
-        this.props.appState.email = response.profileObj.email;
-        this.props.appState.accessToken = response.Zi.id_token;
+        console.log(response);
+        this.props.appState.firstName = response.first_name;
+        this.props.appState.lastName = response.last_name;
+        this.props.appState.email = response.email;
+        this.props.appState.accessToken = response.accessToken;
         const data = JSON.stringify({
             AccessToken: this.props.appState.accessToken, 
             Email: this.props.appState.email, 
