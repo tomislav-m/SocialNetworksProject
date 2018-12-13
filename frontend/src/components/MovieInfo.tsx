@@ -13,6 +13,7 @@ import favicon from '../../src/images/favicon.png';
 interface IProps{
     movie: IMovie;
     topWatched: boolean;
+    activePage: number;
 }
 
 export default class MovieInfo extends React.Component<IProps> {
