@@ -7,12 +7,32 @@ import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {movieInfoContainer, movieInfoBox, movieInfoRating } from 'src/utils/Emotions';
 import Truncate from 'react-truncate';
+import theMovieDb from '../../src/images/theMovieDb.png';
+import favicon from '../../src/images/favicon.png';
 
 interface IProps{
     movie: IMovie;
+    topWatched: boolean;
 }
 
 export default class MovieInfo extends React.Component<IProps> {
+
+    public renderInfoRating = () => {
+        return this.props.topWatched ?
+            <div>
+                <img src = {theMovieDb} height="30" width="30"/>
+                <div className = "rate">
+                    {this.props.movie.vote_average}
+                </div>/10
+            </div >
+            : 
+            <div>
+                <img src = {favicon} height="30" width="30"/>
+                <div className = "rate">
+                    {this.props.movie.vote_average}
+                </div>/5
+            </div >
+    }
 
     public render() {
         const tooltip = (
@@ -59,11 +79,7 @@ export default class MovieInfo extends React.Component<IProps> {
 
                     <div className = {movieInfoRating}>
                         <div>
-                            <div>
-                                <div className = "rate">
-                                    {this.props.movie.vote_average}
-                                </div>/10
-                            </div >
+                            { this.renderInfoRating()}
                             <OverlayTrigger placement="right" overlay={tooltip}>
                                 <Badge>
                                     {this.props.movie.vote_count}

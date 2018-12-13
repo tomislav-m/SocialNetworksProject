@@ -19,9 +19,9 @@
   text-align: center;
   margin:5px;
   display: inline-block;
- }
+}
 
- .btnGoogle {
+.btnGoogle {
   margin:5px;
   width: 165px;
   height:35px;
@@ -30,7 +30,7 @@
   color:white;
   border:0px transparent;
   text-align: center;
- }
+}
 .genres {
   /*padding-left: 40%;*/
 }

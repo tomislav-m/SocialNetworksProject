@@ -26,6 +26,7 @@ export default class Login extends React.Component< { history?: any, appState: A
             Email: this.props.appState.email, 
             FirstName: this.props.appState.firstName, 
             LastName: this.props.appState.lastName,
+            ImageUrl: this.props.appState.imageUrl
         });
     
         fetch("http://localhost:5000/api/users/google", {
@@ -53,11 +54,13 @@ export default class Login extends React.Component< { history?: any, appState: A
         this.props.appState.email = response.email;
         this.props.appState.accessToken = response.accessToken;
         const data = JSON.stringify({
-            AccessToken: this.props.appState.accessToken, 
+            access_token: this.props.appState.accessToken, 
             Email: this.props.appState.email, 
-            FirstName: this.props.appState.firstName, 
-            LastName: this.props.appState.lastName
+            first_name: this.props.appState.firstName, 
+            last_name: this.props.appState.lastName
         });
+
+        console.log(this.props.appState);
     
         fetch("http://localhost:5000/api/users/facebook", {
         method: "POST",

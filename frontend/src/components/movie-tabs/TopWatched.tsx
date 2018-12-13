@@ -6,7 +6,7 @@ import MovieInfo from '../MovieInfo';
 interface IState {
     movies: IMovie[];
 }
-export default class TopWatched extends React.Component<{}, IState>{
+export default class TopWatched extends React.Component<{ history?: any }, IState>{
     constructor(props: any) {
         super(props);
         this.state = { movies: [] };
@@ -25,7 +25,10 @@ export default class TopWatched extends React.Component<{}, IState>{
                 movies: response
             })
         })
-        .catch(error => console.error('Error:', error));
+        .catch((error) => {
+            console.error("Error:", error);
+            this.props.history.push("/error");
+        });
     }
 
     public renderBody = () => {
@@ -34,7 +37,7 @@ export default class TopWatched extends React.Component<{}, IState>{
         _.forEach(this.state.movies, (i) => {
             movies.push(
                 <div key = {key}>
-                    <MovieInfo movie = {i}/>
+                    <MovieInfo movie = {i} topWatched={true}/>
                 </div>
             )
             key++;
