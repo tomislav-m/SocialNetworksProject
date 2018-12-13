@@ -30,7 +30,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
 
         return (
             <div>
-                <Header firstName = {movie.firstName}/>
+                <Header firstName = {this.props.appState.firstName}/>
                 <img src = {`http://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt = "No image"/>
                 
                 {movie.title}

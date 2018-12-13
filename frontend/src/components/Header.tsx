@@ -2,6 +2,7 @@ import * as React from "react";
 import { Navbar, Nav, NavDropdown, MenuItem, Glyphicon } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import GenreModal from 'src/containers/GenreModal';
+import { observer } from 'mobx-react';
 
 interface IProps {
     firstName: string;
@@ -12,6 +13,8 @@ interface IState {
     profileRedirect: boolean;
     showGenreModal: boolean;
 }
+
+@observer
 export default class Header extends React.Component<IProps, IState> {
 
     public componentWillMount() {
