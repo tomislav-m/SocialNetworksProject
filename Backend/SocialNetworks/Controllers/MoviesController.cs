@@ -16,6 +16,7 @@ using NReco.CF.Taste.Impl.Neighborhood;
 using NReco.CF.Taste.Impl.Recommender;
 using NReco.CF.Taste.Impl.Common;
 using NReco.CF.Taste.Common;
+using AutoMapper;
 
 namespace SocialNetworks.Controllers
 {
@@ -25,46 +26,50 @@ namespace SocialNetworks.Controllers
     {
         private readonly IMovieRepository _movieRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public MoviesController(IMovieRepository movieRepository, IUserRepository userRepository)
+        public MoviesController(IMovieRepository movieRepository, IUserRepository userRepository, IMapper mapper)
         {
             _movieRepository = movieRepository;
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         // GET: api/Movies/
         [HttpGet]
-        public async Task<IEnumerable<Movie>> Get(int pageNum = 1, int pageSize = 50)
+        public async Task<IEnumerable<MovieJson>> Get(int pageNum = 1, int pageSize = 50)
         {
-            return await _movieRepository.GetAllMovies(pageNum, pageSize);
+            var movies = await _movieRepository.GetAllMovies(pageNum, pageSize);
+            return _mapper.Map<IList<MovieJson>>(movies);
         }
 
         [HttpGet("top-rated")]
-        public async Task<IEnumerable<Movie>> GetTopRated(int pageNum = 1, int pageSize = 50)
+        public async Task<IEnumerable<MovieJson>> GetTopRated(int pageNum = 1, int pageSize = 50)
         {
-            return await _movieRepository.GetTopRatedMovies(pageNum, pageSize);
+            var movies = await _movieRepository.GetTopRatedMovies(pageNum, pageSize);
+            return _mapper.Map<IList<MovieJson>>(movies);
         } 
 
         // GET: api/Movies/5
         [HttpGet("{id}")]
-        public async Task<Movie> Get(string id)
+        public async Task<MovieJson> Get(string id)
         {
-            return await _movieRepository.GetMovie(id);
+            return _mapper.Map<MovieJson>(await _movieRepository.GetMovie(id));
         }
 
         // POST: api/Movies
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Movie movie)
+        public async Task<IActionResult> Post([FromBody] MovieJson movie)
         {
-            await _movieRepository.AddMovie(movie);
+            await _movieRepository.AddMovie(_mapper.Map<Movie>(movie));
             return new OkObjectResult(movie);
         }
 
         // PUT: api/Artists/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(string id, [FromBody] Movie movie)
+        public async Task<IActionResult> Put(string id, [FromBody] MovieJson movie)
         {
-            await _movieRepository.UpdateMovie(id, movie);
+            await _movieRepository.UpdateMovie(id, _mapper.Map<Movie>(movie));
             return new OkObjectResult(movie);
         }
 
@@ -77,9 +82,10 @@ namespace SocialNetworks.Controllers
 
         [HttpGet]
         [Route("search/{query}")]
-        public async Task<IEnumerable<Movie>> Search(string query, int pageNum = 1, int pageSize = 50)
+        public async Task<IEnumerable<MovieJson>> Search(string query, int pageNum = 1, int pageSize = 50)
         {
-            return await _movieRepository.SearchMovies(query, pageNum, pageSize);
+            var movies = await _movieRepository.SearchMovies(query, pageNum, pageSize);
+            return _mapper.Map<IList<MovieJson>>(movies);
         }
 
         [HttpGet]

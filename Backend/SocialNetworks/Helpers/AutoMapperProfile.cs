@@ -13,6 +13,8 @@ namespace SocialNetworks.Helpers
             CreateMap<FacebookUserData, User>();
             CreateMap<User, GoogleUserData>();
             CreateMap<GoogleUserData, User>();
+            CreateMap<Movie, MovieJson>();
+            CreateMap<MovieJson, Movie>();
         }
     }
 }
