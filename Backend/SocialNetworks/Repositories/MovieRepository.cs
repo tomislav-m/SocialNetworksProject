@@ -24,7 +24,6 @@ namespace SocialNetworks.Repositories
             {
                 return await _context.Movies
                     .Find(_ => true)
-                    //.SortByDescending(x => x.VoteAverage)
                     .Skip((pageNum - 1) * pageSize).Limit(pageSize)
                     .ToListAsync();
             }
