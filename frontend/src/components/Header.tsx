@@ -74,7 +74,7 @@ export default class Header extends React.Component<IProps, IState> {
                         </Navbar.Brand>
                     </Navbar.Header>
                     <Nav pullRight={true}>
-                        <Navbar.Text>Hi, {this.props.firstName}!</Navbar.Text>
+                        <Navbar.Text>Hi, {localStorage.getItem('firstName')}!</Navbar.Text>
                         <NavDropdown title={navDropdownTitle} id="basic-nav-dropdown">
                             <MenuItem onSelect={this.openProfile}>My Profile</MenuItem>
                             <MenuItem onSelect={this.openGenreModal}>Favourite genres</MenuItem>

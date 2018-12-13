@@ -17,12 +17,12 @@ export default class Profile extends React.Component< IProps > {
                 <Header firstName = {this.props.mobxStore!.firstName} />
                 <div className = {profileContainer}>
                     <div className = {imageCss}>
-                        <img className = {imageSize} src = {this.props.mobxStore!.imageUrl} alt = "No image"/>
+                        <img className = {imageSize} src = {localStorage.getItem('imageUrl')!} alt = "No image"/>
                     </div>
                     <div className = {profileCss}>
-                        Name: {this.props.mobxStore!.firstName} <br/>
-                        Last name: {this.props.mobxStore!.lastName} <br/>
-                        Email: {this.props.mobxStore!.email}
+                        Name: {localStorage.getItem('firstName')} <br/>
+                        Last name: {localStorage.getItem('lastName')} <br/>
+                        Email: {localStorage.getItem('email')}
                     </div>
                 </div>
             </div>

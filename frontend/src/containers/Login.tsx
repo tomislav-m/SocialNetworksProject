@@ -26,6 +26,11 @@ export default class Login extends React.Component< IProps > {
         this.props.mobxStore!.email = response.profileObj.email;
         this.props.mobxStore!.accessToken = response.Zi.id_token;
         this.props.mobxStore!.imageUrl = response.profileObj.imageUrl;
+        localStorage.setItem('firstName', response.profileObj.givenName);
+        localStorage.setItem('lastName', response.profileObj.familyName);
+        localStorage.setItem('email', response.profileObj.email);
+        localStorage.setItem('accessToken', response.Zi.id_token);
+        localStorage.setItem('imageUrl', response.profileObj.imageUrl);
         const data = JSON.stringify({
             AccessToken: this.props.mobxStore!.accessToken, 
             Email: this.props.mobxStore!.email, 
@@ -44,6 +49,7 @@ export default class Login extends React.Component< IProps > {
         .then((res) => res.json())
         .then((res) => {
             this.props.mobxStore!.token = res.token;
+            localStorage.setItem('token', res.token);
             this.props.history.push("/movies");
         })
         .catch((error) => {
