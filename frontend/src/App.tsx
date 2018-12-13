@@ -2,16 +2,20 @@ import * as React from 'react';
 import Header from './components/Header'
 import Search from './components/Search';
 import MovieTabs from './components/MovieTabs';
-import { AppState } from './states/AppState';
+import { IMobxStore } from './stores/mobxStore';
 import { inject, observer } from 'mobx-react';
 
-@inject('appState')
+interface IProps {
+  mobxStore?: IMobxStore
+}
+
+@inject('mobxStore')
 @observer
-class App extends React.Component< { appState: AppState }> {
+class App extends React.Component< IProps > {
   public render() {
     return (
       <div>
-        <Header firstName = { this.props.appState.firstName }/>
+        <Header firstName = { this.props.mobxStore!.firstName }/>
         <Search/>
         <MovieTabs/>
       </div>

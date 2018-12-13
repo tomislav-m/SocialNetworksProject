@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Header from '../components/Header';
 import { inject, observer } from 'mobx-react';
-import { AppState } from '../states/AppState';
+import { IMobxStore } from '../stores/mobxStore';
 import { RouteComponentProps } from "react-router-dom";
 
 interface IRouteParams {
@@ -9,14 +9,14 @@ interface IRouteParams {
 }
 
 interface IProps extends RouteComponentProps<IRouteParams>{ 
-    appState: AppState;
+    mobxStore?: IMobxStore
 }
 
 interface IState {
     loading: boolean;
 }
 
-@inject('appState')
+@inject('mobxStore')
 @observer
 export default class MovieDetails extends React.Component<IProps, IState> {
     constructor(props: any){
@@ -30,7 +30,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
 
         return (
             <div>
-                <Header firstName = {this.props.appState.firstName}/>
+                <Header firstName = {this.props.mobxStore!.firstName}/>
                 <img src = {`http://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt = "No image"/>
                 
                 {movie.title}

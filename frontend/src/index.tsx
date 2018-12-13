@@ -10,12 +10,13 @@ import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 import { Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-import { AppState } from './states/AppState';
+import { stores } from './stores';
 
-const appState = new AppState();
+
+// const appState = new AppState();
 
 ReactDOM.render((
-  <Provider appState = {appState}>
+  <Provider {...stores}>
       <BrowserRouter>
           <div>
             <Route exact path={"/"} component={Login}/>

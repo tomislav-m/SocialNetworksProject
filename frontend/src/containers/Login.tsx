@@ -1,32 +1,37 @@
 import * as React from "react";
 import { observer, inject } from 'mobx-react';
+import { action } from 'mobx';
 import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login";
 import "../App.css";
 import { GOOGLE_CLIENT_ID, FACEBOOK_APP_ID } from "src/utils/ApiKeys";
-import { AppState } from '../states/AppState';
+import { IMobxStore } from '../stores/mobxStore';
 import image from '../images/favicon.png';
 import { imageLoginSize, login, appName, loginButtons } from '../utils/Emotions';
 
-@inject('appState')
+interface IProps {
+    history?: any;
+    mobxStore?: IMobxStore
+}
+@inject('mobxStore')
 @observer
-export default class Login extends React.Component< { history?: any, appState: AppState } > {
+export default class Login extends React.Component< IProps > {
     public failure = () => {
         console.log("Failure");
     };
-
+    @action
     public responseGoogle = (response: any) => {
-        this.props.appState.firstName = response.profileObj.givenName;
-        this.props.appState.lastName = response.profileObj.familyName;
-        this.props.appState.email = response.profileObj.email;
-        this.props.appState.accessToken = response.Zi.id_token;
-        this.props.appState.imageUrl = response.profileObj.imageUrl;
+        this.props.mobxStore!.firstName = response.profileObj.givenName;
+        this.props.mobxStore!.lastName = response.profileObj.familyName;
+        this.props.mobxStore!.email = response.profileObj.email;
+        this.props.mobxStore!.accessToken = response.Zi.id_token;
+        this.props.mobxStore!.imageUrl = response.profileObj.imageUrl;
         const data = JSON.stringify({
-            AccessToken: this.props.appState.accessToken, 
-            Email: this.props.appState.email, 
-            FirstName: this.props.appState.firstName, 
-            LastName: this.props.appState.lastName,
-            ImageUrl: this.props.appState.imageUrl
+            AccessToken: this.props.mobxStore!.accessToken, 
+            Email: this.props.mobxStore!.email, 
+            FirstName: this.props.mobxStore!.firstName, 
+            LastName: this.props.mobxStore!.lastName,
+            ImageUrl: this.props.mobxStore!.imageUrl
         });
     
         fetch("http://localhost:5000/api/users/google", {
@@ -38,7 +43,7 @@ export default class Login extends React.Component< { history?: any, appState: A
         })
         .then((res) => res.json())
         .then((res) => {
-            this.props.appState.token = res.token;
+            this.props.mobxStore!.token = res.token;
             this.props.history.push("/movies");
         })
         .catch((error) => {
@@ -49,18 +54,18 @@ export default class Login extends React.Component< { history?: any, appState: A
 
     public responseFacebook = (response: any) => {
         console.log(response);
-        this.props.appState.firstName = response.first_name;
-        this.props.appState.lastName = response.last_name;
-        this.props.appState.email = response.email;
-        this.props.appState.accessToken = response.accessToken;
+        this.props.mobxStore!.firstName = response.first_name;
+        this.props.mobxStore!.lastName = response.last_name;
+        this.props.mobxStore!.email = response.email;
+        this.props.mobxStore!.accessToken = response.accessToken;
         const data = JSON.stringify({
-            access_token: this.props.appState.accessToken, 
-            Email: this.props.appState.email, 
-            first_name: this.props.appState.firstName, 
-            last_name: this.props.appState.lastName
+            access_token: this.props.mobxStore!.accessToken, 
+            Email: this.props.mobxStore!.email, 
+            first_name: this.props.mobxStore!.firstName, 
+            last_name: this.props.mobxStore!.lastName
         });
 
-        console.log(this.props.appState);
+        console.log(this.props.mobxStore!);
     
         fetch("http://localhost:5000/api/users/facebook", {
         method: "POST",
@@ -71,7 +76,7 @@ export default class Login extends React.Component< { history?: any, appState: A
         })
         .then((res) => res.json())
         .then((res) => {
-            this.props.appState.token = res.token;
+            this.props.mobxStore!.token = res.token;
             this.props.history.push("/movies");
         })
         .catch((error) => {
