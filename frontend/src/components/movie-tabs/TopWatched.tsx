@@ -9,6 +9,7 @@ interface IState {
     totalPages: number;
     activePage: number;
     totalItemsCount: number;
+    loading: boolean;
 }
 
 export default class TopWatched extends React.Component<{ history?: any }, IState>{
@@ -18,7 +19,8 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
             movies: [],
             totalPages: 1,
             activePage: 1,
-            totalItemsCount:1
+            totalItemsCount:1,
+            loading: false
         };
     }
 
@@ -27,6 +29,7 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
     }
 
     public getTopWatched(){
+        this.setState({ loading: true });
         fetch(`https://api.themoviedb.org/3/movie/popular?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US`)
         .then(response => response.json())
         .then(response => {
@@ -34,7 +37,8 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
                 activePage: response.page,
                 totalPages: response.total_pages,
                 movies: response.results,
-                totalItemsCount: response.total_results
+                totalItemsCount: response.total_results,
+                loading: false
             })
         })
         .catch((error) => {
@@ -45,7 +49,10 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
 
     public handlePageChange = (selectedPage: number) => {
         console.log(`active page is ${selectedPage}`);
-        this.setState( {activePage: selectedPage });
+        this.setState({
+            activePage: selectedPage,
+            loading: true
+        });
         fetch(`https://api.themoviedb.org/3/movie/popular?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US&page=${selectedPage}`)
         .then(response => response.json())
         .then(response => {
@@ -53,7 +60,8 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
                 activePage: response.page,
                 totalPages: response.total_pages,
                 movies: response.results,
-                totalItemsCount: response.total_results
+                totalItemsCount: response.total_results,
+                loading: false
             })
         })
         .catch((error) => {
@@ -66,7 +74,7 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
     public render() {
         return (
             <div>
-                <TopWatchedMovies movies={this.state.movies}/>
+                { !this.state.loading && <TopWatchedMovies movies={this.state.movies}/>}
                 <div>
                     <Pagination
                         activePage={this.state.activePage}
