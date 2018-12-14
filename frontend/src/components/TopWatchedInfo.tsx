@@ -46,10 +46,29 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
     }
 
     public getMovieInfo(){
-        fetch(`http://localhost:5000/movies/${this.props.movieID}`)
+        fetch(`https://api.themoviedb.org/3/movie/${this.props.movieID}?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US`)
         .then(response => response.json())
         .then(response => {
-            console.log(response)
+            // console.log(response);
+            this.setState({
+                movie: response
+            });
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            // this.props.history.push("/error");
+        });
+        fetch(`http://localhost:5000/api/movies/${this.props.movieID}`)
+        .then(response => response.json())
+        .then(response => {
+            console.log(response.voteAverage+':'+response.rating);
+            this.setState( {
+                movie : {
+                    ...this.state.movie,
+                    voteAverage : response.voteAverage,
+                    rating : response.rating
+                }
+            })
         })
         .catch((error) => {
             console.error("Error:", error);

@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { IMovie } from 'src/utils/Typings';
 import TopWatchedInfo from '../TopWatchedInfo';
 import Pagination from 'react-js-pagination';
+import TopWatchedMovies from '../TopWatchedMovies';
 
 interface IState {
     movies: IMovie[];
@@ -74,12 +75,13 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
             console.error("Error:", error);
             this.props.history.push("/error");
         });
+        console.log(this.state.movies);
     }
 
     public render() {
         return (
             <div>
-                {this.renderBody()}
+                <TopWatchedMovies/>
                 <div>
                     <Pagination
                         activePage={this.state.activePage}
