@@ -7,7 +7,7 @@ export const movieInfoContainer = css`
 `
 export const movieInfoBox = css`
     display: grid;
-    grid-auto-rows: 50px 175px 20px;
+    grid-auto-rows: 50px 145px 20px;
     padding-left: 2em;
 `
 export const movieInfoRating = css`

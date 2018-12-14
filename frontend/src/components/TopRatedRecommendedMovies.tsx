@@ -7,8 +7,6 @@ import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {movieInfoContainer, movieInfoBox, movieInfoRating } from 'src/utils/Emotions';
 import Truncate from 'react-truncate';
-import theMovieDb from '../../src/images/theMovieDb.png';
-import favicon from '../../src/images/favicon.png';
 
 interface IProps{
     movie: IMovie;
@@ -16,24 +14,7 @@ interface IProps{
     activePage: number;
 }
 
-export default class MovieInfo extends React.Component<IProps> {
-
-    public renderInfoRating = () => {
-        return this.props.topWatched ?
-            <div>
-                <img src = {theMovieDb} height="30" width="30"/>
-                <div className = "rate">
-                    {this.props.movie.voteAverage}
-                </div>/10
-            </div >
-            : 
-            <div>
-                <img src = {favicon} height="30" width="30"/>
-                <div className = "rate">
-                    {this.props.movie.rating}
-                </div>/5
-            </div >
-    }
+export default class TopRatedRecommendedMovies extends React.Component<IProps> {
 
     public render() {
         const tooltip = (
@@ -52,6 +33,7 @@ export default class MovieInfo extends React.Component<IProps> {
                 >
                     <img src = {`http://image.tmdb.org/t/p/w185/${this.props.movie.poster_path}`} alt = "No image"/>
                 </Link>
+
                 <div className = {movieInfoBox}>
                     <div className = "movieTitle">
                         <Link 
@@ -63,6 +45,7 @@ export default class MovieInfo extends React.Component<IProps> {
                             {this.props.movie.title}
                         </Link>
                     </div>
+
                     <div>
                     <Truncate lines={7} ellipsis={
                         <span>... 
@@ -80,7 +63,16 @@ export default class MovieInfo extends React.Component<IProps> {
 
                     <div className = {movieInfoRating}>
                         <div>
-                            { this.renderInfoRating()}
+                            <div>
+                                <div className = "rate">
+                                    {(this.props.movie.voteAverage).toFixed(1)}
+                                </div>/5
+                            </div>
+                            <div>
+                                <div className = "rate">
+                                    {this.props.movie.rating}
+                                </div>/5
+                            </div>
                             <OverlayTrigger placement="right" overlay={tooltip}>
                                 <Badge>
                                     {this.props.movie.ratingCount}

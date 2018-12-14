@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { IMovie } from 'src/utils/Typings';
-import MovieInfo from '../MovieInfo';
+import TopRatedRecommendedMovies from '../TopRatedRecommendedMovies';
 
 interface IState {
     movies: IMovie[];
@@ -21,18 +21,7 @@ export default class TopRated extends React.Component<{}, IState>{
         .then(response => response.json())
         .then((response: any[]) => {
             console.log(response);
-            /* const movies= response.map(movie => {
-                const mappedMovie: IMovie = {
-                    id: movie.id,
-                    title: movie.title,
-                    overview: movie.plot,
-                    poster_path: movie.posterUrl,
-                    voteAverage: movie.voteAverage,
-                    ratingCount: movie.voteCount
-                }
-                return mappedMovie;
-            });
-            this.setState({ movies }); */
+            this.setState({ movies: response}); 
         })
         .catch(error => console.error('Error:', error));
     }
@@ -43,7 +32,7 @@ export default class TopRated extends React.Component<{}, IState>{
         _.forEach(this.state.movies, (i) => {
             movies.push(
                 <div key = {key}>
-                    <MovieInfo movie = {i} topWatched={false} activePage={1}/>
+                    <TopRatedRecommendedMovies movie = {i} topWatched={false} activePage={1}/>
                 </div>
             )
             key++;
