@@ -81,19 +81,6 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
         });
     }
 
-    public renderInfoRating = () => {
-        return (
-            <div>
-                <div className = "rate">
-                    {this.state.movie.voteAverage}
-                </div>/10
-                <div className = "rate">
-                    {this.state.movie.rating}
-                </div>/5
-            </div >
-        )
-    }
-
     public render() {
         const tooltip = (
             <Tooltip id="tooltip">
@@ -111,6 +98,7 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                 >
                     <img src = {`http://image.tmdb.org/t/p/w185/${this.state.movie.poster_path}`} alt = "No image"/>
                 </Link>
+
                 <div className = {movieInfoBox}>
                     <div className = "movieTitle">
                         <Link 
@@ -139,7 +127,17 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
 
                     <div className = {movieInfoRating}>
                         <div>
-                            { this.renderInfoRating()}
+                            <div>
+                                <div className = "rate">
+                                    {this.state.movie.voteAverage}
+                                </div>/5
+                            </div>
+                            <div>
+                                <div className = "rate">
+                                    {this.state.movie.rating}
+                                </div>/5
+                            </div >
+
                             <OverlayTrigger placement="right" overlay={tooltip}>
                                 <Badge>
                                     {this.state.movie.ratingCount}

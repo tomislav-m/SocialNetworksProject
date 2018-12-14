@@ -4,15 +4,21 @@ export const movieInfoContainer = css`
     display: grid;
     grid-template-columns: 0.5fr 1.5fr;
     padding-top: 2em;
+    justify-self: center;
+    justify-content: center;
 `
 export const movieInfoBox = css`
     display: grid;
     grid-auto-rows: 50px 145px 20px;
     padding-left: 2em;
+    justify-self: center;
+    justify-content: center;
 `
 export const movieInfoRating = css`
     display: grid;
     grid-template-columns: 1fr 1fr;
+    justify-self: center;
+    justify-content: center;
 `
 export const profileContainer = css`
     display: grid;
