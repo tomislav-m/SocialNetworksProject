@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { IMovie } from 'src/utils/Typings';
-import TopRatedRecommendedMovies from '../TopRatedRecommendedMovies';
+import TopRatedRecommInfo from '../TopRatedRecommInfo';
 
 interface IState {
     movies: IMovie[];
@@ -31,7 +31,7 @@ export default class TopRated extends React.Component<{}, IState>{
         _.forEach(this.state.movies, (i) => {
             movies.push(
                 <div key = {key}>
-                    <TopRatedRecommendedMovies movie = {i} topWatched={false} activePage={1}/>
+                    <TopRatedRecommInfo movie = {i} topWatched={false} activePage={1}/>
                 </div>
             )
             key++;

@@ -14,7 +14,7 @@ interface IProps{
     activePage: number;
 }
 
-export default class TopRatedRecommendedMovies extends React.Component<IProps> {
+export default class TopRatedRecommInfo extends React.Component<IProps> {
 
     public render() {
         const tooltip = (
