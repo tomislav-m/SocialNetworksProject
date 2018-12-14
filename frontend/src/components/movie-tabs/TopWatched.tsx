@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { IMovie } from 'src/utils/Typings';
-import TopWatchedInfo from '../TopWatchedInfo';
 import Pagination from 'react-js-pagination';
 import TopWatchedMovies from '../TopWatchedMovies';
 
@@ -44,20 +43,6 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
         });
     }
 
-    public renderBody = () => {
-        const movies: any[] = new Array();
-        let key = 1;
-        _.forEach(this.state.movies, (i) => {
-            movies.push(
-                <div key = {key}>
-                    <TopWatchedInfo movieID = {i.id} topWatched={true} />
-                </div>
-            )
-            key++;
-        });
-        return movies;
-    }
-
     public handlePageChange = (selectedPage: number) => {
         console.log(`active page is ${selectedPage}`);
         this.setState( {activePage: selectedPage });
@@ -81,7 +66,7 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
     public render() {
         return (
             <div>
-                <TopWatchedMovies/>
+                <TopWatchedMovies movies={this.state.movies}/>
                 <div>
                     <Pagination
                         activePage={this.state.activePage}
