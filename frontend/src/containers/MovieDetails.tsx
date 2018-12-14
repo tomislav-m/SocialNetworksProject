@@ -26,8 +26,6 @@ export default class MovieDetails extends React.Component<IProps, IState> {
 
     public render() {
         const  { movie } = this.props.location.state;
-        console.log('*******', movie);
-
         return (
             <div>
                 <Header firstName = {this.props.mobxStore!.firstName}/>
@@ -36,10 +34,14 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                 {movie.title}
                 {movie.overview} 
                 {movie.release_date} <br/>
-                
-                {/*movie.runtime*/} 
-                {movie.vote_average} <br/>
-                {movie.vote_count}
+                {movie.runtime} <br/>
+                {movie.voteAverage} <br/>
+                {movie.ratingCount} <br/>
+                {movie.rating} <br/>
+                {movie.genre_ids} <br/>
+                {movie.actorsIds} <br/>
+                {movie.directorsIds} <br/>
+                {movie.soundtrackId}
             </div>
         );
     }

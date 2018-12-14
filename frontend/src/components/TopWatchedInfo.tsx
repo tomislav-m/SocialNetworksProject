@@ -49,7 +49,6 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
         fetch(`https://api.themoviedb.org/3/movie/${this.props.movieID}?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US`)
         .then(response => response.json())
         .then(response => {
-            // console.log(response);
             this.setState({
                 movie: response
             });
@@ -61,12 +60,18 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
         fetch(`http://localhost:5000/api/movies/${this.props.movieID}`)
         .then(response => response.json())
         .then(response => {
-            console.log(response.voteAverage+':'+response.rating);
             this.setState( {
                 movie : {
                     ...this.state.movie,
                     voteAverage : response.voteAverage,
-                    rating : response.rating
+                    rating : response.rating,
+                    ratingCount: response.ratingCount,
+                    runtime: response.runtime,
+                    release_date: response.release_date,
+                    genre_ids: response.genre_ids,
+                    actorsIds: response.actorsIds,
+                    directorsIds: response.directorsIds,
+                    soundtrackId: response.soundtrackId
                 }
             })
         })

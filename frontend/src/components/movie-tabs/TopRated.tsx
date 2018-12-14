@@ -20,7 +20,6 @@ export default class TopRated extends React.Component<{}, IState>{
         fetch(`http://localhost:5000/api/movies/top-rated`)
         .then(response => response.json())
         .then((response: any[]) => {
-            console.log(response);
             this.setState({ movies: response}); 
         })
         .catch(error => console.error('Error:', error));
