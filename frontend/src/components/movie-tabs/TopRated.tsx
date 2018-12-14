@@ -20,18 +20,19 @@ export default class TopRated extends React.Component<{}, IState>{
         fetch(`http://localhost:5000/api/movies/top-rated`)
         .then(response => response.json())
         .then((response: any[]) => {
-            const movies= response.map(movie => {
+            console.log(response);
+            /* const movies= response.map(movie => {
                 const mappedMovie: IMovie = {
                     id: movie.id,
                     title: movie.title,
                     overview: movie.plot,
                     poster_path: movie.posterUrl,
-                    vote_average: movie.voteAverage,
-                    vote_count: movie.voteCount
+                    voteAverage: movie.voteAverage,
+                    ratingCount: movie.voteCount
                 }
                 return mappedMovie;
             });
-            this.setState({ movies });
+            this.setState({ movies }); */
         })
         .catch(error => console.error('Error:', error));
     }

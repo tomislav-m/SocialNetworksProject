@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import '../App.css';
 import { IMovie } from 'src/utils/Typings';
@@ -7,32 +8,66 @@ import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {movieInfoContainer, movieInfoBox, movieInfoRating } from 'src/utils/Emotions';
 import Truncate from 'react-truncate';
-import theMovieDb from '../../src/images/theMovieDb.png';
-import favicon from '../../src/images/favicon.png';
 
-interface IProps{
-    movie: IMovie;
+interface IProps {
+    history?: any;
+    movieID: string;
     topWatched: boolean;
-    activePage: number;
 }
 
-export default class MovieInfo extends React.Component<IProps> {
+interface IState {
+    movie: IMovie;
+}
+
+export default class TopWatchedInfo extends React.Component<IProps, IState> {
+
+    constructor(props: any) {
+        super(props);
+        this.state = { 
+            movie: {
+                id: '', 
+                title: '',
+                overview: '',
+                poster_path: '',
+                voteAverage: 0,
+                rating: 0,
+                ratingCount: 0,
+                runtime: '',
+                release_date: '',
+                genre_ids: [],
+                actorsIds: [],
+                directorsIds: [],
+                soundtrackId: ''
+            }
+        };
+    }
+    public componentDidMount() {
+        this.getMovieInfo();
+    }
+
+    public getMovieInfo(){
+        fetch(`http://localhost:5000/movies/${this.props.movieID}`)
+        .then(response => response.json())
+        .then(response => {
+            console.log(response)
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            // this.props.history.push("/error");
+        });
+    }
 
     public renderInfoRating = () => {
-        return this.props.topWatched ?
+        return (
             <div>
-                <img src = {theMovieDb} height="30" width="30"/>
                 <div className = "rate">
-                    {this.props.movie.voteAverage}
+                    {this.state.movie.voteAverage}
                 </div>/10
-            </div >
-            : 
-            <div>
-                <img src = {favicon} height="30" width="30"/>
                 <div className = "rate">
-                    {this.props.movie.rating}
+                    {this.state.movie.rating}
                 </div>/5
             </div >
+        )
     }
 
     public render() {
@@ -46,21 +81,21 @@ export default class MovieInfo extends React.Component<IProps> {
             <div className = {movieInfoContainer}>
                 <Link 
                     to ={{
-                        pathname: `/movies/${this.props.movie.id}`,
-                        state:  { movie: this.props.movie} 
+                        pathname: `/movies/${this.state.movie.id}`,
+                        state:  { movie: this.state.movie} 
                     }}
                 >
-                    <img src = {`http://image.tmdb.org/t/p/w185/${this.props.movie.poster_path}`} alt = "No image"/>
+                    <img src = {`http://image.tmdb.org/t/p/w185/${this.state.movie.poster_path}`} alt = "No image"/>
                 </Link>
                 <div className = {movieInfoBox}>
                     <div className = "movieTitle">
                         <Link 
                             to ={{
-                                pathname: `/movies/${this.props.movie.id}`,
-                                state:  { movie: this.props.movie} 
+                                pathname: `/movies/${this.state.movie.id}`,
+                                state:  { movie: this.state.movie} 
                             }}
                         >
-                            {this.props.movie.title}
+                            {this.state.movie.title}
                         </Link>
                     </div>
                     <div>
@@ -68,13 +103,13 @@ export default class MovieInfo extends React.Component<IProps> {
                         <span>... 
                             <Link 
                                 to ={{
-                                    pathname: `/movies/${this.props.movie.id}`,
-                                    state:  { movie: this.props.movie} 
+                                    pathname: `/movies/${this.state.movie.id}`,
+                                    state:  { movie: this.state.movie} 
                                 }}
                             >Read more
                             </Link>
                         </span>}>
-                        {this.props.movie.overview}
+                        {this.state.movie.overview}
                     </Truncate> 
                     </div>
 
@@ -83,7 +118,7 @@ export default class MovieInfo extends React.Component<IProps> {
                             { this.renderInfoRating()}
                             <OverlayTrigger placement="right" overlay={tooltip}>
                                 <Badge>
-                                    {this.props.movie.ratingCount}
+                                    {this.state.movie.ratingCount}
                                 </Badge>
                             </OverlayTrigger>
                         </div>
