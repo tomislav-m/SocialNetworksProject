@@ -37,14 +37,14 @@ namespace SocialNetworks.Controllers
 
         // GET: api/Movies/
         [HttpGet]
-        public async Task<IEnumerable<MovieJson>> Get(int pageNum = 1, int pageSize = 50)
+        public async Task<IEnumerable<MovieJson>> Get(int pageNum = 1, int pageSize = 20)
         {
             var movies = await _movieRepository.GetAllMovies(pageNum, pageSize);
             return _mapper.Map<IList<MovieJson>>(movies);
         }
 
         [HttpGet("top-rated")]
-        public async Task<IEnumerable<MovieJson>> GetTopRated(int pageNum = 1, int pageSize = 50)
+        public async Task<IEnumerable<MovieJson>> GetTopRated(int pageNum = 1, int pageSize = 20)
         {
             var movies = await _movieRepository.GetTopRatedMovies(pageNum, pageSize);
             return _mapper.Map<IList<MovieJson>>(movies);
@@ -82,7 +82,7 @@ namespace SocialNetworks.Controllers
 
         [HttpGet]
         [Route("search/{query}")]
-        public async Task<IEnumerable<MovieJson>> Search(string query, int pageNum = 1, int pageSize = 50)
+        public async Task<IEnumerable<MovieJson>> Search(string query, int pageNum = 1, int pageSize = 20)
         {
             var movies = await _movieRepository.SearchMovies(query, pageNum, pageSize);
             return _mapper.Map<IList<MovieJson>>(movies);
