@@ -2,8 +2,8 @@
 import * as React from 'react';
 import '../App.css';
 import { IMovie } from 'src/utils/Typings';
-import Rater from 'react-rater'
-import 'react-rater/lib/react-rater.css'
+import Rater from 'react-rater';
+import 'react-rater/lib/react-rater.css';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {movieInfoContainer, movieInfoBox, movieInfoRating } from 'src/utils/Emotions';
@@ -52,33 +52,30 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
             this.setState({
                 movie: response
             });
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-            // this.props.history.push("/error");
-        });
-        fetch(`http://localhost:5000/api/movies/${this.props.movieID}`)
-        .then(response => response.json())
-        .then(response => {
-            this.setState( {
-                movie : {
-                    ...this.state.movie,
-                    voteAverage : response.voteAverage,
-                    rating : response.rating,
-                    ratingCount: response.ratingCount,
-                    runtime: response.runtime,
-                    release_date: response.release_date,
-                    genre_ids: response.genre_ids,
-                    actorsIds: response.actorsIds,
-                    directorsIds: response.directorsIds,
-                    soundtrackId: response.soundtrackId
-                }
+            fetch(`http://localhost:5000/api/movies/${this.props.movieID}`)
+            .then(r => r.json())
+            .then(r => {
+                this.setState( {
+                    movie : {
+                        ...this.state.movie,
+                        voteAverage : r.voteAverage,
+                        rating : r.rating,
+                        ratingCount: r.ratingCount,
+                        runtime: r.runtime,
+                        release_date: r.release_date,
+                        genre_ids: r.genre_ids,
+                        actorsIds: r.actorsIds,
+                        directorsIds: r.directorsIds,
+                        soundtrackId: r.soundtrackId
+                    }
+                })
             })
         })
         .catch((error) => {
             console.error("Error:", error);
             // this.props.history.push("/error");
         });
+        
     }
 
     public render() {

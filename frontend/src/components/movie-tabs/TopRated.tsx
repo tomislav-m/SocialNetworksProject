@@ -2,14 +2,22 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { IMovie } from 'src/utils/Typings';
 import TopRatedRecommInfo from '../TopRatedRecommInfo';
+import Pagination from 'react-js-pagination';
 
 interface IState {
     movies: IMovie[];
+    loading: boolean;
+    activePage: number;
 }
-export default class TopRated extends React.Component<{}, IState>{
+export default class TopRated extends React.Component<{ history?: any }, IState>{
     constructor(props: any) {
         super(props);
-        this.state = { movies: [] };
+        this.state = { 
+            movies: [] ,
+            loading: false,
+            activePage: 1
+        };
+
     }
 
     public componentDidMount() {
@@ -17,12 +25,37 @@ export default class TopRated extends React.Component<{}, IState>{
     }
 
     public getTopRated(){
-        fetch(`http://localhost:5000/api/movies/top-rated`)
+        this.setState({ loading: true });
+        fetch(`http://localhost:5000/api/movies/top-rated?pageSize=20`)
         .then(response => response.json())
         .then((response: any[]) => {
-            this.setState({ movies: response}); 
+            this.setState({ 
+                movies: response,
+                loading:false
+            }); 
         })
         .catch(error => console.error('Error:', error));
+    }
+
+    public handlePageChange = (selectedPage: number) => {
+        console.log(`active page is ${selectedPage}`);
+        this.setState({
+            activePage: selectedPage,
+            loading: true
+        });
+        fetch(`http://localhost:5000/api/movies/top-rated?pageSize=20&pageNum=${selectedPage}`)
+        .then(response => response.json())
+        .then(response => {
+            this.setState( {
+                movies: response,
+                loading: false
+            })
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            this.props.history.push("/error");
+        });
+        console.log(this.state.movies);
     }
 
     public renderBody = () => {
@@ -42,7 +75,16 @@ export default class TopRated extends React.Component<{}, IState>{
     public render() {
         return (
             <div>
-                {this.renderBody()}
+                { !this.state.loading && this.renderBody()}
+                <div>
+                    <Pagination
+                        activePage={this.state.activePage}
+                        itemsCountPerPage={20}
+                        totalItemsCount={200}
+                        pageRangeDisplayed={10}
+                        onChange={this.handlePageChange}
+                    />
+                </div>
             </div>
         );
     }
