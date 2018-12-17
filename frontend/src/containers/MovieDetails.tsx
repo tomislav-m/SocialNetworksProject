@@ -13,7 +13,7 @@ interface IRouteParams {
 }
 
 interface IProps extends RouteComponentProps<IRouteParams>{ 
-    mobxStore?: IMobxStore
+    mobxStore?: IMobxStore;
 }
 
 interface IState {
@@ -25,7 +25,47 @@ interface IState {
 export default class MovieDetails extends React.Component<IProps, IState> {
     constructor(props: any){
         super(props);
-        this.state ={ loading: true };
+        this.state ={ 
+            loading: true, 
+        };
+    }
+
+    public getGenres(genreIds:string[]) {
+        genreIds.forEach(genreId => {
+            console.log(genreId)
+            fetch(`http://localhost:5000/api/genres/${genreId}`)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+            })
+        })
+    }
+
+    public getDirectors(directorIds: string[]) {
+        directorIds.forEach(directorId => {
+            console.log(directorId)
+            fetch(`http://localhost:5000/api/people/${directorId}`)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+            })
+        })
+    }
+
+    public getActors(actorsIds: string[]) {
+        actorsIds.forEach(actorId => {
+            console.log(actorId)
+            fetch(`http://localhost:5000/api/people/${actorId}`)
+            .then(response => response.json())
+            .then(response => {
+                console.log(response)
+            })
+        })
+    }
+
+    public getSoundtrack(soundtrackId: string[]) {
+        console.log(soundtrackId)
+        // api za dohvaćanje soundtracka???
     }
 
     public render() {
@@ -52,9 +92,9 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                             </div>
 
                             <div className = {infoBox}>
-                                Release date: <Moment format="D MMMM YYYY">{movie.release_date}</Moment><br/>
-                                Runtime: {movie.runtime} <br/>
-                                Genres: {movie.genre_ids} 
+                                Release date: <Moment format="D MMMM YYYY">{movie.release_date || "no information"}</Moment><br/>
+                                Runtime: {movie.runtime || "no information"} <br/>
+                                Genres: {this.getGenres(movie.genre_ids)} 
                             </div>
                            
                             <div className = {movieDetailsRating}>
@@ -83,10 +123,12 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                     </div>
 
                     <div>
-                        Ispis redatelja, glumaca i soundtrackova
-                        {/*movie.actorsIds*/} <br/>
-                        {/*movie.directorsIds*/} <br/>
-                        {/*movie.soundtrackId*/}
+                        Director:
+                        {this.getDirectors(movie.directorsIds)} <br/>
+                        Actors:
+                        {this.getActors(movie.actorsIds)} <br/>
+                        Soundtrack:
+                        {this.getSoundtrack(movie.soundtrackId)}
                     </div>
                 </div> 
             </div>
