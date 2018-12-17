@@ -3,16 +3,23 @@ import { css } from 'emotion';
 export const movieInfoContainer = css`
     display: grid;
     grid-template-columns: 0.5fr 1.5fr;
-    padding-top: 2em;
+    padding-top: 2.5em;
+    justify-self: center;
+    justify-content: center;
 `
 export const movieInfoBox = css`
     display: grid;
-    grid-auto-rows: 50px 175px 20px;
+    grid-auto-rows: 4.5em 8.5em 1.25em;
     padding-left: 2em;
+    justify-self: center;
+    justify-content: center;
 `
 export const movieInfoRating = css`
     display: grid;
     grid-template-columns: 1fr 1fr;
+    padding-top: 1.5em;
+    justify-self: center;
+    justify-content: center;
 `
 export const profileContainer = css`
     display: grid;
@@ -25,7 +32,7 @@ export const imageCss = css`
 export const profileCss = css`
     margin-right: 30em;
     margin-top: 10em;
-    font-size: 15px;
+    font-size: 1em;
 `
 export const imageSize = css`
     width: 15em;
@@ -42,9 +49,43 @@ export const imageLoginSize = css`
     height: 20em;
 `
 export const appName = css`
-    font-size: 50px;
-    padding-top: 50px;
+    font-size: 3.125em;
+    padding-top: 1.5em;
 `
 export const loginButtons = css`
-    padding-top: 20px;
+    padding-top: 1.25em;
+`
+export const movieContainer = css`
+    display: grid;
+    grid-auto-rows: 0.5fr 1fr 1fr;
+    grid-template-columns: 0.9fr;
+    margin-left: 30em;
+`
+export const firstMovieBox = css`
+    display: grid;
+    grid-template-columns: 0.5fr 1.5fr;
+    grid-auto-rows: 20em;
+    column-gap: 2.5em;
+    margin-right: 8em;
+`
+export const secondMovieBox = css`
+    display: grid;
+    grid-auto-rows: 1fr 1fr 1fr;
+`
+export const overviewBox = css`
+    display: grid;
+    grid-template-columns: 35em;
+    margin-top: 5em;
+    margin-right: 7em;
+    text-align: justify;
+`
+export const titleBox = css`
+    font-size: 2em;
+`
+export const infoBox = css`
+    
+`
+export const movieDetailsRating = css`
+    display: grid;
+    grid-template-columns: 0.5fr;
 `

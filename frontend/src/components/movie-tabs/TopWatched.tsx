@@ -1,14 +1,15 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { IMovie } from 'src/utils/Typings';
-import MovieInfo from '../MovieInfo';
 import Pagination from 'react-js-pagination';
+import TopWatchedInfo from '../TopWatchedInfo';
 
 interface IState {
     movies: IMovie[];
     totalPages: number;
     activePage: number;
     totalItemsCount: number;
+    loading: boolean;
 }
 
 export default class TopWatched extends React.Component<{ history?: any }, IState>{
@@ -18,7 +19,8 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
             movies: [],
             totalPages: 1,
             activePage: 1,
-            totalItemsCount:1
+            totalItemsCount:1,
+            loading: false
         };
     }
 
@@ -27,6 +29,7 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
     }
 
     public getTopWatched(){
+        this.setState({ loading: true });
         fetch(`https://api.themoviedb.org/3/movie/popular?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US`)
         .then(response => response.json())
         .then(response => {
@@ -34,13 +37,38 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
                 activePage: response.page,
                 totalPages: response.total_pages,
                 movies: response.results,
-                totalItemsCount: response.total_results
+                totalItemsCount: response.total_results,
+                loading: false
+            })
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            // this.props.history.push("/error");
+        });
+    }
+
+    public handlePageChange = (selectedPage: number) => {
+        console.log(`active page is ${selectedPage}`);
+        this.setState({
+            activePage: selectedPage,
+            loading: true
+        });
+        fetch(`https://api.themoviedb.org/3/movie/popular?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US&page=${selectedPage}`)
+        .then(response => response.json())
+        .then(response => {
+            this.setState( {
+                activePage: response.page,
+                totalPages: response.total_pages,
+                movies: response.results,
+                totalItemsCount: response.total_results,
+                loading: false
             })
         })
         .catch((error) => {
             console.error("Error:", error);
             this.props.history.push("/error");
         });
+        console.log(this.state.movies);
     }
 
     public renderBody = () => {
@@ -49,7 +77,7 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
         _.forEach(this.state.movies, (i) => {
             movies.push(
                 <div key = {key}>
-                    <MovieInfo movie = {i} topWatched={true} activePage={this.state.activePage}/>
+                    <TopWatchedInfo movieID = {i.id} topWatched={true} />
                 </div>
             )
             key++;
@@ -57,29 +85,10 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
         return movies;
     }
 
-    public handlePageChange = (selectedPage: number) => {
-        console.log(`active page is ${selectedPage}`);
-        this.setState( {activePage: selectedPage });
-        fetch(`https://api.themoviedb.org/3/movie/popular?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US&page=${selectedPage}`)
-        .then(response => response.json())
-        .then(response => {
-            this.setState( {
-                activePage: response.page,
-                totalPages: response.total_pages,
-                movies: response.results,
-                totalItemsCount: response.total_results
-            })
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-            this.props.history.push("/error");
-        });
-    }
-
     public render() {
         return (
             <div>
-                {this.renderBody()}
+                { !this.state.loading && this.renderBody()}
                 <div>
                     <Pagination
                         activePage={this.state.activePage}
