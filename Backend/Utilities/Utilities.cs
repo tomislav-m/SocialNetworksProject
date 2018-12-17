@@ -62,7 +62,7 @@ namespace Utilities
         public static async Task GetMovies(string url)
         {
             var str = url + "api_key=" + apiKey + "&page=";
-            for (int i = 1; i <= 320; ++i)
+            for (int i = 21; i <= 200; ++i)
             {
                 var stringTask = client.GetStringAsync(str + i);
                 var msg = await stringTask;
@@ -73,16 +73,19 @@ namespace Utilities
                 foreach (var t in tokens)
                 {
                     TMDBMovie movie = JsonConvert.DeserializeObject<TMDBMovie>(t.ToString());
-                    Movie model = new Movie
+                    var dbMovie = await client.GetStringAsync("http://localhost:5000/api/Movies/" + movie.Id);
+                    if (dbMovie != string.Empty) continue;
+                    MovieJson model = new MovieJson
                     {
                         TMDbId = movie.Id,
                         Genres = movie.Genre_Ids,
                         ReleaseDate = movie.Release_Date,
                         Title = movie.Title,
-                        VoteCount = movie.Vote_Count,
-                        VoteAverage = movie.Vote_Average,
+                        VoteAverage = 0,
                         Popularity = movie.Popularity,
-                        PosterUrl = movie.Poster_Path
+                        PosterUrl = movie.Poster_Path,
+                        Rating = 0,
+                        RatingCount = 0
                     };
                     var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("http://localhost:5000/api/Movies", stringContent);
@@ -105,18 +108,16 @@ namespace Utilities
 
         public static async Task GetAndSaveCast()
         {
-            var task = client.GetStringAsync("http://localhost:5000/api/Movies");
+            var task = client.GetStringAsync("http://localhost:5000/api/Movies?pageSize=7319&pageNum=1");
             var response = await task;
             var movies = JArray.Parse(response);
-            int i = 0;
             foreach (var movie in movies.Children())
             {
-                var model = JsonConvert.DeserializeObject<Movie>(movie.ToString());
-                if (model.ActorsIds != null)
+                var model = JsonConvert.DeserializeObject<MovieJson>(movie.ToString());
+                if (model.ActorsIds != null && model.ActorsIds.Count() > 0)
                 {
                     continue;
                 }
-                ++i;
                 var credits = "https://api.themoviedb.org/3/movie/" + model.TMDbId + "/credits?api_key=" + apiKey;
                 task = client.GetStringAsync(credits);
                 var creditsResponse = await task;
@@ -138,10 +139,7 @@ namespace Utilities
                 var movieJson = JsonConvert.SerializeObject(model);
                 var movieContent = new StringContent(movieJson, Encoding.UTF8, "application/json");
                 var movieResponse = await client.PutAsync("http://localhost:5000/api/Movies/" + model.TMDbId, movieContent);
-                if (i % 10 == 0)
-                {
-                    Console.WriteLine(i);
-                }
+                Console.WriteLine(model.Title + ":" + movieResponse.StatusCode);
             }
         }
 
