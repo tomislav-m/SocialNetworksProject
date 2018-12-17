@@ -57,14 +57,35 @@ export const loginButtons = css`
 `
 export const movieContainer = css`
     display: grid;
-    grid-auto-rows: 1fr 1fr 1fr;
-    justify-items: center;
+    grid-auto-rows: 0.5fr 1fr 1fr;
+    grid-template-columns: 0.9fr;
+    margin-left: 30em;
 `
 export const firstMovieBox = css`
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 0.5fr 1.5fr;
+    grid-auto-rows: 20em;
+    column-gap: 2.5em;
+    margin-right: 8em;
 `
 export const secondMovieBox = css`
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 1fr 1fr 1fr;
+`
+export const overviewBox = css`
+    display: grid;
+    grid-template-columns: 35em;
+    margin-top: 5em;
+    margin-right: 7em;
+    text-align: justify;
+`
+export const titleBox = css`
+    font-size: 2em;
+`
+export const infoBox = css`
+    
+`
+export const movieDetailsRating = css`
+    display: grid;
+    grid-template-columns: 0.5fr;
 `
