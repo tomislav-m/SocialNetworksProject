@@ -4,7 +4,7 @@ import '../App.css';
 import { IMovie } from 'src/utils/Typings';
 import Rater from 'react-rater'
 import 'react-rater/lib/react-rater.css'
-import { Badge, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import {movieInfoContainer, movieInfoBox, movieInfoRating } from 'src/utils/Emotions';
 import Truncate from 'react-truncate';
@@ -82,12 +82,17 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
     }
 
     public render() {
-        const tooltip = (
+        const tooltip1 = (
             <Tooltip id="tooltip">
-                <strong>Number of votes</strong>
+                <strong>{Number(this.state.movie.voteAverage).toFixed(1)} based on IMDB, TMDB and RT user ratings</strong>
             </Tooltip>
         );
-
+        const tooltip2 = (
+            <Tooltip id="tooltip">
+                <strong>{Number(this.state.movie.rating).toFixed(1)} based on {this.state.movie.ratingCount} user ratings</strong>
+            </Tooltip>
+        );
+        
         return (
             <div className = {movieInfoContainer}>
                 <Link 
@@ -110,43 +115,42 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                             {this.state.movie.title}
                         </Link>
                     </div>
+
                     <div>
-                    <Truncate lines={7} ellipsis={
-                        <span>... 
-                            <Link 
-                                to ={{
-                                    pathname: `/movies/${this.state.movie.id}`,
-                                    state:  { movie: this.state.movie} 
-                                }}
-                            >Read more
-                            </Link>
-                        </span>}>
-                        {this.state.movie.overview}
-                    </Truncate> 
+                        <Truncate lines={4} ellipsis={
+                            <span>... 
+                                <Link 
+                                    to ={{
+                                        pathname: `/movies/${this.state.movie.id}`,
+                                        state:  { movie: this.state.movie} 
+                                    }}
+                                >Read more
+                                </Link>
+                            </span>}>
+                            {this.state.movie.overview}
+                        </Truncate> 
                     </div>
 
                     <div className = {movieInfoRating}>
                         <div>
-                            <div>
+                            <OverlayTrigger placement="right" overlay={tooltip1}>
                                 <div className = "rate">
-                                    {this.state.movie.voteAverage}
-                                </div>/5
-                            </div>
-                            <div>
+                                    {Number(this.state.movie.voteAverage).toFixed(1)}
+                                </div>
+                            </OverlayTrigger>/5
+                           
+                            <br/>
+                            
+                            <OverlayTrigger placement="right" overlay={tooltip2}>
                                 <div className = "rate">
-                                    {this.state.movie.rating}
-                                </div>/5
-                            </div >
+                                    {Number(this.state.movie.rating).toFixed(1)}
+                                </div>
+                            </OverlayTrigger>/5     
+                        </div>
 
-                            <OverlayTrigger placement="right" overlay={tooltip}>
-                                <Badge>
-                                    {this.state.movie.ratingCount}
-                                </Badge>
-                            </OverlayTrigger>
-                        </div>
                         <div className = "ratingStars">
-                            Rate   <Rater total={5} rating={0} />
-                        </div>
+                            Rate this movie:  <Rater total={5} rating={0} />
+                        </div> 
                     </div>
                 </div>
             </div>                  

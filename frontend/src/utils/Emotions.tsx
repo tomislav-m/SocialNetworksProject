@@ -3,13 +3,13 @@ import { css } from 'emotion';
 export const movieInfoContainer = css`
     display: grid;
     grid-template-columns: 0.5fr 1.5fr;
-    padding-top: 2em;
+    padding-top: 2.5em;
     justify-self: center;
     justify-content: center;
 `
 export const movieInfoBox = css`
     display: grid;
-    grid-auto-rows: 50px 145px 20px;
+    grid-auto-rows: 4.5em 8.5em 1.25em;
     padding-left: 2em;
     justify-self: center;
     justify-content: center;
@@ -17,6 +17,7 @@ export const movieInfoBox = css`
 export const movieInfoRating = css`
     display: grid;
     grid-template-columns: 1fr 1fr;
+    padding-top: 1.5em;
     justify-self: center;
     justify-content: center;
 `
@@ -31,7 +32,7 @@ export const imageCss = css`
 export const profileCss = css`
     margin-right: 30em;
     margin-top: 10em;
-    font-size: 15px;
+    font-size: 1em;
 `
 export const imageSize = css`
     width: 15em;
@@ -48,9 +49,22 @@ export const imageLoginSize = css`
     height: 20em;
 `
 export const appName = css`
-    font-size: 50px;
-    padding-top: 50px;
+    font-size: 3.125em;
+    padding-top: 1.5em;
 `
 export const loginButtons = css`
-    padding-top: 20px;
+    padding-top: 1.25em;
+`
+export const movieContainer = css`
+    display: grid;
+    grid-auto-rows: 1fr 1fr 1fr;
+    justify-items: center;
+`
+export const firstMovieBox = css`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+`
+export const secondMovieBox = css`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 `
