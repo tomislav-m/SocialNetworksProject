@@ -21,6 +21,7 @@ interface IState {
     loading: boolean;
     directors: string[];
     actors: string[];
+    genres: string[];
 }
 
 @inject('mobxStore')
@@ -31,24 +32,33 @@ export default class MovieDetails extends React.Component<IProps, IState> {
         this.state ={ 
             loading: false, 
             directors: new Array,
-            actors: new Array
+            actors: new Array,
+            genres: new Array
         };
     }
 
     public componentDidMount(){
         this.setState({ loading: true });
         this.getPeople('directors', this.props.location.state.movie.directorsIds)
+        this.getGenres(this.props.location.state.movie.genre_ids)
     }
 
     public getGenres(genreIds:string[]) {
+        const array : string [] = new Array();
         genreIds.forEach(genreId => {
             // console.log(genreId)
             fetch(`http://localhost:5000/api/genres/${genreId}`)
             .then(response => response.json())
             .then(response => {
-                // console.log(response)
+                console.log(response.name)
+                array.push(response.name)
             })
         })
+        this.setState({
+            genres: array,
+            loading: false
+        })
+        
     }
 
     public getPeople(people: string, peopleIds: string[],) {
@@ -62,7 +72,6 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                 people === 'directors' 
                     ? this.setState({ directors: array})
                     : this.setState({ actors: array })
-                this.setState({ loading: false })
             })
         })
         console.log('array'+ array)
@@ -75,21 +84,32 @@ export default class MovieDetails extends React.Component<IProps, IState> {
 
     public renderDirectors = () => {
         console.log('renderDirectors:' + this.state.directors);
-        const forecast: any[] = new Array();
+        const array: any[] = new Array();
         let key = 1;
         _.forEach(this.state.directors, (i) => {
-            forecast.push(
+            array.push(
                 <div key={key}>
                     <p> <strong> { i }</strong></p>
                 </div>
             )
             key++;
         });
-        return forecast;
+        return array;
     }
 
+    public renderGenres = () => {
+        const array: any[] = new Array();
+        _.forEach(this.state.genres, (i) => {
+            array.push(
+                    <h5>{ i }, </h5>
+            )
+        });
+        return array;
+    }
+    
 
-    public render() {
+
+    public renderBody = () => {
         const  { movie } = this.props.location.state;
         const tooltip1 = (
             <Tooltip id="tooltip">
@@ -101,7 +121,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                 <strong>{Number(movie.rating).toFixed(1)} based on {movie.ratingCount} user ratings</strong>
             </Tooltip>
         );
-        return (
+        return(
             <div>
                 <Header firstName = {this.props.mobxStore!.firstName}/>
                 <div className = {movieContainer}>
@@ -115,7 +135,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                             <div className = {infoBox}>
                                 Release date: <Moment format="D MMMM YYYY">{movie.release_date || "no information"}</Moment><br/>
                                 Runtime: {movie.runtime || "no information"} <br/>
-                                Genres: {this.getGenres(movie.genre_ids)} 
+                                Genres:  {this.renderGenres()}
                             </div>
                         
                             <div className = {movieDetailsRating}>
@@ -143,15 +163,23 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                         {movie.overview} 
                     </div>
 
-                    { !this.state.loading && <div>
+                    <div>
                         Director:
                         {this.renderDirectors()}<br/>
                         Actors:
-                        {this.getActors(movie.actorsIds)} <br/>
+                        {} <br/>
                         Soundtrack:
                         {this.getSoundtrack(movie.soundtrackId)}
-                    </div>}
+                    </div>
                 </div> 
+            </div>
+        )
+    }
+    public render() {
+        
+        return (
+            <div>
+                {!this.state.loading && this.renderBody()}
             </div>
         );
     }
