@@ -7,7 +7,9 @@ import { movieDetailsRating, infoBox, titleBox, overviewBox, movieContainer, fir
 import Moment from 'react-moment';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Rater from 'react-rater';
-import * as _ from 'lodash';
+import MovieGenres from 'src/components/MovieGenres';
+import MovieActors from 'src/components/MovieActors';
+import MovieDirectors from 'src/components/MovieDirectors';
 
 interface IRouteParams {
     movieID: string; 
@@ -19,9 +21,9 @@ interface IProps extends RouteComponentProps<IRouteParams>{
 
 interface IState {
     loading: boolean;
-    directors: string[];
-    actors: string[];
-    genres: string[];
+    directors: any[];
+    actors: any[];
+    genres: any[];
 }
 
 @inject('mobxStore')
@@ -41,75 +43,43 @@ export default class MovieDetails extends React.Component<IProps, IState> {
         this.setState({ loading: true });
         this.getPeople('directors', this.props.location.state.movie.directorsIds)
         this.getGenres(this.props.location.state.movie.genre_ids)
+        this.getPeople('actors', this.props.location.state.movie.actorsIds)
     }
 
     public getGenres(genreIds:string[]) {
-        const array : string [] = new Array();
+        const array : string[] = new Array();
         genreIds.forEach(genreId => {
-            // console.log(genreId)
             fetch(`http://localhost:5000/api/genres/${genreId}`)
             .then(response => response.json())
             .then(response => {
-                console.log(response.name)
                 array.push(response.name)
             })
+            .catch(error => console.log(error))
         })
-        this.setState({
-            genres: array,
-            loading: false
-        })
-        
+        this.setState({genres: array})
     }
 
     public getPeople(people: string, peopleIds: string[],) {
         const array : string[] = new Array();
         peopleIds.forEach(id => {
-            console.log(id)
             fetch(`http://localhost:5000/api/people/${id}`)
             .then(response => response.json())
             .then(response => {
-                array.push(response.name);
+                array.push(response);
                 people === 'directors' 
                     ? this.setState({ directors: array})
                     : this.setState({ actors: array })
             })
+            .catch(error => console.log(error))
         })
-        console.log('array'+ array)
     }
 
     public getSoundtrack(soundtrackId: string[]) {
         console.log(soundtrackId)
         // api za dohvaćanje soundtracka???
     }
-
-    public renderDirectors = () => {
-        console.log('renderDirectors:' + this.state.directors);
-        const array: any[] = new Array();
-        let key = 1;
-        _.forEach(this.state.directors, (i) => {
-            array.push(
-                <div key={key}>
-                    <p> <strong> { i }</strong></p>
-                </div>
-            )
-            key++;
-        });
-        return array;
-    }
-
-    public renderGenres = () => {
-        const array: any[] = new Array();
-        _.forEach(this.state.genres, (i) => {
-            array.push(
-                    <h5>{ i }, </h5>
-            )
-        });
-        return array;
-    }
-    
-
-
-    public renderBody = () => {
+ 
+    public render() {
         const  { movie } = this.props.location.state;
         const tooltip1 = (
             <Tooltip id="tooltip">
@@ -121,7 +91,8 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                 <strong>{Number(movie.rating).toFixed(1)} based on {movie.ratingCount} user ratings</strong>
             </Tooltip>
         );
-        return(
+        
+        return (
             <div>
                 <Header firstName = {this.props.mobxStore!.firstName}/>
                 <div className = {movieContainer}>
@@ -135,7 +106,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                             <div className = {infoBox}>
                                 Release date: <Moment format="D MMMM YYYY">{movie.release_date || "no information"}</Moment><br/>
                                 Runtime: {movie.runtime || "no information"} <br/>
-                                Genres:  {this.renderGenres()}
+                                <MovieGenres genres = {this.state.genres}/>
                             </div>
                         
                             <div className = {movieDetailsRating}>
@@ -160,26 +131,18 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                     </div>
                     
                     <div className = {overviewBox}>
+                        <b>Overview: </b>
                         {movie.overview} 
                     </div>
 
                     <div>
-                        Director:
-                        {this.renderDirectors()}<br/>
-                        Actors:
-                        {} <br/>
-                        Soundtrack:
+                        <br/>
+                        <MovieDirectors directors = {this.state.directors}/> <br/>
+                        <MovieActors actors = {this.state.actors}/> <br/>
+                        <b>Soundtrack:</b>
                         {this.getSoundtrack(movie.soundtrackId)}
                     </div>
                 </div> 
-            </div>
-        )
-    }
-    public render() {
-        
-        return (
-            <div>
-                {!this.state.loading && this.renderBody()}
             </div>
         );
     }

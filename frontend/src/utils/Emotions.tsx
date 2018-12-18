@@ -57,7 +57,7 @@ export const loginButtons = css`
 `
 export const movieContainer = css`
     display: grid;
-    grid-auto-rows: 0.5fr 1fr 1fr;
+    grid-auto-rows: default;
     grid-template-columns: 0.9fr;
     margin-left: 30em;
 `
