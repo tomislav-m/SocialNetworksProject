@@ -135,7 +135,7 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                                     {Number(this.state.movie.voteAverage).toFixed(1)}
                                 </div>
                             </OverlayTrigger>/5
-                           
+                        
                             <br/>
                             
                             <OverlayTrigger placement="right" overlay={tooltip2}>
@@ -146,7 +146,10 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                         </div>
 
                         <div className = "ratingStars">
-                            Rate this movie:  <Rater total={5} rating={0} />
+                            Rate this movie:  
+                            <div className="sizeStars"> 
+                                <Rater total={5} rating={0} />  
+                            </div>
                         </div> 
                     </div>
                 </div>

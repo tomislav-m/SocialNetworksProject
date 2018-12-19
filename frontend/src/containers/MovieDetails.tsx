@@ -82,21 +82,24 @@ export default class MovieDetails extends React.Component<IProps, IState> {
     }
 
     public rate = (event: any) =>{
-        this.setState({rate: event.rating})
-        console.log(this.props.location.state.movie.id)
-        // const movieId: string = this.props.location.state.movie.id;
-        const data = JSON.stringify({
-           movieId: this.state.rate 
-        });
-        fetch(`http://localhost:5000/api/movies/add-ratings/${localStorage.getItem('id')}`, {
-            method: "POST", 
-            headers: {
-                "Content-Type": "application/json", 
-            },
-            body: data
+        this.setState({ rate: event.rating }, () => {
+            const key = this.props.location.state.movie.id;
+            const obj = {};
+            obj[key] = this.state.rate;
+            const data = JSON.stringify(obj);
+            fetch(`http://localhost:5000/api/users/add-ratings/${localStorage.getItem('id')}`, {
+                method: "PUT", 
+                headers: {
+                    "Content-Type": "application/json", 
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                },
+                body: data
+            })
         })
+        console.log(this.props.location.state.movie.id)
+        // const movieId: string = this.props.location.state.movie.id; 
     }
- 
+
     public render() {
         const  { movie } = this.props.location.state;
         const tooltip1 = (
@@ -141,7 +144,10 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                                         </div>
                                     </OverlayTrigger>/5 
                                     <div>
-                                        Rate this movie:  <Rater total={5} rating={this.state.rate} onRate={this.rate}/>  
+                                        Rate this movie:
+                                        <div className="sizeStars"> 
+                                            <Rater total={5} rating={0} />  
+                                        </div>  
                                     </div>  
                                 </div>
                             </div> 

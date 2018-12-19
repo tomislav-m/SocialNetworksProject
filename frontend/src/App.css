@@ -52,3 +52,7 @@
 .genres {
   display: inline-block;
 }
+.sizeStars {
+  font-size: 2em;
+  display: inline;
+}

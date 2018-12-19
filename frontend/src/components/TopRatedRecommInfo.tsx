@@ -71,7 +71,7 @@ export default class TopRatedRecommInfo extends React.Component<IProps> {
                                     {Number(this.props.movie.voteAverage).toFixed(1)}
                                 </div>
                             </OverlayTrigger>/5
-                           
+                        
                             <br/>
                             
                             <OverlayTrigger placement="right" overlay={tooltip2}>
@@ -82,7 +82,10 @@ export default class TopRatedRecommInfo extends React.Component<IProps> {
                         </div>
 
                         <div className = "ratingStars">
-                            Rate this movie:  <Rater total={5} rating={0} />
+                            Rate this movie:
+                            <div className="sizeStars"> 
+                                <Rater total={5} rating={0} />  
+                            </div>
                         </div> 
                     </div>
                 </div>
