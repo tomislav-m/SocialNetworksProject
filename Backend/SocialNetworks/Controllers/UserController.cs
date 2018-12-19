@@ -23,7 +23,6 @@ namespace SocialNetworks.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-	[EnableCors("CorsPolicy")]
     public class UsersController : ControllerBase
     {
         private IUserRepository _userRepository;

@@ -28,7 +28,7 @@ namespace SocialNetworks
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-            builder => builder.AllowAnyOrigin()
+            builder => builder.WithOrigins("https://localhost:3000")
                               .AllowAnyMethod()
                               .AllowAnyHeader()
                               .AllowCredentials());
