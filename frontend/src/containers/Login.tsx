@@ -48,8 +48,10 @@ export default class Login extends React.Component< IProps > {
         })
         .then((res) => res.json())
         .then((res) => {
+            console.log(res)
             this.props.mobxStore!.token = res.token;
             localStorage.setItem('token', res.token);
+            localStorage.setItem('movieRatings', res.movieRatings);
             this.props.history.push("/movies");
         })
         .catch((error) => {

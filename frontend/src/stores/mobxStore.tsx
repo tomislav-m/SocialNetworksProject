@@ -8,6 +8,7 @@ export interface IMobxStore {
     accessToken: string;
     token: string;
     idGenres: string[];
+    movieRatings: any[];
 }
 export class MobxStore implements IMobxStore{
     // user
@@ -18,5 +19,6 @@ export class MobxStore implements IMobxStore{
     @observable public accessToken = ''; // token koji dobivamo od googlea
     @observable public token = ''; // token koji se šalje u headeru, sami generiramo
     @observable public idGenres = [];
+    @observable public movieRatings = [];
 }
 
