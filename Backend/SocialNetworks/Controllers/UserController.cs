@@ -16,12 +16,14 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Recommender;
 using System.Linq;
+using Microsoft.AspNetCore.Cors;
 
 namespace SocialNetworks.Controllers
 {
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
+	[EnableCors("CorsPolicy")]
     public class UsersController : ControllerBase
     {
         private IUserRepository _userRepository;
