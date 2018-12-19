@@ -37,6 +37,10 @@
 .movieTitle {
   font-size: 1.5em;
 }
+
+.react-rater-star.will-be-active {
+  color: #ffcc00 !important;
+}
 .react-rater-star.is-active {
   color: #ffcc00 !important;
   width: 100% !important;
