@@ -140,7 +140,6 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                         <MovieDirectors directors = {this.state.directors}/> <br/>
                         <MovieActors actors = {this.state.actors}/> <br/>
                         <b>Soundtrack:</b>
-                        {this.getSoundtrack(movie.soundtrackId)}
                     </div>
                 </div> 
             </div>

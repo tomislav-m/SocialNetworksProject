@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Navbar, Nav, NavDropdown, MenuItem, Glyphicon } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
-import GenreModal from 'src/containers/GenreModal';
 import { observer } from 'mobx-react';
 
 interface IProps {
@@ -11,7 +10,6 @@ interface IProps {
 interface IState {
     logoutRedirect: boolean;
     profileRedirect: boolean;
-    showGenreModal: boolean;
 }
 
 @observer
@@ -21,7 +19,6 @@ export default class Header extends React.Component<IProps, IState> {
         this.setState({
             logoutRedirect: false,
             profileRedirect: false,
-            showGenreModal: false
         });
     }
     public logout = () => {
@@ -36,14 +33,6 @@ export default class Header extends React.Component<IProps, IState> {
             return <Redirect to="/"/>;
         }
         return null;
-    }
-
-    public openGenreModal = () => {
-        this.setState({ showGenreModal: true })
-    }
-
-    public closeGenreModal = () => {
-        this.setState({ showGenreModal: false })
     }
 
     public openProfile = () => {
@@ -66,7 +55,6 @@ export default class Header extends React.Component<IProps, IState> {
             <div>
                 {this.logoutRedirect()}
                 {this.profileRedirect()}
-                {this.state.showGenreModal && <GenreModal onClose={this.closeGenreModal} onSave={this.closeGenreModal}/>}
                 <Navbar inverse>
                     <Navbar.Header >
                         <Navbar.Brand>
@@ -77,7 +65,6 @@ export default class Header extends React.Component<IProps, IState> {
                         <Navbar.Text>Hi, {localStorage.getItem('firstName')}!</Navbar.Text>
                         <NavDropdown title={navDropdownTitle} id="basic-nav-dropdown">
                             <MenuItem onSelect={this.openProfile}>My Profile</MenuItem>
-                            <MenuItem onSelect={this.openGenreModal}>Favourite genres</MenuItem>
                             <MenuItem divider />
                             <MenuItem onSelect={this.logout}>Logout</MenuItem>
                         </NavDropdown>
