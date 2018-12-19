@@ -17,6 +17,7 @@ interface IProps {
 
 interface IState {
     movie: IMovie;
+    rate: number;
 }
 
 export default class TopWatchedInfo extends React.Component<IProps, IState> {
@@ -38,7 +39,8 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                 actorsIds: [],
                 directorsIds: [],
                 soundtrackId: ''
-            }
+            },
+            rate: 0
         };
     }
     public componentDidMount() {
@@ -76,6 +78,25 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
             // this.props.history.push("/error");
         });
         
+    }
+
+    public rate = (event: any) =>{
+        this.setState({ rate: event.rating }, () => {
+            const key = this.state.movie.id;
+            const obj = {};
+            obj[key] = this.state.rate;
+            const data = JSON.stringify(obj);
+            fetch(`http://localhost:5000/api/users/add-ratings/${localStorage.getItem('id')}`, {
+                method: "PUT", 
+                headers: {
+                    "Content-Type": "application/json", 
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                },
+                body: data
+            })
+        })
+        console.log(this.state.movie.id)
+        // const movieId: string = this.props.location.state.movie.id; 
     }
 
     public render() {
@@ -148,7 +169,7 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                         <div className = "ratingStars">
                             Rate this movie:  
                             <div className="sizeStars"> 
-                                <Rater total={5} rating={0} />  
+                                <Rater total={5} rating={0} onRate={this.rate}/>  
                             </div>
                         </div> 
                     </div>

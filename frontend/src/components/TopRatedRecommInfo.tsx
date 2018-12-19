@@ -12,7 +12,36 @@ interface IProps{
     movie: IMovie;
 }
 
-export default class TopRatedRecommInfo extends React.Component<IProps> {
+interface IState {
+    rate: number;
+}
+
+export default class TopRatedRecommInfo extends React.Component<IProps, IState> {
+    constructor(props: any){
+        super(props);
+        this.state ={ 
+            rate: 0
+        };
+    }
+
+    public rate = (event: any) =>{
+        this.setState({ rate: event.rating }, () => {
+            const key = this.props.movie.id;
+            const obj = {};
+            obj[key] = this.state.rate;
+            const data = JSON.stringify(obj);
+            fetch(`http://localhost:5000/api/users/add-ratings/${localStorage.getItem('id')}`, {
+                method: "PUT", 
+                headers: {
+                    "Content-Type": "application/json", 
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                },
+                body: data
+            })
+        })
+        console.log(this.props.movie.id)
+        // const movieId: string = this.props.location.state.movie.id; 
+    }
 
     public render() {
         const tooltip1 = (
@@ -84,7 +113,7 @@ export default class TopRatedRecommInfo extends React.Component<IProps> {
                         <div className = "ratingStars">
                             Rate this movie:
                             <div className="sizeStars"> 
-                                <Rater total={5} rating={0} />  
+                                <Rater total={5} rating={0} onRate={this.rate}/>  
                             </div>
                         </div> 
                     </div>
