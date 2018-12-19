@@ -146,7 +146,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                                     <div>
                                         Rate this movie:
                                         <div className="sizeStars"> 
-                                            <Rater total={5} rating={0} />  
+                                            <Rater total={5} rating={0} onRate={this.rate}/>  
                                         </div>  
                                     </div>  
                                 </div>
