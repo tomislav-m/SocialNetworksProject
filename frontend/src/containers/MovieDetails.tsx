@@ -24,6 +24,7 @@ interface IState {
     directors: any[];
     actors: any[];
     genres: any[];
+    rate: number;
 }
 
 @inject('mobxStore')
@@ -35,7 +36,8 @@ export default class MovieDetails extends React.Component<IProps, IState> {
             loading: false, 
             directors: new Array,
             actors: new Array,
-            genres: new Array
+            genres: new Array,
+            rate: 0
         };
     }
 
@@ -77,6 +79,22 @@ export default class MovieDetails extends React.Component<IProps, IState> {
     public getSoundtrack(soundtrackId: string[]) {
         console.log(soundtrackId)
         // api za dohvaćanje soundtracka???
+    }
+
+    public rate = (event: any) =>{
+        this.setState({rate: event.rating})
+        console.log(this.props.location.state.movie.id)
+        // const movieId: string = this.props.location.state.movie.id;
+        const data = JSON.stringify({
+           movieId: this.state.rate 
+        });
+        fetch(`http://localhost:5000/api/movies/add-ratings/${localStorage.getItem('id')}`, {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application/json", 
+            },
+            body: data
+        })
     }
  
     public render() {
@@ -123,7 +141,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                                         </div>
                                     </OverlayTrigger>/5 
                                     <div>
-                                        Rate this movie:  <Rater total={5} rating={0} />  
+                                        Rate this movie:  <Rater total={5} rating={this.state.rate} onRate={this.rate}/>  
                                     </div>  
                                 </div>
                             </div> 
