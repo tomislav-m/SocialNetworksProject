@@ -64,7 +64,7 @@ export default class TopRated extends React.Component<{ history?: any }, IState>
         _.forEach(this.state.movies, (i) => {
             movies.push(
                 <div key = {key}>
-                    <TopRatedRecommInfo movie = {i} topWatched={false} activePage={1}/>
+                    <TopRatedRecommInfo movie = {i}/>
                 </div>
             )
             key++;

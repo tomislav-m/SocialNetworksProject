@@ -1,30 +1,18 @@
 import * as React from 'react';
 import '../App.css';
 import { IMovie } from 'src/utils/Typings';
-import Rater from 'react-rater'
 import 'react-rater/lib/react-rater.css'
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import {movieInfoContainer, movieInfoBox, movieInfoRating } from 'src/utils/Emotions';
+import {movieInfoContainer, movieInfoBox } from 'src/utils/Emotions';
 import Truncate from 'react-truncate';
 
 interface IProps{
     movie: IMovie;
 }
 
-export default class TopRatedRecommInfo extends React.Component<IProps> {
+export default class SearchInfo extends React.Component<IProps> {
 
     public render() {
-        const tooltip1 = (
-            <Tooltip id="tooltip">
-                <strong>{Number(this.props.movie.voteAverage).toFixed(1)} based on IMDB, TMDB and RT user ratings</strong>
-            </Tooltip>
-        );
-        const tooltip2 = (
-            <Tooltip id="tooltip">
-                <strong>{Number(this.props.movie.rating).toFixed(1)} based on {this.props.movie.ratingCount} user ratings</strong>
-            </Tooltip>
-        );
 
         return (
             <div className = {movieInfoContainer}>
@@ -64,27 +52,6 @@ export default class TopRatedRecommInfo extends React.Component<IProps> {
                         </Truncate> 
                     </div>
 
-                    <div className = {movieInfoRating}>
-                    <div>
-                            <OverlayTrigger placement="right" overlay={tooltip1}>
-                                <div className = "rate">
-                                    {Number(this.props.movie.voteAverage).toFixed(1)}
-                                </div>
-                            </OverlayTrigger>/5
-                           
-                            <br/>
-                            
-                            <OverlayTrigger placement="right" overlay={tooltip2}>
-                                <div className = "rate">
-                                    {Number(this.props.movie.rating).toFixed(1)}
-                                </div>
-                            </OverlayTrigger>/5     
-                        </div>
-
-                        <div className = "ratingStars">
-                            Rate this movie:  <Rater total={5} rating={0} />
-                        </div> 
-                    </div>
                 </div>
             </div>                  
         );
