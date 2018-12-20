@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Header from './components/Header'
-import Search from './components/Search';
+import Header from './containers/Header'
+import Search from './components/search/Search';
 import MovieTabs from './components/MovieTabs';
 import { IMobxStore } from './stores/mobxStore';
 import { inject, observer } from 'mobx-react';

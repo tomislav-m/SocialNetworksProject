@@ -1,5 +1,5 @@
 import * as React from 'react';
-import '../App.css';
+import '../../App.css';
 import { IMovie } from 'src/utils/Typings';
 import 'react-rater/lib/react-rater.css'
 import { Link } from 'react-router-dom';

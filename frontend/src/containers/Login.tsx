@@ -13,6 +13,7 @@ interface IProps {
     history?: any;
     mobxStore?: IMobxStore
 }
+
 @inject('mobxStore')
 @observer
 export default class Login extends React.Component< IProps > {

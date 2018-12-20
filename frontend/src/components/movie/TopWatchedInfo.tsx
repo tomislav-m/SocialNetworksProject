@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import '../App.css';
+import "../../App.css";
 import { IMovie } from 'src/utils/Typings';
 import Rater from 'react-rater';
 import 'react-rater/lib/react-rater.css';

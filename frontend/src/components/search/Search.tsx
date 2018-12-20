@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormGroup, FormControl, InputGroup, Button, Glyphicon } from 'react-bootstrap';
-import '../App.css';
-import SearchModal from 'src/containers/SearchModal';
+import "../../App.css";
+import SearchModal from 'src/components/search/SearchModal';
 import { IMovie } from 'src/utils/Typings';
 import ReactLoading from 'react-loading';
 

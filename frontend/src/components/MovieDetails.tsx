@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Header from '../components/Header';
+import Header from '../containers/Header';
 import { inject, observer } from 'mobx-react';
 import { IMobxStore } from '../stores/mobxStore';
 import { RouteComponentProps } from "react-router-dom";
@@ -7,9 +7,9 @@ import { movieDetailsRating, infoBox, titleBox, overviewBox, movieContainer, fir
 import Moment from 'react-moment';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Rater from 'react-rater';
-import MovieGenres from 'src/components/MovieGenres';
-import MovieActors from 'src/components/MovieActors';
-import MovieDirectors from 'src/components/MovieDirectors';
+import MovieGenres from 'src/components/movie/MovieGenres';
+import MovieActors from 'src/components/movie/MovieActors';
+import MovieDirectors from 'src/components/movie/MovieDirectors';
 
 interface IRouteParams {
     movieID: string; 

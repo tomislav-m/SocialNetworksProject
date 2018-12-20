@@ -4,7 +4,7 @@ import { Provider } from 'mobx-react';
 import App from './App';
 import Login from './containers/Login';
 import Profile from './containers/Profile';
-import MovieDetails from './containers/MovieDetails';
+import MovieDetails from './components/MovieDetails';
 import ErrorPage from './components/ErrorPage';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';

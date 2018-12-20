@@ -2,49 +2,39 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { IMovie } from 'src/utils/Typings';
 import Pagination from 'react-js-pagination';
-import TopWatchedInfo from '../TopWatchedInfo';
+import TopRatedRecommInfo from 'src/components/movie/TopRatedRecommInfo';
 
 interface IState {
     movies: IMovie[];
-    totalPages: number;
-    activePage: number;
-    totalItemsCount: number;
     loading: boolean;
+    activePage: number;
 }
-
-export default class TopWatched extends React.Component<{ history?: any }, IState>{
+export default class TopRated extends React.Component<{ history?: any }, IState>{
     constructor(props: any) {
         super(props);
         this.state = { 
-            movies: [],
-            totalPages: 1,
-            activePage: 1,
-            totalItemsCount:1,
-            loading: false
+            movies: [] ,
+            loading: false,
+            activePage: 1
         };
+
     }
 
     public componentDidMount() {
-        this.getTopWatched();
+        this.getTopRated();
     }
 
-    public getTopWatched(){
+    public getTopRated(){
         this.setState({ loading: true });
-        fetch(`https://api.themoviedb.org/3/movie/popular?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US`)
+        fetch(`http://localhost:5000/api/movies/top-rated?pageSize=20`)
         .then(response => response.json())
-        .then(response => {
-            this.setState( {
-                activePage: response.page,
-                totalPages: response.total_pages,
-                movies: response.results,
-                totalItemsCount: response.total_results,
-                loading: false
-            })
+        .then((response: any[]) => {
+            this.setState({ 
+                movies: response,
+                loading:false
+            }); 
         })
-        .catch((error) => {
-            console.error("Error:", error);
-            // this.props.history.push("/error");
-        });
+        .catch(error => console.error('Error:', error));
     }
 
     public handlePageChange = (selectedPage: number) => {
@@ -53,14 +43,11 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
             activePage: selectedPage,
             loading: true
         });
-        fetch(`https://api.themoviedb.org/3/movie/popular?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US&page=${selectedPage}`)
+        fetch(`http://localhost:5000/api/movies/top-rated?pageSize=20&pageNum=${selectedPage}`)
         .then(response => response.json())
         .then(response => {
             this.setState( {
-                activePage: response.page,
-                totalPages: response.total_pages,
-                movies: response.results,
-                totalItemsCount: response.total_results,
+                movies: response,
                 loading: false
             })
         })
@@ -77,7 +64,7 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
         _.forEach(this.state.movies, (i) => {
             movies.push(
                 <div key = {key}>
-                    <TopWatchedInfo movieID = {i.id} topWatched={true} />
+                    <TopRatedRecommInfo movie = {i}/>
                 </div>
             )
             key++;
@@ -93,7 +80,7 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
                     <Pagination
                         activePage={this.state.activePage}
                         itemsCountPerPage={20}
-                        totalItemsCount={this.state.totalItemsCount}
+                        totalItemsCount={200}
                         pageRangeDisplayed={10}
                         onChange={this.handlePageChange}
                     />

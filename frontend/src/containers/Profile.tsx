@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Header from '../components/Header';
+import Header from './Header';
 import { IMobxStore } from '../stores/mobxStore';
 import { observer, inject } from 'mobx-react';
 import {profileContainer, imageCss, profileCss, imageSize} from 'src/utils/Emotions';
