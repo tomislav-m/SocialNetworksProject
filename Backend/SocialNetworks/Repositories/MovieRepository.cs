@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using SocialNetworks.Helpers;
 using SocialNetworks.Models;
@@ -127,6 +128,24 @@ namespace SocialNetworks.Repositories
                 }
                 return list.OrderByDescending(x => x.Popularity)
                     .Skip((pageNum - 1) * pageSize).Take(pageSize);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<string> GetRatings(string id)
+        {
+            try
+            {
+                var fields = Builders<Movie>.Projection
+                    .Include(x => x.VoteAverage)
+                    .Include(x => x.Rating)
+                    .Exclude(x => x.Id);
+                var cursor = await _context.Movies.Find(x => x.Id == id)
+                    .Project(fields).SingleOrDefaultAsync();
+                return cursor.ToJson();
             }
             catch (Exception ex)
             {
