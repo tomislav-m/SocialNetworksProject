@@ -70,7 +70,7 @@ export default class Search extends React.Component< {}, IState > {
                 { this.state.showSearchModal && 
                     <SearchModal title={this.state.searchInput} movies={this.state.movies} onClose={this.closeSearchModal}/>
                 }
-                { this.state.loading && <ReactLoading type="spin" color="black" width="35%" height="15em" />}
+                { this.state.loading && <ReactLoading type="spin" color="black" width="2em" height="2em" className="loader"/> }
             </FormGroup>
         );
     }
