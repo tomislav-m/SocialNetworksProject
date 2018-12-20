@@ -176,10 +176,13 @@ namespace SocialNetworks.Repositories
             try
             {
                 var filter = Builders<User>.Filter.Eq(x => x.Id, id);
-                var update = Builders<User>
-                    .Update.AddToSetEach(x => x.MovieRatings, ratings);
+                var user = (await _context.Users.FindAsync(x => x.Id == id)).SingleOrDefault();
+                foreach(var rating in ratings)
+                {
+                    user.MovieRatings[rating.Key] = rating.Value;
+                }
 
-                await _context.Users.FindOneAndUpdateAsync(filter, update);
+                await _context.Users.FindOneAndReplaceAsync<User>(filter, user);
             }
             catch (Exception ex)
             {
