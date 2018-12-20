@@ -63,3 +63,9 @@
 .loader {
   margin-left: 30%;
 }
+.personInfo {
+  display: inline-block;
+}
+.altSize {
+  font-size: 10px;
+}

@@ -11,7 +11,9 @@ interface IState {
     activePage: number;
     genres: IGenre[];
     name: boolean[];
+    checkedItems: Map<string, boolean>;
 }
+
 export default class Recommended extends React.Component<{ history?: any }, IState>{
     constructor(props: any) {
         super(props);
@@ -20,7 +22,8 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
             loading: false,
             activePage: 1,
             genres: [],
-            name: []
+            name: [],
+            checkedItems: new Map(),
         };
 
     }
@@ -48,15 +51,6 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
         })
         .catch((error) => {
             console.error("Error:", error);
-        });
-    }
-
-    public handleInputChange(event : any) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-    
-        this.setState({
-            name: value
         });
     }
 
@@ -114,39 +108,32 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
         });
     }
 
-    public renderSelectGenres = () => {
-        const genres: any[] = new Array();
-        let key = 1;
-        _.forEach(this.state.genres, (i) => {
-            console.log(i.name)
-            genres.push(
-                <div key={key} className="genres">
-                    <Checkbox>
-                        {i.name}
-                    </Checkbox>
-                </div>
-            )
-            key++;
-        });
-        return genres;
-        
+    public handleChange = (e: any) => {
+        const item = e.target.name;
+        const isChecked = e.target.checked;
+        this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
     }
 
-    
+    public getSelected = () => {
+        console.log(this.state.checkedItems);
+    }
 
     public render() {
         return (
             <div>
                 <div>
-                    { this.renderSelectGenres()}
-                    Is going:
-                    <input
-                        name="isGoing"
-                        type="checkbox"
-                        checked={true}
-                        onChange={this.handleInputChange} 
-                    />
-                    <Button type="submit">Filter</Button>
+                    {
+                    this.state.genres.map(item => (
+                        <div key={item.id}>
+                            <label>
+                                <Checkbox name={item.name} checked={!!this.state.checkedItems.get(item.name)} onChange={this.handleChange}>
+                                    {item.name}
+                                </Checkbox>
+                            </label>
+                        </div>
+                    ))
+                    }
+                    <Button type="submit" onClick={this.getSelected}>Filter</Button>
                 </div>
                 { !this.state.loading && this.renderBody()}
                 <div>

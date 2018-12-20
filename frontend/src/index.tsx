@@ -12,9 +12,6 @@ import { Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import { stores } from './stores';
 
-
-// const appState = new AppState();
-
 ReactDOM.render((
   <Provider {...stores}>
       <BrowserRouter>

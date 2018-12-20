@@ -11,7 +11,7 @@ export default class AverageRates extends React.Component<IProps> {
     public render() {
         const tooltip1 = (
             <Tooltip id="tooltip">
-                <strong>{Number(this.props.movie.voteAverage).toFixed(1)} based on IMDB, TMDB and RT user ratings</strong>
+                <strong>{Number(this.props.movie.voteAverage).toFixed(1)} based on IMDB, Metacritic and Rotten Tomatoes user ratings</strong>
             </Tooltip>
         );
         const tooltip2 = (
