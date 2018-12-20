@@ -3,8 +3,7 @@ import * as _ from 'lodash';
 import { IMovie, IGenre } from 'src/utils/Typings';
 import Pagination from 'react-js-pagination';
 import { Checkbox, Button } from 'react-bootstrap';
-import TopRatedRecommInfo from 'src/components/movie/TopRatedRecommInfo';
-
+import TopRatedRecommInfo from './movie-info/TopRatedRecommInfo';
 
 interface IState {
     movies: IMovie[];

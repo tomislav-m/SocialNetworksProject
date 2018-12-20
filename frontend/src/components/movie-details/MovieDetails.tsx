@@ -1,15 +1,15 @@
 import * as React from 'react';
-import Header from '../containers/Header';
+import Header from '../Header';
 import { inject, observer } from 'mobx-react';
-import { IMobxStore } from '../stores/mobxStore';
+import { IMobxStore } from '../../stores/mobxStore';
 import { RouteComponentProps } from "react-router-dom";
 import { movieDetailsRating, infoBox, titleBox, overviewBox, movieContainer, firstMovieBox, secondMovieBox } from 'src/utils/Emotions';
 import Moment from 'react-moment';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import Rater from 'react-rater';
-import MovieGenres from 'src/components/movie/MovieGenres';
-import MovieActors from 'src/components/movie/MovieActors';
-import MovieDirectors from 'src/components/movie/MovieDirectors';
+import Rating from '../rate/Rating';
+import AverageRates from '../rate/AverageRates';
+import MovieGenres from './MovieGenres';
+import MovieDirectors from './MovieDirectors';
+import MovieActors from './MovieActors';
 
 interface IRouteParams {
     movieID: string; 
@@ -81,40 +81,8 @@ export default class MovieDetails extends React.Component<IProps, IState> {
         // api za dohvaćanje soundtracka???
     }
 
-    public rate = (event: any) =>{
-        this.setState({ rate: event.rating }, () => {
-            const key = this.props.location.state.movie.id;
-            const obj = {};
-            obj[key] = this.state.rate;
-            const data = JSON.stringify(obj);
-            fetch(`http://localhost:5000/api/users/add-ratings/${localStorage.getItem('id')}`, {
-                method: "PUT", 
-                headers: {
-                    "Content-Type": "application/json", 
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                },
-                body: data
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-        })
-        console.log(this.props.location.state.movie.id)
-        // const movieId: string = this.props.location.state.movie.id; 
-    }
-
     public render() {
         const  { movie } = this.props.location.state;
-        const tooltip1 = (
-            <Tooltip id="tooltip">
-                <strong>{Number(movie.voteAverage).toFixed(1)} based on IMDB, TMDB and RT user ratings</strong>
-            </Tooltip>
-        );
-        const tooltip2 = (
-            <Tooltip id="tooltip">
-                <strong>{Number(movie.rating).toFixed(1)} based on {movie.ratingCount} user ratings</strong>
-            </Tooltip>
-        );
         
         return (
             <div>
@@ -135,23 +103,8 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                         
                             <div className = {movieDetailsRating}>
                                 <div>
-                                    <OverlayTrigger placement="right" overlay={tooltip1}>
-                                        <div className = "rate">
-                                            {Number(movie.voteAverage).toFixed(1)}
-                                        </div>
-                                    </OverlayTrigger>/5
-                                    <br/>
-                                    <OverlayTrigger placement="right" overlay={tooltip2}>
-                                        <div className = "rate">
-                                            {Number(movie.rating).toFixed(1)}
-                                        </div>
-                                    </OverlayTrigger>/5 
-                                    <div>
-                                        Rate this movie:
-                                        <div className="sizeStars"> 
-                                            <Rater total={5} rating={0} onRate={this.rate}/>  
-                                        </div>  
-                                    </div>  
+                                    <AverageRates movie={movie}/>
+                                    <Rating movie={movie}/>
                                 </div>
                             </div> 
                         </div>

@@ -2,8 +2,8 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { IMovie } from 'src/utils/Typings';
 import Pagination from 'react-js-pagination';
-import TopRatedRecommInfo from 'src/components/movie/TopRatedRecommInfo';
 import ReactLoading from 'react-loading';
+import TopRatedRecommInfo from './movie-info/TopRatedRecommInfo';
 
 interface IState {
     movies: IMovie[];

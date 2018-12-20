@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { IMovie } from 'src/utils/Typings';
 import Pagination from 'react-js-pagination';
-import TopWatchedInfo from 'src/components/movie/TopWatchedInfo';
+import TopWatchedInfo from 'src/components/movie-tabs/movie-info/TopWatchedInfo';
 import ReactLoading from 'react-loading';
 
 interface IState {
@@ -60,7 +60,7 @@ export default class TopWatched extends React.Component<{}, IState>{
         _.forEach(this.state.movies, (i) => {
             movies.push(
                 <div key = {key}>
-                    <TopWatchedInfo movieID = {i.id} topWatched={true} />
+                    <TopWatchedInfo movieID = {i.id} />
                 </div>
             )
             key++;
