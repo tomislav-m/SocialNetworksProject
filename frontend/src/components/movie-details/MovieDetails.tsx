@@ -112,6 +112,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                     
                     <div className = {overviewBox}>
                         <b>Overview: </b>
+                        <br/>
                         {movie.overview} 
                     </div>
 
