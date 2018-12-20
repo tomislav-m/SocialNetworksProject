@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Header from './containers/Header'
 import Search from './components/search/Search';
-import MovieTabs from './components/MovieTabs';
+import MovieTabs from './containers/MovieTabs';
 import { IMobxStore } from './stores/mobxStore';
 import { inject, observer } from 'mobx-react';
 

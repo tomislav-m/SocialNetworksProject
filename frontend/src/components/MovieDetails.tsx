@@ -95,6 +95,9 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                 },
                 body: data
             })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
         })
         console.log(this.props.location.state.movie.id)
         // const movieId: string = this.props.location.state.movie.id; 

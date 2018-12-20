@@ -33,7 +33,13 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
 
     public getRecommended(){
         this.setState({ loading: true });
-        fetch(`http://localhost:5000/api/movies/top-rated?pageSize=20`)
+        fetch(`http://localhost:5000/api/users/recommended/${localStorage.getItem('id')}?pageSize=20`, {
+                method: "GET", 
+                headers: {
+                    "Content-Type": "application/json", 
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                }
+        })
         .then(response => response.json())
         .then((response: any[]) => {
             this.setState({ 
@@ -41,7 +47,9 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
                 loading:false
             }); 
         })
-        .catch(error => console.error('Error:', error));
+        .catch((error) => {
+            console.error("Error:", error);
+        });
     }
 
     public handleInputChange(event : any) {
@@ -59,7 +67,14 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
             activePage: selectedPage,
             loading: true
         });
-        fetch(`http://localhost:5000/api/movies/top-rated?pageSize=20&pageNum=${selectedPage}`)
+
+        fetch(`http://localhost:5000/api/users/recommended/${localStorage.getItem('id')}?pageSize=20&pageNum=${selectedPage}`, {
+                method: "GET", 
+                headers: {
+                    "Content-Type": "application/json", 
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                }
+        })
         .then(response => response.json())
         .then(response => {
             this.setState( {
@@ -69,7 +84,6 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
         })
         .catch((error) => {
             console.error("Error:", error);
-            this.props.history.push("/error");
         });
         console.log(this.state.movies);
     }
@@ -96,7 +110,9 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
                 genres: response
             })  
         })
-        .catch(error => console.error("Error:", error));
+        .catch((error) => {
+            console.error("Error:", error);
+        });
     }
 
     public renderSelectGenres = () => {

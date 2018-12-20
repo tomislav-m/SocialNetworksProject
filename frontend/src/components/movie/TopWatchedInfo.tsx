@@ -45,6 +45,7 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
     }
     public componentDidMount() {
         this.getMovieInfo();
+        this.getMovieRatings();
     }
 
     public getMovieInfo(){
@@ -54,30 +55,34 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
             this.setState({
                 movie: response
             });
-            fetch(`http://localhost:5000/api/movies/${this.props.movieID}`)
-            .then(r => r.json())
-            .then(r => {
-                this.setState( {
-                    movie : {
-                        ...this.state.movie,
-                        voteAverage : r.voteAverage,
-                        rating : r.rating,
-                        ratingCount: r.ratingCount,
-                        runtime: r.runtime,
-                        release_date: r.release_date,
-                        genre_ids: r.genre_ids,
-                        actorsIds: r.actorsIds,
-                        directorsIds: r.directorsIds,
-                        soundtrackId: r.soundtrackId
-                    }
-                })
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+    }
+
+    public getMovieRatings(){
+        fetch(`http://localhost:5000/api/movies/${this.props.movieID}`)
+        .then(r => r.json())
+        .then(r => {
+            this.setState( {
+                movie : {
+                    ...this.state.movie,
+                    voteAverage : r.voteAverage,
+                    rating : r.rating,
+                    ratingCount: r.ratingCount,
+                    runtime: r.runtime,
+                    release_date: r.release_date,
+                    genre_ids: r.genre_ids,
+                    actorsIds: r.actorsIds,
+                    directorsIds: r.directorsIds,
+                    soundtrackId: r.soundtrackId
+                }
             })
         })
         .catch((error) => {
             console.error("Error:", error);
-            // this.props.history.push("/error");
         });
-        
     }
 
     public rate = (event: any) =>{
@@ -94,12 +99,15 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                 },
                 body: data
             })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
         })
         console.log(this.state.movie.id)
         // const movieId: string = this.props.location.state.movie.id; 
     }
 
-    public render() {
+    public renderRating = () => {
         const tooltip1 = (
             <Tooltip id="tooltip">
                 <strong>{Number(this.state.movie.voteAverage).toFixed(1)} based on IMDB, TMDB and RT user ratings</strong>
@@ -110,6 +118,36 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                 <strong>{Number(this.state.movie.rating).toFixed(1)} based on {this.state.movie.ratingCount} user ratings</strong>
             </Tooltip>
         );
+
+        return (
+            <div className = {movieInfoRating}>
+                    <div>
+                        <OverlayTrigger placement="right" overlay={tooltip1}>
+                            <div className = "rate">
+                                {Number(this.state.movie.voteAverage).toFixed(1)}
+                            </div>
+                        </OverlayTrigger>/5
+                    
+                        <br/>
+                        
+                        <OverlayTrigger placement="right" overlay={tooltip2}>
+                            <div className = "rate">
+                                {Number(this.state.movie.rating).toFixed(1)}
+                            </div>
+                        </OverlayTrigger>/5     
+                    </div>
+
+                    <div className = "ratingStars">
+                        Rate this movie:  
+                        <div className="sizeStars"> 
+                            <Rater total={5} rating={0} onRate={this.rate}/>  
+                        </div>
+                    </div> 
+                </div>
+        );
+    }
+
+    public render() {
         
         return (
             <div className = {movieInfoContainer}>
@@ -148,31 +186,7 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                             {this.state.movie.overview}
                         </Truncate> 
                     </div>
-
-                    <div className = {movieInfoRating}>
-                        <div>
-                            <OverlayTrigger placement="right" overlay={tooltip1}>
-                                <div className = "rate">
-                                    {Number(this.state.movie.voteAverage).toFixed(1)}
-                                </div>
-                            </OverlayTrigger>/5
-                        
-                            <br/>
-                            
-                            <OverlayTrigger placement="right" overlay={tooltip2}>
-                                <div className = "rate">
-                                    {Number(this.state.movie.rating).toFixed(1)}
-                                </div>
-                            </OverlayTrigger>/5     
-                        </div>
-
-                        <div className = "ratingStars">
-                            Rate this movie:  
-                            <div className="sizeStars"> 
-                                <Rater total={5} rating={0} onRate={this.rate}/>  
-                            </div>
-                        </div> 
-                    </div>
+                    { this.renderRating()}
                 </div>
             </div>                  
         );

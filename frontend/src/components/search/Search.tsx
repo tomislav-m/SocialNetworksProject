@@ -35,7 +35,9 @@ export default class Search extends React.Component< {}, IState > {
                 loading: false
             });
         })
-        .catch(error => console.log(error))
+        .catch((error) => {
+            console.error("Error:", error);
+        });
     }
 
     public handleEnterPress = (event: any) => {

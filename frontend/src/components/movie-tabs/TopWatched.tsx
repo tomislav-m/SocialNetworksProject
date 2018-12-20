@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { IMovie } from 'src/utils/Typings';
 import Pagination from 'react-js-pagination';
 import TopWatchedInfo from 'src/components/movie/TopWatchedInfo';
+import ReactLoading from 'react-loading';
 
 interface IState {
     movies: IMovie[];
@@ -12,7 +13,7 @@ interface IState {
     loading: boolean;
 }
 
-export default class TopWatched extends React.Component<{ history?: any }, IState>{
+export default class TopWatched extends React.Component<{}, IState>{
     constructor(props: any) {
         super(props);
         this.state = { 
@@ -25,12 +26,12 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
     }
 
     public componentDidMount() {
-        this.getTopWatched();
+        this.getTopWatched(1);
     }
 
-    public getTopWatched(){
+    public getTopWatched(page: number){
         this.setState({ loading: true });
-        fetch(`https://api.themoviedb.org/3/movie/popular?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US`)
+        fetch(`https://api.themoviedb.org/3/movie/popular?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US&page=${page}`)
         .then(response => response.json())
         .then(response => {
             this.setState( {
@@ -43,7 +44,6 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
         })
         .catch((error) => {
             console.error("Error:", error);
-            // this.props.history.push("/error");
         });
     }
 
@@ -51,24 +51,7 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
         console.log(`active page is ${selectedPage}`);
         this.setState({
             activePage: selectedPage,
-            loading: true
-        });
-        fetch(`https://api.themoviedb.org/3/movie/popular?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US&page=${selectedPage}`)
-        .then(response => response.json())
-        .then(response => {
-            this.setState( {
-                activePage: response.page,
-                totalPages: response.total_pages,
-                movies: response.results,
-                totalItemsCount: response.total_results,
-                loading: false
-            })
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-            this.props.history.push("/error");
-        });
-        console.log(this.state.movies);
+        }, () => this.getTopWatched(selectedPage));
     }
 
     public renderBody = () => {
@@ -88,8 +71,9 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
     public render() {
         return (
             <div>
+                { this.state.loading && <ReactLoading type="spin" color="black" width="35%" height="15em" />}
                 { !this.state.loading && this.renderBody()}
-                <div>
+                { !this.state.loading && 
                     <Pagination
                         activePage={this.state.activePage}
                         itemsCountPerPage={20}
@@ -97,7 +81,7 @@ export default class TopWatched extends React.Component<{ history?: any }, IStat
                         pageRangeDisplayed={10}
                         onChange={this.handlePageChange}
                     />
-                </div>
+                }
             </div>
         );
     }

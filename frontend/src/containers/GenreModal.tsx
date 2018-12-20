@@ -30,7 +30,9 @@ export default class GenreModal extends React.Component<IProps, IState> {
                 genres: response
             })  
         })
-        .catch(error => console.error("Error:", error));
+        .catch((error) => {
+            console.error("Error:", error);
+        });
     }
 
     public renderBody = () => {

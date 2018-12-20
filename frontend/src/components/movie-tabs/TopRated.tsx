@@ -21,12 +21,12 @@ export default class TopRated extends React.Component<{ history?: any }, IState>
     }
 
     public componentDidMount() {
-        this.getTopRated();
+        this.getTopRated(1);
     }
 
-    public getTopRated(){
+    public getTopRated(page: number){
         this.setState({ loading: true });
-        fetch(`http://localhost:5000/api/movies/top-rated?pageSize=20`)
+        fetch(`http://localhost:5000/api/movies/top-rated?pageSize=20&pageNum=${page}`)
         .then(response => response.json())
         .then((response: any[]) => {
             this.setState({ 
@@ -34,7 +34,9 @@ export default class TopRated extends React.Component<{ history?: any }, IState>
                 loading:false
             }); 
         })
-        .catch(error => console.error('Error:', error));
+        .catch((error) => {
+            console.error("Error:", error);
+        });
     }
 
     public handlePageChange = (selectedPage: number) => {
@@ -43,19 +45,7 @@ export default class TopRated extends React.Component<{ history?: any }, IState>
             activePage: selectedPage,
             loading: true
         });
-        fetch(`http://localhost:5000/api/movies/top-rated?pageSize=20&pageNum=${selectedPage}`)
-        .then(response => response.json())
-        .then(response => {
-            this.setState( {
-                movies: response,
-                loading: false
-            })
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-            this.props.history.push("/error");
-        });
-        console.log(this.state.movies);
+        this.getTopRated(selectedPage);
     }
 
     public renderBody = () => {
