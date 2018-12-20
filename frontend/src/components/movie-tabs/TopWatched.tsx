@@ -71,7 +71,7 @@ export default class TopWatched extends React.Component<{}, IState>{
     public render() {
         return (
             <div>
-                { this.state.loading && <ReactLoading type="spin" color="black" width="35%" height="15em" />}
+                { this.state.loading && <ReactLoading type="spin" color="black" width="35%" height="15em" className="loader"/>}
                 { !this.state.loading && this.renderBody()}
                 { !this.state.loading && 
                     <Pagination

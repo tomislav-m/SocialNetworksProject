@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import { IMovie } from 'src/utils/Typings';
 import Pagination from 'react-js-pagination';
 import TopRatedRecommInfo from 'src/components/movie/TopRatedRecommInfo';
+import ReactLoading from 'react-loading';
 
 interface IState {
     movies: IMovie[];
@@ -65,16 +66,16 @@ export default class TopRated extends React.Component<{ history?: any }, IState>
     public render() {
         return (
             <div>
+                { this.state.loading && <ReactLoading type="spin" color="black" width="35%" height="15em" className="loader"/>}
                 { !this.state.loading && this.renderBody()}
-                <div>
-                    <Pagination
-                        activePage={this.state.activePage}
-                        itemsCountPerPage={20}
-                        totalItemsCount={200}
-                        pageRangeDisplayed={10}
-                        onChange={this.handlePageChange}
-                    />
-                </div>
+                { !this.state.loading && 
+                <Pagination
+                    activePage={this.state.activePage}
+                    itemsCountPerPage={20}
+                    totalItemsCount={200}
+                    pageRangeDisplayed={10}
+                    onChange={this.handlePageChange}
+                /> }
             </div>
         );
     }

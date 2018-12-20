@@ -8,20 +8,34 @@ import { GOOGLE_CLIENT_ID, FACEBOOK_APP_ID } from "src/utils/ApiKeys";
 import { IMobxStore } from '../stores/mobxStore';
 import image from '../images/favicon.png';
 import { imageLoginSize, login, appName, loginButtons } from '../utils/Emotions';
+import ReactLoading from 'react-loading';
 
 interface IProps {
     history?: any;
     mobxStore?: IMobxStore
 }
 
+interface IState {
+    loading: boolean;
+}
+
 @inject('mobxStore')
 @observer
-export default class Login extends React.Component< IProps > {
+export default class Login extends React.Component<IProps, IState > {
+    constructor(props: any) {
+        super(props);
+        this.state = { 
+            loading: false
+        };
+    }
+
     public failure = () => {
         console.log("Failure");
     };
+
     @action
     public responseGoogle = (response: any) => {
+        this.setState({ loading: true });
         this.props.mobxStore!.firstName = response.profileObj.givenName;
         this.props.mobxStore!.lastName = response.profileObj.familyName;
         this.props.mobxStore!.email = response.profileObj.email;
@@ -63,7 +77,7 @@ export default class Login extends React.Component< IProps > {
     };
 
     public responseFacebook = (response: any) => {
-        console.log(response);
+        this.setState({ loading: true });
         this.props.mobxStore!.firstName = response.first_name;
         this.props.mobxStore!.lastName = response.last_name;
         this.props.mobxStore!.email = response.email;
@@ -104,29 +118,36 @@ export default class Login extends React.Component< IProps > {
         });
     };
 
+    public renderLogin = () => {
+        return(
+        <div className = {loginButtons}>
+            <GoogleLogin
+                clientId={GOOGLE_CLIENT_ID}
+                onSuccess={this.responseGoogle}
+                onFailure={this.failure}
+                buttonText="Login with Google"
+                className = "btnGoogle"
+            />
+            <FacebookLogin
+                appId={FACEBOOK_APP_ID}
+                autoLoad={false}
+                fields="first_name,last_name,email,picture"
+                callback={this.responseFacebook}
+                reAuthenticate={true}
+                onFailure={this.failure}
+                cssClass="btnFacebook"
+            />
+        </div>
+        );
+    }
+
     public render() {
         return (
         <div className={login}>
             <div className = {appName}>Movie SNApp</div>
             <img className = {imageLoginSize} src = {image}/>
-            <div className = {loginButtons}>
-                <GoogleLogin
-                    clientId={GOOGLE_CLIENT_ID}
-                    onSuccess={this.responseGoogle}
-                    onFailure={this.failure}
-                    buttonText="Login with Google"
-                    className = "btnGoogle"
-                />
-                <FacebookLogin
-                    appId={FACEBOOK_APP_ID}
-                    autoLoad={false}
-                    fields="first_name,last_name,email,picture"
-                    callback={this.responseFacebook}
-                    reAuthenticate={true}
-                    onFailure={this.failure}
-                    cssClass="btnFacebook"
-                />
-            </div>
+            { !this.state.loading && this.renderLogin()}
+            { this.state.loading && <ReactLoading type="spin" color="black" width="5%" height="5em"/>}
         </div>
         );
     }
