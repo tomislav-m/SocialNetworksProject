@@ -1,5 +1,4 @@
 ﻿using SocialNetworks.Models;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,6 +8,7 @@ namespace SocialNetworks.Repositories
     {
         Task<IEnumerable<Movie>> GetAllMovies(int pageNum, int pageSize);
         Task<IEnumerable<Movie>> GetTopRatedMovies(int pageNum, int pageSize);
+        Task<string> GetRatings(string id);
         Task<Movie> GetMovie(string id);
         Task AddMovie(Movie movie);
         Task<bool> RemoveMovie(string id);

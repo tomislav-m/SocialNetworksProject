@@ -2,20 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetworks.Models;
 using SocialNetworks.Repositories;
 using NReco.CF.Taste.Model;
-using NReco.CF.Taste.Impl.Model.File;
-using Newtonsoft.Json;
 using NReco.CF.Taste.Impl.Model;
-using System.Text;
 using NReco.CF.Taste.Impl.Similarity;
 using NReco.CF.Taste.Impl.Neighborhood;
 using NReco.CF.Taste.Impl.Recommender;
 using NReco.CF.Taste.Impl.Common;
-using NReco.CF.Taste.Common;
 using AutoMapper;
 
 namespace SocialNetworks.Controllers
@@ -105,6 +100,13 @@ namespace SocialNetworks.Controllers
             
             var movieId = movieDict.FirstOrDefault(x => x.Value == recommendedItems[0].GetItemID()).Key;
             Console.WriteLine((await _movieRepository.GetMovie(movieId)).Title);
+        }
+
+        [HttpGet("getRatings/{id}")]
+        public async Task<string> GetRatings(string id)
+        {
+            var ratings = await _movieRepository.GetRatings(id);
+            return ratings;
         }
 
         private IDataModel loadDataModel(IEnumerable<User> users, Dictionary<string, long> movieDict)
