@@ -44,7 +44,7 @@ export default class Rating extends React.Component<IProps, IState > {
             <div className = "ratingStars">
                 Rate this movie:
                 <div className="sizeStars"> 
-                    <Rater total={5} rating={0} onRate={this.rate}/>  
+                    <Rater total={5} rating={this.state.rate} onRate={this.rate}/>  
                 </div>
             </div> 
         );
