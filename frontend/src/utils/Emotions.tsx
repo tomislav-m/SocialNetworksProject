@@ -87,5 +87,8 @@ export const infoBox = css`
 `
 export const movieDetailsRating = css`
     display: grid;
-    grid-template-columns: 0.5fr;
+    grid-template-columns: 0.5fr 1fr;
+`
+export const ratingStars = css`
+    padding-right: 10em;
 `

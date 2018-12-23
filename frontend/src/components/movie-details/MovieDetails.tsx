@@ -3,7 +3,7 @@ import Header from '../Header';
 import { inject, observer } from 'mobx-react';
 import { IMobxStore } from '../../stores/mobxStore';
 import { RouteComponentProps } from "react-router-dom";
-import { movieDetailsRating, infoBox, titleBox, overviewBox, movieContainer, firstMovieBox, secondMovieBox } from 'src/utils/Emotions';
+import { ratingStars, movieDetailsRating, infoBox, titleBox, overviewBox, movieContainer, firstMovieBox, secondMovieBox } from 'src/utils/Emotions';
 import Moment from 'react-moment';
 import Rating from '../rate/Rating';
 import AverageRates from '../rate/AverageRates';
@@ -102,10 +102,10 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                             </div>
                         
                             <div className = {movieDetailsRating}>
-                                <div>
-                                    <AverageRates movie={movie}/>
+                                <AverageRates movie={movie}/>
+                                <div className = {ratingStars}>
                                     <Rating movie={movie}/>
-                                </div>
+                                </div> 
                             </div> 
                         </div>
                     </div>

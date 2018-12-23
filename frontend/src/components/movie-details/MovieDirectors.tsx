@@ -1,5 +1,6 @@
 import * as React from 'react';
 import "../../App.css";
+import image from 'src/images/no-photo-icon-10.jpg';
 
 interface IProps {
     directors: any[];
@@ -13,8 +14,12 @@ export default class MovieDirectors extends React.Component<IProps> {
                     this.props.directors.map((director:any) => (
                         <div>
                             <br/>
-                            <img className = "altSize" src = {`http://image.tmdb.org/t/p/w45${director.pictureUrl}`} alt = "No image"/> &nbsp;
-                            <h5 className = "personInfo">{director.name}</h5>
+                            {
+                                director.pictureUrl !== null
+                                ? <img src = {`http://image.tmdb.org/t/p/w45${director.pictureUrl}`}/>
+                                : <img className = "altSize" src = {image}/>
+                            }
+                            &nbsp;&nbsp;<h5 className = "personInfo">{director.name}</h5>
                         </div>
                         
                     ))
