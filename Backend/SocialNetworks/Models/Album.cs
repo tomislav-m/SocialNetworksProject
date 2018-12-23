@@ -14,8 +14,9 @@ namespace SocialNetworks.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string DiscogsId { get; set; }
+        public string MovieId { get; set; }
         public string Title { get; set; }
-        public IEnumerable<string> ArtistsIds { get; set; }
+        public IEnumerable<string> ArtistsList { get; set; }
         public string CoverUrl { get; set; }
         public IEnumerable<Song> Songs { get; set; }
     }

@@ -222,10 +222,11 @@ namespace Utilities
 
         public static async Task GetAndSaveSoundtrack()
         {
-            var response = await client.GetStringAsync("http://localhost:5000/api/Movies");
-            var movies = JsonConvert.DeserializeObject<IEnumerable<Movie>>(response);
-            foreach (var movie in movies.Skip(2))
+            var response = await client.GetStringAsync("http://localhost:5000/api/Movies/top-rated?pageSize=1000&pageNum=2");
+            var movies = JsonConvert.DeserializeObject<IEnumerable<MovieJson>>(response);
+            foreach (var movie in movies)
             {
+                System.Threading.Thread.Sleep(1000);
                 var year = movie.ReleaseDate.Year;
                 var searchUrl = $"https://api.discogs.com/database/search?q={movie.Title}&style=soundtrack&year={year}";
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Discogs", "key=EujhPvhRDMCgptbPCece, secret=AMUIkVJHwXYjanhOymvvOeCyJLKeCCls");
@@ -233,8 +234,28 @@ namespace Utilities
                 var searchResponse = await client.GetStringAsync(searchUrl);
                 var o = JObject.Parse(searchResponse);
                 var albumUrl = o.SelectToken("results[0].master_url");
-                var albumResponse = await client.GetStringAsync(albumUrl.ToString());
+                var albumResponse = "";
+                try
+                {
+                    albumResponse = await client.GetStringAsync(albumUrl.ToString());
+                }
+                catch
+                {
+                    continue;
+                }
                 var album = JsonConvert.DeserializeObject<Album>(albumResponse);
+                JEnumerable<JToken> albumArtists;
+                try
+                {
+                    albumArtists = JObject.Parse(albumResponse).SelectToken("artists").Children();
+                    var artistsAray = new List<string>();
+                    foreach (var artist in albumArtists)
+                    {
+                        artistsAray.Add(artist.SelectToken("name").ToString());
+                    }
+                    album.ArtistsList = artistsAray;
+                }
+                catch { }
                 album.CoverUrl = o.SelectToken("results[0].cover_image").ToString();
                 album.DiscogsId = o.SelectToken("results[0].id").ToString();
                 var songs = JObject.Parse(albumResponse).SelectToken("tracklist").Children();
@@ -245,7 +266,18 @@ namespace Utilities
                     JEnumerable<JToken> artists;
                     try
                     {
-                        artists = songObject.SelectToken("artist").Children();
+                        artists = songObject.SelectToken("artists").Children();
+                        var artistsAray = new List<string>();
+                        foreach (var artist in artists)
+                        {
+                            artistsAray.Add(artist.SelectToken("name").ToString());
+                        }
+                        song.ArtistsList = artistsAray;
+                    }
+                    catch { }
+                    try
+                    {
+                        artists = songObject.SelectToken("extraartists").Children();
                         var artistsAray = new List<string>();
                         foreach (var artist in artists)
                         {
@@ -257,8 +289,11 @@ namespace Utilities
                     songsArray.Add(song);
                 }
                 album.Songs = songsArray;
-                Console.WriteLine(JsonConvert.SerializeObject(album));
-                break;
+                album.Id = null;
+                album.MovieId = movie.Id;
+                var stringContent = new StringContent(JsonConvert.SerializeObject(album), Encoding.UTF8, "application/json");
+                var responseAlbum = await client.PostAsync("http://localhost:5000/api/Albums", stringContent);
+                Console.WriteLine(album.Title + ": " + responseAlbum.StatusCode);
             }
         }
 

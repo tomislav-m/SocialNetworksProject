@@ -14,7 +14,8 @@ namespace Utilities
                 Console.WriteLine("4. Get more movies");
                 Console.WriteLine("5. Recommend");
                 Console.WriteLine("6. CalculateAverageScore");
-                Console.WriteLine("7. Exit");
+                Console.WriteLine("7. GetAndSaveSoundtrack");
+                Console.WriteLine("8. Exit");
 
                 var key = Console.ReadLine();
                 if(key == "1")
@@ -43,7 +44,11 @@ namespace Utilities
                 {
                     Utilities.CalculateAverageScore().Wait();
                 }
-                else if(key == "7" || key.ToLower() == "exit")
+                else if(key == "7")
+                {
+                    Utilities.GetAndSaveSoundtrack().Wait();
+                }
+                else if(key == "8" || key.ToLower() == "exit")
                 {
                     break;
                 }

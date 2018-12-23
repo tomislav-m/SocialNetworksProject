@@ -85,6 +85,7 @@ namespace SocialNetworks
             services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddTransient<IGenreRepository, GenreRepository>();
             services.AddTransient<ISongRepository, SongRepository>();
+            services.AddTransient<IAlbumRepository, AlbumRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
         }
 
