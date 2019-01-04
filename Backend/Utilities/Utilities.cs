@@ -17,11 +17,13 @@ namespace Utilities
         public string Id { get; set; }
         public string Title { get; set; }
         public DateTime Release_Date { get; set; }
-        public IEnumerable<string> Genre_Ids { get; set; }
+        public IEnumerable<Genre2> Genres { get; set; }
         public int Vote_Count { get; set; }
         public float Vote_Average { get; set; }
         public float Popularity { get; set; }
         public string Poster_Path { get; set; }
+        public string Imdb_id { get; set; }
+        public string Overview { get; set; }
     }
 
     public class OMDMovie
@@ -78,7 +80,7 @@ namespace Utilities
                     MovieJson model = new MovieJson
                     {
                         TMDbId = movie.Id,
-                        Genres = movie.Genre_Ids,
+                        //Genres = movie.Genre_Ids,
                         ReleaseDate = movie.Release_Date,
                         Title = movie.Title,
                         VoteAverage = 0,
@@ -297,147 +299,33 @@ namespace Utilities
             }
         }
 
-        public static void RecommenderTest()
+        public static async Task RecommenderTest()
         {
-            var user1 = new Dictionary<string, int>
+            var response = await client.GetStringAsync("http://localhost:5000/api/Users");
+            var users = JsonConvert.DeserializeObject<IEnumerable<User>>(response);
+            var user = users.SingleOrDefault(x => x.Email == "tomislav.maslac95@gmail.com");
+            var dict = new Dictionary<string, Dictionary<string, int>>();
+            foreach (var u in users)
             {
-                { "Titanic", 10 },
-                { "Amelie", 10 },
-                { "Beauty and the beast", 8 },
-                { "Girl with the dragon tattoo", 8 },
-                { "A Star is born", 8 },
-                { "Split", 7 },
-                { "Punch-drunk love", 5 },
-                { "A simple favor", 8 },
-                { "Pretty woman", 7 },
-                { "The place", 7 },
-                { "No string attached", 6 },
-                { "Clueless", 6 },
-                { "Orphan", 7 },
-                { "The shape of water", 7 },
-                { "Lady bird", 7 },
-            };
-            var user2 = new Dictionary<string, int>
-            {
-                { "Titanic", 7 },
-                { "Amelie", 10 },
-                { "Beauty and the beast", 7 },
-                { "Bohemian rhapsody", 8 },
-                { "A Star is born", 9 },
-                { "Split", 7 },
-                { "Punch-drunk love", 6 },
-                { "A simple favor", 7 },
-                { "Pretty woman", 7 },
-                { "The place", 8 },
-                { "No string attached", 5 },
-                { "Clueless", 6 },
-                { "Orphan", 7 },
-                { "Get out", 8 },
-                { "The shape of water", 7 },
-                { "Lady bird", 7 },
-                { "Your name", 7 },
-                { "Mother", 4 }
-            };
-            var user3 = new Dictionary<string, int>
-            {
-                { "Titanic", 10 },
-                { "Amelie", 9 },
-                { "Beauty and the beast", 8 },
-                { "Girl with the dragon tattoo", 6 },
-                { "A Star is born", 8 },
-                { "Split", 6 },
-                { "Punch-drunk love", 7 },
-                { "A simple favor", 6 },
-                { "Pretty woman", 6 },
-                { "The place", 6 },
-                { "Orphan", 6 },
-                { "Get out", 8 },
-                { "The shape of water", 8 },
-                { "Lady bird", 9 },
-                { "Your name", 9 },
-                { "Mother", 7 }
-            };
-            var user4 = new Dictionary<string, int>
-            {
-                { "Titanic", 9 },
-                { "Amelie", 10 },
-                { "Beauty and the beast", 7 },
-                { "Girl with the dragon tattoo", 7 },
-                { "A Star is born", 8 },
-                { "Split", 7 },
-                { "Punch-drunk love", 6 },
-                { "A simple favor", 8 },
-                { "Pretty woman", 7 },
-                { "The place", 7 },
-                { "No string attached", 6 },
-                { "Clueless", 6 },
-                { "Orphan", 7 },
-                { "The shape of water", 7 },
-                { "Lady bird", 7 },
-                { "Get out", 7 },
-                { "Your name", 9 }
-            };
-            var user5 = new Dictionary<string, int>
-            {
-                { "Titanic", 9 },
-                { "Amelie", 10 },
-                { "Beauty and the beast", 7 },
-                { "Girl with the dragon tattoo", 7 },
-                { "A Star is born", 8 },
-                { "Split", 7 },
-                { "Punch-drunk love", 6 },
-                { "A simple favor", 8 },
-                { "Pretty woman", 7 },
-                { "The place", 7 },
-                { "No string attached", 6 },
-                { "Clueless", 6 },
-                { "Orphan", 7 },
-                { "The shape of water", 7 },
-                { "Lady bird", 7 },
-                { "Get out", 7 },
-                { "Your name", 10 }
-            };
-            var user6 = new Dictionary<string, int>
-            {
-                { "Titanic", 10 },
-                { "Amelie", 10 },
-                { "Beauty and the beast", 8 },
-                { "Girl with the dragon tattoo", 7 },
-                { "A Star is born", 8 },
-                { "Split", 7 },
-                { "Punch-drunk love", 6 },
-                { "A simple favor", 8 },
-                { "Pretty woman", 7 },
-                { "The place", 7 },
-                { "No string attached", 6 },
-                { "Clueless", 6 },
-                { "Orphan", 7 },
-                { "The shape of water", 7 },
-                { "Lady bird", 7 },
-                { "Get out", 9 },
-                { "Your name", 8 }
-            };
-            var dict = new Dictionary<string, Dictionary<string, int>>
-            {
-                { "0", user1 },
-                { "1", user2 },
-                { "2", user3 },
-                { "3", user4 },
-                { "4", user5 },
-                { "5", user6 }
-            };
-            var recommender = new UserBasedRecommender(dict, "0", 0.6);
+                if (u.MovieRatings.Count > 0)
+                {
+                    dict.Add(u.Email, u.MovieRatings);
+                }
+            }
+            var recommender = new UserBasedRecommender(dict, user.Email, 0.35);
             var recs = recommender.Recommend();
-            Console.WriteLine("Recommendations for user1:");
-            foreach (var rec in recs)
+            Console.WriteLine($"Recommendations for {user.Email}:");
+            foreach (var rec in recs.Take(50))
             {
-                Console.WriteLine(rec.Key + ": " + rec.Value);
+                var movieResponse = await client.GetStringAsync("http://localhost:5000/api/Movies/" + rec.Key);
+                var movie = JsonConvert.DeserializeObject<Movie>(movieResponse);
+                Console.WriteLine(movie.Title + ": " + rec.Value);
             }
         }
 
         public static async Task CalculateAverageScore()
         {
-            var response = await client.GetStringAsync("http://localhost:5000/api/Movies?pageSize=6393&pageNum=1");
+            var response = await client.GetStringAsync("http://localhost:5000/api/Movies?pageSize=8000&pageNum=1");
             var movies = JsonConvert.DeserializeObject<IEnumerable<Movie>>(response);
             foreach(var movie in movies)
             {
@@ -469,6 +357,82 @@ namespace Utilities
                 }
 
                 Console.WriteLine(movie.Title + ": " + movie.VoteAverage);
+            }
+        }
+
+        public static async Task CreateUsers()
+        {
+            for (int i = 51; i < 100; ++i)
+            {
+                string name = "user" + i;
+                var user = new UserDto
+                {
+                    FirstName = name,
+                    Email = name + "@mail.com",
+                    LastName = name,
+                    Password = name
+                };
+                var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+                var response = await client.PostAsync($"http://localhost:5000/api/Users/register", content);
+                Console.WriteLine(name + ": " + response.StatusCode);
+            }
+        }
+
+        public static async Task AddRatings()
+        {
+            var random = new Random();
+
+            var response = await client.GetStringAsync("http://localhost:5000/api/Users");
+            var users = JsonConvert.DeserializeObject<IEnumerable<User>>(response).Where(x => x.Email.Contains("user") && x.MovieRatings.Count == 0);
+            var movieResponse = await client.GetStringAsync("http://localhost:5000/api/Movies/top-rated?pageSize=250");
+            var movies = JsonConvert.DeserializeObject<IEnumerable<Movie>>(movieResponse);
+            foreach (var user in users)
+            {
+                var ratings = new Dictionary<string, int>();
+                for(int i = 0; i < 50; ++i)
+                {
+                    var movie = movies.ElementAt(random.Next(0, movies.Count() - 1));
+                    if (ratings.ContainsKey(movie.Id) || user.MovieRatings.Select(x => x.Key).Contains(movie.Id)) continue;
+                    var rating = random.Next(1, 5);
+                    if (random.Next(0, 4) > 0)
+                    {
+                        rating = (int)Math.Ceiling(movie.VoteAverage);
+                    }
+                    ratings.Add(movie.Id, rating);
+                }
+                var json = JsonConvert.SerializeObject(ratings);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                var movieResponse2 = await client.PutAsync($"http://localhost:5000/api/Users/add-ratings/{user.Id}", content);
+                Console.WriteLine(user.Email + ": " + movieResponse2.StatusCode);
+            }
+        }
+
+        public static async Task Update()
+        {
+            var movieResponse = await client.GetStringAsync("http://localhost:5000/api/Movies/top-rated?pageSize=8000");
+            var movies = JsonConvert.DeserializeObject<IEnumerable<MovieJson>>(movieResponse).Where(x => x.IMDbId == null).ToList();
+            for(int i = 0; i < movies.Count; ++i)
+            {
+                try
+                {
+                    var movie = movies.ElementAt(i);
+                    var response = await client.GetStringAsync($"https://api.themoviedb.org/3/movie/{movie.TMDbId}?api_key={apiKey}");
+                    var tmdbMovie = JsonConvert.DeserializeObject<TMDBMovie>(response);
+                    movie.IMDbId = tmdbMovie.Imdb_id;
+                    movie.Plot = tmdbMovie.Overview;
+                    movie.PosterUrl = tmdbMovie.Poster_Path;
+                    movie.ReleaseDate = tmdbMovie.Release_Date;
+                    movie.Genres = tmdbMovie.Genres.Select(x => x.Id).ToList();
+                    var movieJson = JsonConvert.SerializeObject(movie);
+                    var movieContent = new StringContent(movieJson, Encoding.UTF8, "application/json");
+                    var movieResponse2 = await client.PutAsync("http://localhost:5000/api/Movies/" + movie.TMDbId, movieContent);
+                    Console.WriteLine(movie.Title + ": " + movieResponse2.StatusCode);
+                    System.Threading.Thread.Sleep(300);
+                }
+                catch
+                {
+                    continue;
+                }
             }
         }
     }

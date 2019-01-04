@@ -39,7 +39,7 @@ namespace SocialNetworks.Repositories
             try
             {
                 return await _context.Movies
-                    .Find(_ => true)
+                    .Find(_ => _.IMDbVotes > 50000)
                     .SortByDescending(x => x.VoteAverage)
                     .Skip((pageNum - 1) * pageSize).Limit(pageSize)
                     .ToListAsync();

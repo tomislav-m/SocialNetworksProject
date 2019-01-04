@@ -15,7 +15,10 @@ namespace Utilities
                 Console.WriteLine("5. Recommend");
                 Console.WriteLine("6. CalculateAverageScore");
                 Console.WriteLine("7. GetAndSaveSoundtrack");
-                Console.WriteLine("8. Exit");
+                Console.WriteLine("8. CreateUsers");
+                Console.WriteLine("9. AddRatings");
+                Console.WriteLine("10. Update");
+                Console.WriteLine("11. Exit");
 
                 var key = Console.ReadLine();
                 if(key == "1")
@@ -38,7 +41,7 @@ namespace Utilities
                 }
                 else if (key == "5")
                 {
-                    Utilities.RecommenderTest();
+                    Utilities.RecommenderTest().Wait();
                 }
                 else if(key == "6")
                 {
@@ -48,7 +51,19 @@ namespace Utilities
                 {
                     Utilities.GetAndSaveSoundtrack().Wait();
                 }
-                else if(key == "8" || key.ToLower() == "exit")
+                else if(key == "8")
+                {
+                    Utilities.CreateUsers().Wait();
+                }
+                else if(key == "9")
+                {
+                    Utilities.AddRatings().Wait();
+                }
+                else if(key == "10")
+                {
+                    Utilities.Update().Wait();
+                }
+                else if(key == "11" || key.ToLower() == "exit")
                 {
                     break;
                 }

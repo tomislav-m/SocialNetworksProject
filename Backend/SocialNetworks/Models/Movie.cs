@@ -27,7 +27,7 @@ namespace SocialNetworks.Models
         public string Runtime { get; set; }
         public string Metascore { get; set; }
         public int RTRating { get; set; }
-        public int Rating { get; set; }
+        public float Rating { get; set; }
         public int RatingCount { get; set; }
     }
 }

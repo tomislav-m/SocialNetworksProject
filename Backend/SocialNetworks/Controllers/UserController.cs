@@ -26,6 +26,7 @@ namespace SocialNetworks.Controllers
     public class UsersController : ControllerBase
     {
         private IUserRepository _userRepository;
+        private IMovieRepository _movieRepository;
         private IMapper _mapper;
         private readonly Settings _appSettings;
         private static readonly HttpClient Client = new HttpClient();
@@ -33,11 +34,13 @@ namespace SocialNetworks.Controllers
 
         public UsersController(
             IUserRepository userRepository,
+            IMovieRepository movieRepository,
             IMapper mapper,
             IOptions<Settings> appSettings,
             IOptions<FacebookAuthSettings> fbAuthSettings)
         {
             _userRepository = userRepository;
+            _movieRepository = movieRepository;
             _mapper = mapper;
             _appSettings = appSettings.Value;
             _fbAuthSettings = fbAuthSettings.Value;
@@ -79,7 +82,7 @@ namespace SocialNetworks.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
+        
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -144,24 +147,48 @@ namespace SocialNetworks.Controllers
             var userData = JsonConvert.DeserializeObject<GoogleUserData>(response);
             return ExternalLogin(userData);
         }
-
+        
         [HttpPut("add-ratings/{id}")]
         public async Task<IActionResult> AddRatings(string id, [FromBody]Dictionary<string, int> ratings)
         {
+            var userRatings = _userRepository.GetById(id).MovieRatings;
             await _userRepository.AddRatings(id, ratings);
+            foreach(var movieRating in ratings)
+            {
+                var movie = await _movieRepository.GetMovie(movieRating.Key);
+                var x = movie.Rating * movie.RatingCount;
+                var y = 0;
+                if (!userRatings.ContainsKey(movieRating.Key))
+                {
+                    ++movie.RatingCount;
+                }
+                else
+                {
+                    y = userRatings[movieRating.Key];
+                }
+                movie.Rating = (x + movieRating.Value - y) / movie.RatingCount;
+                await _movieRepository.UpdateMovie(movie.TMDbId, movie);
+            }
             return Ok();
         }
-
+        
         [HttpGet("recommend/{id}")]
-        public IActionResult Recommend(string id)
+        public async Task<IActionResult> Recommend(string id)
         {
             if (_userRepository.GetById(id) == null)
             {
                 return NotFound();
             }
             var users = _userRepository.GetAll();
-            var recommender = new UserBasedRecommender(users.ToDictionary(x => x.Id, y => y.MovieRatings), id, 0.5);
-            return Ok(recommender.Recommend());
+            var recommender = new UserBasedRecommender(users.ToDictionary(x => x.Id, y => y.MovieRatings), id, 0.2);
+            var recs = recommender.Recommend().Take(30);
+            List<object> movies = new List<object>();
+            foreach(var rec in recs)
+            {
+                var movie = await _movieRepository.GetMovie(rec.Key);
+                movies.Add(new { movie.Title, rec.Value });
+            }
+            return Ok(movies);
         }
 
         private IActionResult ExternalLogin(dynamic userData)

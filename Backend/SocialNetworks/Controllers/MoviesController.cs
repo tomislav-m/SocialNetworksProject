@@ -54,9 +54,9 @@ namespace SocialNetworks.Controllers
 
         // POST: api/Movies
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] MovieJson movie)
+        public async Task<IActionResult> Post([FromBody] Movie movie)
         {
-            await _movieRepository.AddMovie(_mapper.Map<Movie>(movie));
+            await _movieRepository.AddMovie(movie);
             return new OkObjectResult(movie);
         }
 
