@@ -172,8 +172,9 @@ namespace SocialNetworks.Controllers
             return Ok();
         }
         
+        [AllowAnonymous]
         [HttpGet("recommend/{id}")]
-        public async Task<IActionResult> Recommend(string id)
+        public async Task<IActionResult> Recommend(string id, string genres)
         {
             if (_userRepository.GetById(id) == null)
             {
@@ -181,14 +182,15 @@ namespace SocialNetworks.Controllers
             }
             var users = _userRepository.GetAll();
             var recommender = new UserBasedRecommender(users.ToDictionary(x => x.Id, y => y.MovieRatings), id, 0.2);
-            var recs = recommender.Recommend().Take(30);
-            List<object> movies = new List<object>();
-            foreach(var rec in recs)
+            var recs = recommender.Recommend();
+            var genresArray = genres == null ? new string[] { } : genres.Split(',');
+            var movies = (await _movieRepository.GetMoreMovies(recs.Select(x => x.Key), genresArray)).ToList();
+            try
             {
-                var movie = await _movieRepository.GetMovie(rec.Key);
-                movies.Add(new { movie.Title, rec.Value });
+                movies.Sort((x, y) => recs.Single(z => z.Key == y.Id).Value.CompareTo(recs.Single(z => z.Key == x.Id).Value));
             }
-            return Ok(movies);
+            catch { }
+            return Ok(movies.Take(30));
         }
 
         private IActionResult ExternalLogin(dynamic userData)

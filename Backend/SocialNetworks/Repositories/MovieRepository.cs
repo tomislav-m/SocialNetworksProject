@@ -34,6 +34,20 @@ namespace SocialNetworks.Repositories
             }
         }
 
+        public async Task<IEnumerable<Movie>> GetMoreMovies(IEnumerable<string> ids, string[] genres)
+        {
+            try
+            {
+                return await _context.Movies
+                    .Find(x => ids.Contains(x.Id) && (!genres.Any() || x.Genres.Any(y => genres.Contains(y))))
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        } 
+
         public async Task<IEnumerable<Movie>> GetTopRatedMovies(int pageNum, int pageSize)
         {
             try
