@@ -91,6 +91,7 @@ namespace SocialNetworks.Controllers
             return Ok(userDtos);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public IActionResult GetById(string id)
         {
@@ -190,7 +191,7 @@ namespace SocialNetworks.Controllers
                 movies.Sort((x, y) => recs.Single(z => z.Key == y.Id).Value.CompareTo(recs.Single(z => z.Key == x.Id).Value));
             }
             catch { }
-            return Ok(movies.Take(30));
+            return Ok(_mapper.Map<IList<MovieJson>>(movies).Take(30));
         }
 
         private IActionResult ExternalLogin(dynamic userData)
