@@ -35,7 +35,7 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
 
     public getRecommended(){
         this.setState({ loading: true });
-        fetch(`http://localhost:5000/api/users/recommended/${localStorage.getItem('id')}?pageSize=20`, {
+        fetch(`http://localhost:5000/api/users/recommend/${localStorage.getItem('id')}`, {
                 method: "GET", 
                 headers: {
                     "Content-Type": "application/json", 
@@ -61,7 +61,7 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
             loading: true
         });
 
-        fetch(`http://localhost:5000/api/users/recommended/${localStorage.getItem('id')}?pageSize=20&pageNum=${selectedPage}`, {
+        fetch(`http://localhost:5000/api/users/recommend/${localStorage.getItem('id')}?pageSize=20&pageNum=${selectedPage}`, {
                 method: "GET", 
                 headers: {
                     "Content-Type": "application/json", 
