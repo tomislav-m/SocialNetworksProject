@@ -55,7 +55,7 @@ export default class GenreModal extends React.Component<IProps, IState> {
 
                 <Modal.Footer>
                     <Button onClick = {this.props.onClose}>Close</Button>
-                    <Button onClick = {this.props.onSave} bsStyle="primary">Save changes</Button>
+                    <Button onClick = {this.props.onSave} bsStyle="primary">Filter</Button>
                 </Modal.Footer>
             </Modal>
         );
