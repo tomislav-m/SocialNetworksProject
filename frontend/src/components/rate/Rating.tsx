@@ -4,9 +4,11 @@ import { IMovie } from 'src/utils/Typings';
 
 interface IProps{
     movie: IMovie;
+    a?: boolean;
 }
 
 interface IState {
+    movieId: string;
     rate: number;
     loading: boolean;
 }
@@ -16,17 +18,38 @@ export default class Rating extends React.Component<IProps, IState > {
     constructor(props: any) {
         super(props);
         this.state ={ 
+            movieId: '',
             rate: 0,
             loading: false
         };
     }
 
-    public componentDidMount(){
-        this.getRateForMovie(this.props.movie.id);
+    public componentWillMount(){
+        this.getMovieIdFromDatabase(this.props.movie.id)
+    }
+
+    public getMovieIdFromDatabase(movieId: string) {
+        this.setState({ loading: true });
+        fetch(`http://localhost:5000/api/movies/${movieId}`, {
+            method: "GET", 
+            headers: {
+                "Content-Type": "application/json", 
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(response => response.json())
+        // .then(response => console.log(movieId))
+        .then((response: any) => {
+            this.setState({ 
+                movieId: response.id,
+            }, () => this.getRateForMovie(response.id)); 
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
     }
 
     public getRateForMovie(movieId: string) {  
-        this.setState({ loading: true });
         fetch(`http://localhost:5000/api/users/get-rating?userId=${localStorage.getItem('id')}&movieId=${movieId}`, {
             method: "GET", 
             headers: {
@@ -37,9 +60,11 @@ export default class Rating extends React.Component<IProps, IState > {
         .then(response => response.json())
         .then((response: number) => {
             this.setState({ 
+                movieId,
                 rate: response,
                 loading: false
             }); 
+            console.log(movieId + ':::' + response + ' ' + this.props.a)
         })
         .catch((error) => {
             console.error("Error:", error);
@@ -49,7 +74,7 @@ export default class Rating extends React.Component<IProps, IState > {
 
     public rate = (event: any) =>{
         this.setState({ rate: event.rating }, () => {
-            const key = this.props.movie.id;
+            const key = this.state.movieId;
             const obj = {};
             obj[key] = this.state.rate;
             const data = JSON.stringify(obj);
@@ -68,13 +93,16 @@ export default class Rating extends React.Component<IProps, IState > {
     }
 
     public render() {
-        return (
-            <div className = "ratingStars">
-                Rate this movie:
-                <div className="sizeStars"> 
-                    <Rater total={5} rating={this.state.rate} onRate={this.rate}/>  
-                </div>
-            </div> 
-        );
+        if (!this.state.loading) {
+            return (
+                <div className = "ratingStars">
+                    Rate this movie:
+                    <div className="sizeStars"> 
+                        <Rater total={5} rating={this.state.rate} onRate={this.rate}/>  
+                    </div>
+                </div> 
+            );
+        }
+        return null
     }
 }
