@@ -62,7 +62,7 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
             loading: true
         });
 
-        fetch(`http://localhost:5000/api/users/recommend/${localStorage.getItem('id')}?pageSize=20&pageNum=${selectedPage}`, {
+        fetch(`http://localhost:5000/api/users/recommend/${localStorage.getItem('id')}?pageSize=10&pageNum=${selectedPage}`, {
                 method: "GET", 
                 headers: {
                     "Content-Type": "application/json", 
@@ -128,9 +128,9 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
                 <div>
                     <Pagination
                         activePage={this.state.activePage}
-                        itemsCountPerPage={20}
-                        totalItemsCount={200}
-                        pageRangeDisplayed={10}
+                        itemsCountPerPage={10}
+                        totalItemsCount={30}
+                        pageRangeDisplayed={3}
                         onChange={this.handlePageChange}
                     />
                 </div> 
