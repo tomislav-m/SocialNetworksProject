@@ -173,7 +173,6 @@ namespace SocialNetworks.Controllers
             return Ok();
         }
         
-        [AllowAnonymous]
         [HttpGet("recommend/{id}")]
         public async Task<IActionResult> Recommend(string id, string genres)
         {
@@ -192,6 +191,12 @@ namespace SocialNetworks.Controllers
             }
             catch { }
             return Ok(_mapper.Map<IList<MovieJson>>(movies).Take(30));
+        }
+        
+        [HttpGet("get-rating")]
+        public async Task<int> GetRating(string userId, string movieId)
+        {
+            return await _userRepository.GetRating(userId, movieId);
         }
 
         private IActionResult ExternalLogin(dynamic userData)
