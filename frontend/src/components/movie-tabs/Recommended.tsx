@@ -6,6 +6,7 @@ import TopRatedRecommInfo from './movie-info/TopRatedRecommInfo';
 import GenreModal from 'src/components/GenreModal';
 import { Button } from 'react-bootstrap';
 import { genreButton } from 'src/utils/Emotions';
+import { paginationBoxRecom } from 'src/utils/Emotions';
 
 interface IState {
     movies: IMovie[];
@@ -125,7 +126,8 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
                 </div>
                 {this.state.showGenreModal && <GenreModal genres = {this.state.genres} onClose={this.closeGenreModal} onSave={this.closeGenreModal}/>}
                 { !this.state.loading && this.renderBody()}
-                <div>
+                { !this.state.loading && 
+                <div className = {paginationBoxRecom}>
                     <Pagination
                         activePage={this.state.activePage}
                         itemsCountPerPage={10}
@@ -133,7 +135,7 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
                         pageRangeDisplayed={3}
                         onChange={this.handlePageChange}
                     />
-                </div> 
+                </div> }
             </div>
         );
     }

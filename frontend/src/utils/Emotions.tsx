@@ -82,9 +82,6 @@ export const overviewBox = css`
 export const titleBox = css`
     font-size: 2em;
 `
-export const infoBox = css`
-    
-`
 export const movieDetailsRating = css`
     display: grid;
     grid-template-columns: 0.5fr 1fr;
@@ -95,4 +92,10 @@ export const ratingStars = css`
 export const genreButton = css`
     padding-left: 39.5em;
     padding-top: 0.5em;
+`
+export const paginationBox = css`
+    padding-left: 8em;
+`
+export const paginationBoxRecom = css`
+    padding-left: 12em;
 `
