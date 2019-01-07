@@ -8,6 +8,7 @@ interface IProps{
 
 interface IState {
     rate: number;
+    loading: boolean;
 }
 
 export default class Rating extends React.Component<IProps, IState > {
@@ -15,8 +16,35 @@ export default class Rating extends React.Component<IProps, IState > {
     constructor(props: any) {
         super(props);
         this.state ={ 
-            rate: 0
+            rate: 0,
+            loading: false
         };
+    }
+
+    public componentDidMount(){
+        this.getRateForMovie(this.props.movie.id);
+    }
+
+    public getRateForMovie(movieId: string) {  
+        this.setState({ loading: true });
+        fetch(`http://localhost:5000/api/users/get-rating?userId=${localStorage.getItem('id')}&movieId=${movieId}`, {
+            method: "GET", 
+            headers: {
+                "Content-Type": "application/json", 
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        .then(response => response.json())
+        .then((response: number) => {
+            this.setState({ 
+                rate: response,
+                loading: false
+            }); 
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+
     }
 
     public rate = (event: any) =>{
