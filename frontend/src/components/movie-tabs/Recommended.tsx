@@ -2,9 +2,10 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { IMovie, IGenre } from 'src/utils/Typings';
 import Pagination from 'react-js-pagination';
-import { Checkbox, Button } from 'react-bootstrap';
 import TopRatedRecommInfo from './movie-info/TopRatedRecommInfo';
-import { genreBox, genres } from 'src/utils/Emotions';
+import GenreModal from 'src/components/GenreModal';
+import { Button } from 'react-bootstrap';
+import { genreButton } from 'src/utils/Emotions';
 
 interface IState {
     movies: IMovie[];
@@ -12,7 +13,7 @@ interface IState {
     activePage: number;
     genres: IGenre[];
     name: boolean[];
-    checkedItems: Map<string, boolean>;
+    showGenreModal: boolean;
 }
 
 export default class Recommended extends React.Component<{ history?: any }, IState>{
@@ -24,9 +25,8 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
             activePage: 1,
             genres: [],
             name: [],
-            checkedItems: new Map(),
+            showGenreModal: false
         };
-
     }
 
     public componentDidMount() {
@@ -96,6 +96,14 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
         return movies;
     }
 
+    public openGenreModal = () => {
+        this.setState({ showGenreModal: true })
+    }
+
+    public closeGenreModal = () => {
+        this.setState({ showGenreModal: false })
+    }
+
     public getGenres = () => {
         fetch("http://localhost:5000/api/genres")
         .then(response => response.json())
@@ -109,35 +117,15 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
         });
     }
 
-    public handleChange = (e: any) => {
-        const item = e.target.name;
-        const isChecked = e.target.checked;
-        this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
-    }
-
-    public getSelected = () => {
-        console.log(this.state.checkedItems);
-    }
-
     public render() {
         return (
-            <div className = {genreBox}>
-                <div>
-                    {
-                    this.state.genres.map(item => (
-                        <div key={item.id}>
-                            <label>
-                                <Checkbox name={item.name} checked={!!this.state.checkedItems.get(item.name)} onChange={this.handleChange}>
-                                    {item.name}
-                                </Checkbox>
-                            </label>
-                        </div>
-                    ))
-                    }
-                    <Button type="submit" onClick={this.getSelected}>Filter</Button>
+            <div>
+                <div className = {genreButton} >
+                    <Button onClick={this.openGenreModal} bsStyle="primary">Choose genres</Button>
                 </div>
-                <div className = {genres}>
-                    { !this.state.loading && this.renderBody()}
+                {this.state.showGenreModal && <GenreModal genres = {this.state.genres} onClose={this.closeGenreModal} onSave={this.closeGenreModal}/>}
+                { !this.state.loading && this.renderBody()}
+                <div>
                     <Pagination
                         activePage={this.state.activePage}
                         itemsCountPerPage={20}

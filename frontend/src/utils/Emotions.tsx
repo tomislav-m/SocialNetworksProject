@@ -92,10 +92,7 @@ export const movieDetailsRating = css`
 export const ratingStars = css`
     padding-right: 10em;
 `
-export const genreBox = css`
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-`
-export const genres = css`
-    margin-right: 20em;
+export const genreButton = css`
+    padding-left: 39.5em;
+    padding-top: 0.5em;
 `
