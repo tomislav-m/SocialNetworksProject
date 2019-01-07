@@ -92,3 +92,7 @@ export const movieDetailsRating = css`
 export const ratingStars = css`
     padding-right: 10em;
 `
+export const genreButton = css`
+    padding-left: 39.5em;
+    padding-top: 0.5em;
+`

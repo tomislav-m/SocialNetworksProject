@@ -7,49 +7,27 @@ import { IGenre } from 'src/utils/Typings';
 interface IProps {
     onClose: () => void;
     onSave: () => void;
-}
-
-interface IState {
     genres: IGenre[];
 }
+interface IState {
+    checkedItems: Map<string, boolean>;
+}
 export default class GenreModal extends React.Component<IProps, IState> {
-    constructor(props: IProps) {
+    constructor(props: any) {
         super(props);
-        this.state = { genres: []};
+        this.state = { 
+            checkedItems: new Map(),
+        };
+    }
+    
+    public handleChange = (e: any) => {
+        const item = e.target.name;
+        const isChecked = e.target.checked;
+        this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
     }
 
-    public componentWillMount(){
-        this.getGenres();
-    }
-
-    public getGenres = () => {
-        fetch("http://localhost:5000/api/genres")
-        .then(response => response.json())
-        .then((response: IGenre[]) => {
-            this.setState({
-                genres: response
-            })  
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
-    }
-
-    public renderBody = () => {
-        const genres: any[] = new Array();
-        let key = 1;
-        _.forEach(this.state.genres, (i) => {
-            console.log(i.name)
-            genres.push(
-                <div key={key} className="genres">
-                    <Checkbox>
-                        {i.name}
-                    </Checkbox>
-                </div>
-            )
-            key++;
-        });
-        return genres;
+    public getSelected = () => {
+        console.log(this.state.checkedItems);
     }
 
     public render() {
@@ -59,7 +37,21 @@ export default class GenreModal extends React.Component<IProps, IState> {
                     <Modal.Title>Select favourite genres</Modal.Title>
                 </Modal.Header>
 
-                <Modal.Body>{this.renderBody()}</Modal.Body>
+                <Modal.Body>
+                    <div>
+                        {
+                        this.props.genres.map(item => (
+                            <div key={item.id}>
+                                <label>
+                                    <Checkbox name={item.name} checked={!!this.state.checkedItems.get(item.name)} onChange={this.handleChange}>
+                                        {item.name}
+                                    </Checkbox>
+                                </label>
+                            </div>
+                        ))
+                        }
+                    </div>
+                </Modal.Body>
 
                 <Modal.Footer>
                     <Button onClick = {this.props.onClose}>Close</Button>
