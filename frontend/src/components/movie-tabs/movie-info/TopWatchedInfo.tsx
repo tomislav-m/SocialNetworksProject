@@ -14,7 +14,7 @@ interface IProps {
 
 interface IState {
     movie: IMovie;
-    rate: number;
+    loading: boolean;
 }
 
 export default class TopWatchedInfo extends React.Component<IProps, IState> {
@@ -37,10 +37,11 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                 directorsIds: [],
                 soundtrackId: ''
             },
-            rate: 0
+            loading: false
         };
     }
     public componentDidMount() {
+        this.setState({ loading: true });
         this.getMovieInfo();
         this.getMovieRatings();
     }
@@ -74,7 +75,8 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                     actorsIds: r.actorsIds,
                     directorsIds: r.directorsIds,
                     soundtrackId: r.soundtrackId
-                }
+                },
+                loading: false
             })
         })
         .catch((error) => {
@@ -121,10 +123,12 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                             {this.state.movie.overview}
                         </Truncate> 
                     </div>
-                    <div className = {movieInfoRating}>
-                        <AverageRates movie={this.state.movie}/>
-                        <Rating movie={this.state.movie}/>
-                    </div>
+                    {!this.state.loading && 
+                        <div className = {movieInfoRating}>
+                            <AverageRates movie={this.state.movie}/>
+                            <Rating movie={this.state.movie} a={true}/>
+                        </div>
+                    }
                 </div>
             </div>                  
         );
