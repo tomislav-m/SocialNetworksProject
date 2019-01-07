@@ -4,6 +4,7 @@ import { IMovie, IGenre } from 'src/utils/Typings';
 import Pagination from 'react-js-pagination';
 import { Checkbox, Button } from 'react-bootstrap';
 import TopRatedRecommInfo from './movie-info/TopRatedRecommInfo';
+import { genreBox, genres } from 'src/utils/Emotions';
 
 interface IState {
     movies: IMovie[];
@@ -120,7 +121,7 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
 
     public render() {
         return (
-            <div>
+            <div className = {genreBox}>
                 <div>
                     {
                     this.state.genres.map(item => (
@@ -135,8 +136,8 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
                     }
                     <Button type="submit" onClick={this.getSelected}>Filter</Button>
                 </div>
-                { !this.state.loading && this.renderBody()}
-                <div>
+                <div className = {genres}>
+                    { !this.state.loading && this.renderBody()}
                     <Pagination
                         activePage={this.state.activePage}
                         itemsCountPerPage={20}
