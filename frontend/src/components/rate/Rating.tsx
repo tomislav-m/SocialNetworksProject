@@ -38,7 +38,6 @@ export default class Rating extends React.Component<IProps, IState > {
             }
         })
         .then(response => response.json())
-        // .then(response => console.log(movieId))
         .then((response: any) => {
             this.setState({ 
                 movieId: response.id,
@@ -64,7 +63,6 @@ export default class Rating extends React.Component<IProps, IState > {
                 rate: response,
                 loading: false
             }); 
-            console.log(movieId + ':::' + response + ' ' + this.props.a)
         })
         .catch((error) => {
             console.error("Error:", error);

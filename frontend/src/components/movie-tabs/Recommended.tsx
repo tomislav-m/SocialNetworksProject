@@ -83,7 +83,7 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
         console.log(this.state.movies);
     }
 
-    public renderBody = () => {
+    public renderFirstTen = () => {
         const movies: any[] = new Array();
         let key = 1;
         _.forEach(this.state.movies, (i) => {
@@ -94,7 +94,36 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
             )
             key++;
         });
-        return movies;
+        return _.dropRight(movies, 20);
+    }
+
+    public renderBetween = () => {
+        let movies: any[] = new Array();
+        let key = 1;
+        _.forEach(this.state.movies, (i) => {
+            movies.push(
+                <div key = {key}>
+                    <TopRatedRecommInfo movie = {i}/>
+                </div>
+            )
+            key++;
+        });
+        movies = _.drop(movies, 10)
+        return _.dropRight(movies, 10);
+    }
+
+    public renderLastTen = () => {
+        const movies: any[] = new Array();
+        let key = 1;
+        _.forEach(this.state.movies, (i) => {
+            movies.push(
+                <div key = {key}>
+                    <TopRatedRecommInfo movie = {i}/>
+                </div>
+            )
+            key++;
+        });
+        return _.drop(movies, 20);
     }
 
     public openGenreModal = () => {
@@ -125,7 +154,9 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
                     <Button onClick={this.openGenreModal} bsStyle="primary">Choose genres</Button>
                 </div>
                 {this.state.showGenreModal && <GenreModal genres = {this.state.genres} onClose={this.closeGenreModal} onSave={this.closeGenreModal}/>}
-                { !this.state.loading && this.renderBody()}
+                { !this.state.loading && this.state.activePage === 1 && this.renderFirstTen()}
+                { !this.state.loading && this.state.activePage === 2 && this.renderBetween()}
+                { !this.state.loading && this.state.activePage === 3 && this.renderLastTen()}
                 { !this.state.loading && 
                 <div className = {paginationBoxRecom}>
                     <Pagination
