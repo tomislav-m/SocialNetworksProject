@@ -19,6 +19,7 @@ namespace SocialNetworks.Repositories
         void Update(User user, string password = null);
         void Delete(string id);
         Task AddRatings(string id, Dictionary<string, int> ratings);
+        Task<int> GetRating(string userId, string movieId);
     }
 
     public class UserRepository : IUserRepository
@@ -183,6 +184,23 @@ namespace SocialNetworks.Repositories
                 }
 
                 await _context.Users.FindOneAndReplaceAsync<User>(filter, user);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<int> GetRating(string userId, string movieId)
+        {
+            try
+            {
+                var user = (await _context.Users.FindAsync(x => x.Id == userId)).SingleOrDefault();
+                if (user.MovieRatings.ContainsKey(movieId))
+                {
+                    return user.MovieRatings[movieId];
+                }
+                return 0;
             }
             catch (Exception ex)
             {
