@@ -4,6 +4,7 @@ import { IMovie } from 'src/utils/Typings';
 import Pagination from 'react-js-pagination';
 import TopWatchedInfo from 'src/components/movie-tabs/movie-info/TopWatchedInfo';
 import ReactLoading from 'react-loading';
+import { paginationBox } from 'src/utils/Emotions';
 
 interface IState {
     movies: IMovie[];
@@ -74,6 +75,7 @@ export default class TopWatched extends React.Component<{}, IState>{
                 { this.state.loading && <ReactLoading type="spin" color="black" width="35%" height="15em" className="loader"/>}
                 { !this.state.loading && this.renderBody()}
                 { !this.state.loading && 
+                <div className = {paginationBox}>
                     <Pagination
                         activePage={this.state.activePage}
                         itemsCountPerPage={20}
@@ -81,7 +83,7 @@ export default class TopWatched extends React.Component<{}, IState>{
                         pageRangeDisplayed={10}
                         onChange={this.handlePageChange}
                     />
-                }
+                </div>}
             </div>
         );
     }

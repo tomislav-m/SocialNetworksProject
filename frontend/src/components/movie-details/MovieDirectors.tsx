@@ -11,7 +11,8 @@ export default class MovieDirectors extends React.Component<IProps> {
             <div>
                 <b>Directors: </b>
                 {
-                    this.props.directors.map((director:any) => (
+                    (this.props.directors.length !== 0)
+                    ? this.props.directors.map((director:any) => (
                         <div>
                             <br/>
                             {
@@ -19,11 +20,11 @@ export default class MovieDirectors extends React.Component<IProps> {
                                 ? <img src = {`http://image.tmdb.org/t/p/w45${director.pictureUrl}`}/>
                                 : <img className = "altSize" src = {image}/>
                             }
-                            &nbsp;&nbsp;<h5 className = "personInfo">{director.name}</h5>
+                            &nbsp;&nbsp;<h5 className = "personInfo">{director.name || "no information"}</h5>
                         </div>
-                        
                     ))
-                }
+                    : "no information"   
+                } 
             </div>
         );
     }
