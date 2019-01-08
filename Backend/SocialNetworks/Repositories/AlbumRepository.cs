@@ -44,6 +44,20 @@ namespace SocialNetworks.Repositories
             }
         }
 
+        public async Task<Album> GetAlbumByMovieId(string id)
+        {
+            try
+            {
+                return await _context.Albums
+                                .Find(album => album.MovieId == id)
+                                .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task AddAlbum(Album album)
         {
             try

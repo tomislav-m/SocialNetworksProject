@@ -28,10 +28,21 @@ namespace SocialNetworks.Controllers
         }
 
         // GET: api/Albums/5
-        [HttpGet("{id}")]
-        public async Task<Album> Get(string id)
+        [HttpGet("{movieId}")]
+        public async Task<IActionResult> Get(string id, string movieId)
         {
-            return await _albumRepository.GetAlbum(id);
+            if (movieId != null)
+            {
+                return Ok(await _albumRepository.GetAlbumByMovieId(movieId));
+            }
+            else if (id != null)
+            {
+                return Ok(await _albumRepository.GetAlbum(id));
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // POST: api/Albums

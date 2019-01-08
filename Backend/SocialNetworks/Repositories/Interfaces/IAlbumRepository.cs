@@ -13,5 +13,6 @@ namespace SocialNetworks.Repositories
         Task AddAlbum(Album artist);
         Task<bool> RemoveAlbum(string id);
         Task<bool> UpdateAlbum(string id, Album album);
+        Task<Album> GetAlbumByMovieId(string id);
     }
 }
