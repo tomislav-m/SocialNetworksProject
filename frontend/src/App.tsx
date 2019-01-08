@@ -2,20 +2,12 @@ import * as React from 'react';
 import Header from './components/Header'
 import Search from './components/search/Search';
 import MovieTabs from './components/movie-tabs/MovieTabs';
-import { IMobxStore } from './stores/mobxStore';
-import { inject, observer } from 'mobx-react';
 
-interface IProps {
-  mobxStore?: IMobxStore
-}
-
-@inject('mobxStore')
-@observer
-class App extends React.Component< IProps > {
+class App extends React.Component {
   public render() {
     return (
       <div>
-        <Header firstName = { this.props.mobxStore!.firstName }/>
+        <Header/>
         <Search/>
         <MovieTabs/>
       </div>

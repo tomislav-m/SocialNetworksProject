@@ -1,26 +1,20 @@
 import * as React from "react";
-import { observer, inject } from 'mobx-react';
-import { action } from 'mobx';
 import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login";
 import "../App.css";
 import { GOOGLE_CLIENT_ID, FACEBOOK_APP_ID } from "src/utils/ApiKeys";
-import { IMobxStore } from '../stores/mobxStore';
 import image from '../images/favicon.png';
 import { imageLoginSize, login, appName, loginButtons } from '../utils/Emotions';
 import ReactLoading from 'react-loading';
 
 interface IProps {
     history?: any;
-    mobxStore?: IMobxStore
 }
 
 interface IState {
     loading: boolean;
 }
 
-@inject('mobxStore')
-@observer
 export default class Login extends React.Component<IProps, IState > {
     constructor(props: any) {
         super(props);
@@ -33,25 +27,19 @@ export default class Login extends React.Component<IProps, IState > {
         console.log("Failure");
     };
 
-    @action
     public responseGoogle = (response: any) => {
         this.setState({ loading: true });
-        this.props.mobxStore!.firstName = response.profileObj.givenName;
-        this.props.mobxStore!.lastName = response.profileObj.familyName;
-        this.props.mobxStore!.email = response.profileObj.email;
-        this.props.mobxStore!.accessToken = response.Zi.id_token;
-        this.props.mobxStore!.imageUrl = response.profileObj.imageUrl;
         localStorage.setItem('firstName', response.profileObj.givenName);
         localStorage.setItem('lastName', response.profileObj.familyName);
         localStorage.setItem('email', response.profileObj.email);
         localStorage.setItem('accessToken', response.Zi.id_token);
         localStorage.setItem('imageUrl', response.profileObj.imageUrl);
         const data = JSON.stringify({
-            AccessToken: this.props.mobxStore!.accessToken, 
-            Email: this.props.mobxStore!.email, 
-            FirstName: this.props.mobxStore!.firstName, 
-            LastName: this.props.mobxStore!.lastName,
-            ImageUrl: this.props.mobxStore!.imageUrl
+            AccessToken: localStorage.getItem('accessToken'), 
+            Email: localStorage.getItem('email'), 
+            FirstName: localStorage.getItem('firstName'), 
+            LastName: localStorage.getItem('lastName'),
+            ImageUrl: localStorage.getItem('imageUrl')
         });
     
         fetch("http://localhost:5000/api/users/google", {
@@ -64,7 +52,6 @@ export default class Login extends React.Component<IProps, IState > {
         .then((res) => res.json())
         .then((res) => {
             console.log(res)
-            this.props.mobxStore!.token = res.token;
             localStorage.setItem('id', res.id);
             localStorage.setItem('token', res.token);
             localStorage.setItem('movieRatings', res.movieRatings);
@@ -78,23 +65,17 @@ export default class Login extends React.Component<IProps, IState > {
 
     public responseFacebook = (response: any) => {
         this.setState({ loading: true });
-        this.props.mobxStore!.firstName = response.first_name;
-        this.props.mobxStore!.lastName = response.last_name;
-        this.props.mobxStore!.email = response.email;
-        this.props.mobxStore!.accessToken = response.accessToken;
         localStorage.setItem('firstName', response.first_name);
         localStorage.setItem('lastName', response.last_name);
         localStorage.setItem('email', response.email);
         localStorage.setItem('accessToken', response.accessToken);
         localStorage.setItem('imageUrl', response.picture.data.url);
         const data = JSON.stringify({
-            access_token: this.props.mobxStore!.accessToken, 
-            Email: this.props.mobxStore!.email, 
-            first_name: this.props.mobxStore!.firstName, 
-            last_name: this.props.mobxStore!.lastName
+            access_token: localStorage.getItem('accessToken'), 
+            Email: localStorage.getItem('email'), 
+            first_name: localStorage.getItem('firstName'), 
+            last_name: localStorage.getItem('lastName')
         });
-
-        console.log(this.props.mobxStore!);
     
         fetch("http://localhost:5000/api/users/facebook", {
         method: "POST",
@@ -105,7 +86,6 @@ export default class Login extends React.Component<IProps, IState > {
         })
         .then((res) => res.json())
         .then((res) => {
-            this.props.mobxStore!.token = res.token;
             console.log(res)
             localStorage.setItem('id', res.id);
             localStorage.setItem('token', res.token);

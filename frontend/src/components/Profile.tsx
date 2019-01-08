@@ -1,20 +1,12 @@
 import * as React from 'react';
 import Header from './Header';
-import { IMobxStore } from '../stores/mobxStore';
-import { observer, inject } from 'mobx-react';
 import {profileContainer, imageCss, profileCss, imageSize} from 'src/utils/Emotions';
 
-interface IProps {
-    mobxStore?: IMobxStore
-}
-
-@inject('mobxStore')
-@observer
-export default class Profile extends React.Component< IProps > {
+export default class Profile extends React.Component {
     public render() {
         return(
             <div>
-                <Header firstName = {this.props.mobxStore!.firstName} />
+                <Header/>
                 <div className = {profileContainer}>
                     <div className = {imageCss}>
                         <img className = {imageSize} src = {localStorage.getItem('imageUrl')!} alt = "No image"/>

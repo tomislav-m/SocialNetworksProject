@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Header from '../Header';
-import { inject, observer } from 'mobx-react';
-import { IMobxStore } from '../../stores/mobxStore';
 import { RouteComponentProps } from "react-router-dom";
 import { ratingStars, movieDetailsRating, titleBox, overviewBox, movieContainer, firstMovieBox, secondMovieBox } from 'src/utils/Emotions';
 import Moment from 'react-moment';
@@ -17,7 +15,7 @@ interface IRouteParams {
 }
 
 interface IProps extends RouteComponentProps<IRouteParams>{ 
-    mobxStore?: IMobxStore;
+    
 }
 
 interface IState {
@@ -31,8 +29,6 @@ interface IState {
     soundtrackTitle: string;
 }
 
-@inject('mobxStore')
-@observer
 export default class MovieDetails extends React.Component<IProps, IState> {
     constructor(props: any){
         super(props);
@@ -105,7 +101,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
         
         return (
             <div>
-                <Header firstName = {this.props.mobxStore!.firstName}/>
+                <Header/>
                 <div className = {movieContainer}>
                     <div className = {firstMovieBox}>
                         <img src = {`http://image.tmdb.org/t/p/w185/${movie.poster_path}`} alt = "No image"/>
