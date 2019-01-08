@@ -10,6 +10,7 @@ import AverageRates from '../rate/AverageRates';
 import MovieGenres from './MovieGenres';
 import MovieDirectors from './MovieDirectors';
 import MovieActors from './MovieActors';
+import MovieSoundtrack from './MovieSoundtrack';
 
 interface IRouteParams {
     movieID: string; 
@@ -25,6 +26,7 @@ interface IState {
     actors: any[];
     genres: any[];
     rate: number;
+    soundtrack: any[];
 }
 
 @inject('mobxStore')
@@ -37,7 +39,8 @@ export default class MovieDetails extends React.Component<IProps, IState> {
             directors: new Array,
             actors: new Array,
             genres: new Array,
-            rate: 0
+            rate: 0, 
+            soundtrack: new Array
         };
     }
 
@@ -46,6 +49,8 @@ export default class MovieDetails extends React.Component<IProps, IState> {
         this.getPeople('directors', this.props.location.state.movie.directorsIds)
         this.getGenres(this.props.location.state.movie.genre_ids)
         this.getPeople('actors', this.props.location.state.movie.actorsIds)
+        this.getSoundtrack(this.props.location.state.movie.id)
+        console.log(this.props.location.state.movie)
     }
 
     public getGenres(genreIds:string[]) {
@@ -76,9 +81,12 @@ export default class MovieDetails extends React.Component<IProps, IState> {
         })
     }
 
-    public getSoundtrack(soundtrackId: string[]) {
-        console.log(soundtrackId)
-        // api za dohvaćanje soundtracka???
+    public getSoundtrack(movieId: string) {
+        console.log(movieId);
+        fetch(`http://localhost:5000/api/Albums/${movieId}`)
+        .then(response => console.log(response))
+        .catch(error => console.log(error))
+        
     }
 
     public render() {
@@ -120,7 +128,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                         <br/>
                         <MovieDirectors directors = {this.state.directors}/> <br/>
                         <MovieActors actors = {this.state.actors}/> <br/>
-                        <b>Soundtrack:</b>
+                        <MovieSoundtrack soundtrack = {this.state.soundtrack}/>
                     </div>
                 </div> 
             </div>
