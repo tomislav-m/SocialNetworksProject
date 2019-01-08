@@ -4,15 +4,11 @@ export const movieInfoContainer = css`
     display: grid;
     grid-template-columns: 0.5fr 1.5fr;
     padding-top: 2.5em;
-    justify-self: center;
-    justify-content: center;
 `
 export const movieInfoBox = css`
     display: grid;
     grid-auto-rows: 4.5em 8.5em 1.25em;
     padding-left: 2em;
-    justify-self: center;
-    justify-content: center;
 `
 export const movieInfoRating = css`
     display: grid;

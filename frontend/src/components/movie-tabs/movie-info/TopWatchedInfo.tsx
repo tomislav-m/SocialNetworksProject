@@ -122,6 +122,7 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                             </span>}>
                             {this.state.movie.overview}
                         </Truncate> 
+                        
                     </div>
                     {!this.state.loading && 
                         <div className = {movieInfoRating}>
