@@ -26,7 +26,9 @@ interface IState {
     actors: any[];
     genres: any[];
     rate: number;
-    soundtrack: any[];
+    soundtracks: any[];
+    artists: any[];
+    soundtrackTitle: string;
 }
 
 @inject('mobxStore')
@@ -40,7 +42,9 @@ export default class MovieDetails extends React.Component<IProps, IState> {
             actors: new Array,
             genres: new Array,
             rate: 0, 
-            soundtrack: new Array
+            soundtracks: new Array,
+            artists: new Array, 
+            soundtrackTitle: "",
         };
     }
 
@@ -50,7 +54,6 @@ export default class MovieDetails extends React.Component<IProps, IState> {
         this.getGenres(this.props.location.state.movie.genre_ids)
         this.getPeople('actors', this.props.location.state.movie.actorsIds)
         this.getSoundtrack(this.props.location.state.movie.id)
-        console.log(this.props.location.state.movie)
     }
 
     public getGenres(genreIds:string[]) {
@@ -84,7 +87,15 @@ export default class MovieDetails extends React.Component<IProps, IState> {
     public getSoundtrack(movieId: string) {
         console.log(movieId);
         fetch(`http://localhost:5000/api/Albums/${movieId}`)
-        .then(response => console.log(response))
+        .then(response => response.json())
+        .then(response => {
+            console.log(response)
+            this.setState({
+                soundtracks: response.songs, 
+                soundtrackTitle: response.title,
+                artists: response.artistsList
+            })
+        })
         .catch(error => console.log(error))
         
     }
@@ -128,7 +139,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                         <br/>
                         <MovieDirectors directors = {this.state.directors}/> <br/>
                         <MovieActors actors = {this.state.actors}/> <br/>
-                        <MovieSoundtrack soundtrack = {this.state.soundtrack}/>
+                        <MovieSoundtrack soundtracks = {this.state.soundtracks} artists = {this.state.artists} soundtrackTitle = {this.state.soundtrackTitle}/>
                     </div>
                 </div> 
             </div>
