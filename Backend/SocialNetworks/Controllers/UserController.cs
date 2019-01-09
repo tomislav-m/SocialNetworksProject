@@ -173,6 +173,7 @@ namespace SocialNetworks.Controllers
             return Ok();
         }
         
+        [AllowAnonymous]
         [HttpGet("recommend/{id}")]
         public async Task<IActionResult> Recommend(string id, string genres)
         {
@@ -181,6 +182,17 @@ namespace SocialNetworks.Controllers
                 return NotFound();
             }
             var users = _userRepository.GetAll();
+            foreach(var user in users)
+            {
+                for(int i = user.MovieRatings.Count - 1; i >= 0 ; --i)
+                {
+                    var key = user.MovieRatings.ElementAt(i).Key;
+                    if (key.Length < 24)
+                    {
+                        user.MovieRatings.Remove(key);
+                    }
+                }
+            }
             var recommender = new UserBasedRecommender(users.ToDictionary(x => x.Id, y => y.MovieRatings), id, 0.2);
             var recs = recommender.Recommend();
             var genresArray = genres == null ? new string[] { } : genres.Split(',');
