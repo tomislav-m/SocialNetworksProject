@@ -20,6 +20,7 @@ export default class MovieSoundtrack extends React.Component<IProps> {
                 </div>
                 
                 <div>
+                    <br/>
                     <b>Artists: &nbsp;</b>
                     {
                         this.props.artists.length !== 0
@@ -30,6 +31,7 @@ export default class MovieSoundtrack extends React.Component<IProps> {
                     }
                 </div>
                 <div>
+                    <br/>
                     <b>Songs:&nbsp;</b>
                     {
                         this.props.soundtracks.length !== 0

@@ -55,14 +55,14 @@ export const movieContainer = css`
     display: grid;
     grid-auto-rows: default;
     grid-template-columns: 0.9fr;
-    margin-left: 30em;
 `
 export const firstMovieBox = css`
     display: grid;
     grid-template-columns: 0.5fr 1.5fr;
     grid-auto-rows: 20em;
-    column-gap: 2.5em;
+    column-gap: 8.1em;
     margin-right: 8em;
+    margin-left: 12em;
 `
 export const secondMovieBox = css`
     display: grid;
@@ -80,10 +80,10 @@ export const titleBox = css`
 `
 export const movieDetailsRating = css`
     display: grid;
-    grid-template-columns: 0.5fr 1fr;
+    grid-template-columns: 4em 50em;
 `
 export const ratingStars = css`
-    padding-right: 10em;
+    padding-right: 20em;
 `
 export const genreButton = css`
     padding-left: 39.5em;
@@ -93,5 +93,11 @@ export const paginationBox = css`
     padding-left: 8em;
 `
 export const paginationBoxRecom = css`
+    padding-left: 12em;
+`
+export const trailer = css`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10em;
     padding-left: 12em;
 `

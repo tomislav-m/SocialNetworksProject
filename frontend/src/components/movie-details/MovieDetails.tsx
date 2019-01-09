@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Header from '../Header';
 import { RouteComponentProps } from "react-router-dom";
-import { ratingStars, movieDetailsRating, titleBox, overviewBox, movieContainer, firstMovieBox, secondMovieBox } from 'src/utils/Emotions';
+import { trailer, ratingStars, movieDetailsRating, titleBox, overviewBox, movieContainer, firstMovieBox, secondMovieBox } from 'src/utils/Emotions';
 import Moment from 'react-moment';
 import Rating from '../rate/Rating';
 import AverageRates from '../rate/AverageRates';
@@ -15,11 +15,8 @@ import { YOUTUBE_API_KEY } from 'src/utils/ApiKeys';
 interface IRouteParams {
     movieID: string; 
 }
-
 interface IProps extends RouteComponentProps<IRouteParams>{ 
-    
 }
-
 interface IState {
     loading: boolean;
     directors: any[];
@@ -141,18 +138,22 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                         </div>
                     </div>
                     <br/>
-                    <MovieTrailer trailerID = {this.state.trailerID}/> 
-                    <div className = {overviewBox}>
-                        <b>Overview: </b>
-                        <br/>
-                        {movie.overview} 
-                    </div>
-
-                    <div>
-                        <br/>
-                        <MovieDirectors directors = {this.state.directors}/> <br/>
-                        <MovieActors actors = {this.state.actors}/> <br/>
-                        <MovieSoundtrack soundtracks = {this.state.soundtracks} artists = {this.state.artists} soundtrackTitle = {this.state.soundtrackTitle}/>
+                    <div className = {trailer}>
+                        <div>
+                            <MovieTrailer trailerID = {this.state.trailerID}/>
+                            <div className = {overviewBox}>
+                                <b>Overview: </b>
+                                <br/>
+                                {movie.overview} 
+                            </div>
+                            <br/>
+                            <MovieSoundtrack soundtracks = {this.state.soundtracks} artists = {this.state.artists} soundtrackTitle = {this.state.soundtrackTitle}/>
+                        </div>
+                        <div> 
+                            <br/>
+                            <MovieDirectors directors = {this.state.directors}/> <br/>
+                            <MovieActors actors = {this.state.actors}/> <br/>
+                        </div>
                     </div>
                 </div> 
             </div>
