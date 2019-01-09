@@ -1,14 +1,12 @@
 import * as React from "react";
 import { Navbar, Nav, NavDropdown, MenuItem, Glyphicon } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
-import { observer } from 'mobx-react';
 
 interface IState {
     logoutRedirect: boolean;
     profileRedirect: boolean;
 }
 
-@observer
 export default class Header extends React.Component<{}, IState> {
 
     public componentWillMount() {

@@ -35,6 +35,7 @@ namespace Utilities
         public string Runtime { get; set; }
         public string Metascore { get; set; }
         public Rating[] Ratings { get; set; }
+        public DateTime Released { get; set; }
     }
 
     public class Rating
@@ -110,13 +111,13 @@ namespace Utilities
 
         public static async Task GetAndSaveCast()
         {
-            var task = client.GetStringAsync("http://localhost:5000/api/Movies?pageSize=7319&pageNum=1");
+            var task = client.GetStringAsync("http://localhost:5000/api/Movies?pageSize=8000&pageNum=1");
             var response = await task;
             var movies = JArray.Parse(response);
             foreach (var movie in movies.Children())
             {
                 var model = JsonConvert.DeserializeObject<MovieJson>(movie.ToString());
-                if (model.ActorsIds != null && model.ActorsIds.Count() > 0)
+                if ((model.ActorsIds != null && model.ActorsIds.Count() > 0) || (model.DirectorsIds != null && model.DirectorsIds.Count() > 0))
                 {
                     continue;
                 }
@@ -181,13 +182,13 @@ namespace Utilities
 
         public static async Task GetMore()
         {
-            var url = "http://www.omdbapi.com/?apikey=40c521a7&plot=full&t=";
+            var url = "http://www.omdbapi.com/?apikey=40c521a7&plot=full&i=";
             var movies = await client.GetStringAsync("http://localhost:5000/api/Movies?pageSize=6393");
-            foreach (var movie in JsonConvert.DeserializeObject<IEnumerable<Movie>>(movies).Where(x => x.IMDbRating == 0))
+            foreach (var movie in JsonConvert.DeserializeObject<IEnumerable<MovieJson>>(movies).Where(x => x.VoteAverage == 0).OrderByDescending(x => x.Popularity))
             {
                 try
                 {
-                    var response = await client.GetStringAsync(url + movie.Title);
+                    var response = await client.GetStringAsync(url + movie.IMDbId);
                     var obj = JObject.Parse(response);
                     var omdMovie = JsonConvert.DeserializeObject<OMDMovie>(obj.ToString());
                     movie.IMDbId = omdMovie.ImdbId;
@@ -326,7 +327,7 @@ namespace Utilities
         public static async Task CalculateAverageScore()
         {
             var response = await client.GetStringAsync("http://localhost:5000/api/Movies?pageSize=8000&pageNum=1");
-            var movies = JsonConvert.DeserializeObject<IEnumerable<Movie>>(response);
+            var movies = JsonConvert.DeserializeObject<IEnumerable<MovieJson>>(response).Where(x => x.VoteAverage == 0).OrderByDescending(x => x.Popularity);
             foreach(var movie in movies)
             {
                 int count = 0;
@@ -409,8 +410,8 @@ namespace Utilities
 
         public static async Task Update()
         {
-            var movieResponse = await client.GetStringAsync("http://localhost:5000/api/Movies/top-rated?pageSize=8000");
-            var movies = JsonConvert.DeserializeObject<IEnumerable<MovieJson>>(movieResponse).Where(x => x.IMDbId == null).ToList();
+            var movieResponse = await client.GetStringAsync("http://localhost:5000/api/Movies?pageSize=8000");
+            var movies = JsonConvert.DeserializeObject<IEnumerable<MovieJson>>(movieResponse).Where(x => x.IMDbId == null || x.PosterUrl == "").OrderByDescending(x => x.Popularity).ToList();
             for(int i = 0; i < movies.Count; ++i)
             {
                 try

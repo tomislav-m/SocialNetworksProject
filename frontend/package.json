@@ -11,6 +11,7 @@
     "@types/react-router": "^4.4.0",
     "@types/react-router-dom": "^4.3.1",
     "@types/react-truncate": "^2.3.3",
+    "@types/react-youtube": "^7.4.3",
     "emotion": "^10.0.4",
     "lodash": "^4.17.11",
     "mobx": "^5.7.0",
@@ -29,6 +30,7 @@
     "react-router-dom": "^4.3.1",
     "react-scripts-ts": "^4.0.8",
     "react-truncate": "^2.4.0",
+    "react-youtube": "^7.8.0",
     "semantic-ui-react": "^0.84.0"
   },
   "scripts": {
