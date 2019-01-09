@@ -24,13 +24,13 @@ export default class AverageRates extends React.Component<IProps> {
             <div>
                 <OverlayTrigger placement="right" overlay={tooltip1}>
                     <div className = "rate">
-                        {Number(this.props.movie.voteAverage).toFixed(1)}
+                        {this.props.movie.voteAverage ? Number(this.props.movie.voteAverage).toFixed(1) : '0'}
                     </div>
                 </OverlayTrigger>/5
                 <br/>
                 <OverlayTrigger placement="right" overlay={tooltip2}>
                     <div className = "rate">
-                        {Number(this.props.movie.rating).toFixed(1)}
+                        {this.props.movie.rating ? Number(this.props.movie.rating).toFixed(1) : '0'}
                     </div>
                 </OverlayTrigger>/5     
             </div>
