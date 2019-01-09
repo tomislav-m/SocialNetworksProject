@@ -58,29 +58,7 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
 
     public handlePageChange = (selectedPage: number) => {
         console.log(`active page is ${selectedPage}`);
-        this.setState({
-            activePage: selectedPage,
-            loading: true
-        });
-
-        fetch(`http://localhost:5000/api/users/recommend/${localStorage.getItem('id')}?pageSize=10&pageNum=${selectedPage}`, {
-                method: "GET", 
-                headers: {
-                    "Content-Type": "application/json", 
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }
-        })
-        .then(response => response.json())
-        .then(response => {
-            this.setState( {
-                movies: response,
-                loading: false
-            })
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
-        console.log(this.state.movies);
+        this.setState({ activePage: selectedPage });
     }
 
     public renderFirstTen = () => {
@@ -134,6 +112,30 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
         this.setState({ showGenreModal: false })
     }
 
+    public filter = (checked: string[]) => {
+        console.log(checked);
+        this.setState({ loading: true });
+        const genres = checked.join(',');
+        fetch(`http://localhost:5000/api/users/recommend/${localStorage.getItem('id')}?genres=${genres}`, {
+                method: "GET", 
+                headers: {
+                    "Content-Type": "application/json", 
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                }
+        })
+        .then(response => response.json())
+        .then((response: any[]) => {
+            this.setState({ 
+                movies: response,
+                loading:false
+            }); 
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+        this.closeGenreModal();
+    }
+
     public getGenres = () => {
         fetch("http://localhost:5000/api/genres")
         .then(response => response.json())
@@ -153,7 +155,7 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
                 <div className = {genreButton} >
                     <Button onClick={this.openGenreModal} bsStyle="primary">Choose genres</Button>
                 </div>
-                {this.state.showGenreModal && <GenreModal genres = {this.state.genres} onClose={this.closeGenreModal} onSave={this.closeGenreModal}/>}
+                {this.state.showGenreModal && <GenreModal genres = {this.state.genres} onClose={this.closeGenreModal} onFilter={this.filter}/>}
                 { !this.state.loading && this.state.activePage === 1 && this.renderFirstTen()}
                 { !this.state.loading && this.state.activePage === 2 && this.renderBetween()}
                 { !this.state.loading && this.state.activePage === 3 && this.renderLastTen()}

@@ -6,7 +6,7 @@ import { IGenre } from 'src/utils/Typings';
 
 interface IProps {
     onClose: () => void;
-    onSave: () => void;
+    onFilter: (checked: string[]) => void;
     genres: IGenre[];
 }
 interface IState {
@@ -26,11 +26,10 @@ export default class GenreModal extends React.Component<IProps, IState> {
         this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
     }
 
-    public onFilter = () => {
+    public filter = () => {
         // console.log(this.state.checkedItems);
         const checked = [...this.state.checkedItems.keys()]
-        console.log(checked);
-        this.props.onSave();
+        this.props.onFilter(checked);
     }
 
     public render() {
@@ -58,7 +57,7 @@ export default class GenreModal extends React.Component<IProps, IState> {
 
                 <Modal.Footer>
                     <Button onClick = {this.props.onClose}>Close</Button>
-                    <Button onClick = {this.onFilter} bsStyle="primary">Filter</Button>
+                    <Button onClick = {this.filter} bsStyle="primary">Filter</Button>
                 </Modal.Footer>
             </Modal>
         );
