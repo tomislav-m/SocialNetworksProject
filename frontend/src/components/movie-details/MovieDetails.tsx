@@ -9,6 +9,8 @@ import MovieGenres from './MovieGenres';
 import MovieDirectors from './MovieDirectors';
 import MovieActors from './MovieActors';
 import MovieSoundtrack from './MovieSoundtrack';
+import MovieTrailer from './MovieTrailer';
+import { YOUTUBE_API_KEY } from 'src/utils/ApiKeys';
 
 interface IRouteParams {
     movieID: string; 
@@ -27,6 +29,7 @@ interface IState {
     soundtracks: any[];
     artists: any[];
     soundtrackTitle: string;
+    trailerID: string;
 }
 
 export default class MovieDetails extends React.Component<IProps, IState> {
@@ -41,6 +44,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
             soundtracks: new Array,
             artists: new Array, 
             soundtrackTitle: "",
+            trailerID: "",
         };
     }
 
@@ -50,6 +54,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
         this.getGenres(this.props.location.state.movie.genre_ids)
         this.getPeople('actors', this.props.location.state.movie.actorsIds)
         this.getSoundtrack(this.props.location.state.movie.id)
+        this.getTrailer(this.props.location.state.movie.title)
     }
 
     public getGenres(genreIds:string[]) {
@@ -81,11 +86,9 @@ export default class MovieDetails extends React.Component<IProps, IState> {
     }
 
     public getSoundtrack(movieId: string) {
-        console.log(movieId);
         fetch(`http://localhost:5000/api/Albums/${movieId}`)
         .then(response => response.json())
         .then(response => {
-            console.log(response)
             this.setState({
                 soundtracks: response.songs, 
                 soundtrackTitle: response.title,
@@ -94,6 +97,19 @@ export default class MovieDetails extends React.Component<IProps, IState> {
         })
         .catch(error => console.log(error))
         
+    }
+
+    public getTrailer(movieTitle: string) {
+        fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${movieTitle}%20trailer&key=${YOUTUBE_API_KEY}`)
+        .then(response => response.json())
+        .then(response => {
+            console.log(response)
+            console.log(response.items[0].id.videoId)
+            this.setState({
+                trailerID: response.items[0].id.videoId
+            })
+        })
+        .catch(error => console.log(error))
     }
 
     public render() {
@@ -124,7 +140,8 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                             </div> 
                         </div>
                     </div>
-                    
+                    <br/>
+                    <MovieTrailer trailerID = {this.state.trailerID}/> 
                     <div className = {overviewBox}>
                         <b>Overview: </b>
                         <br/>
