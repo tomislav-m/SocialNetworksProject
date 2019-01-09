@@ -26,8 +26,11 @@ export default class GenreModal extends React.Component<IProps, IState> {
         this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
     }
 
-    public getSelected = () => {
-        console.log(this.state.checkedItems);
+    public onFilter = () => {
+        // console.log(this.state.checkedItems);
+        const checked = [...this.state.checkedItems.keys()]
+        console.log(checked);
+        this.props.onSave();
     }
 
     public render() {
@@ -43,8 +46,8 @@ export default class GenreModal extends React.Component<IProps, IState> {
                         this.props.genres.map(item => (
                             <div key={item.id}>
                                 <label>
-                                    <Checkbox name={item.name} checked={!!this.state.checkedItems.get(item.name)} onChange={this.handleChange}>
-                                        {item.name}
+                                    <Checkbox name={item.tmDbId} checked={!!this.state.checkedItems.get(item.tmDbId)} onChange={this.handleChange}>
+                                        {item.name} {item.tmDbId}
                                     </Checkbox>
                                 </label>
                             </div>
@@ -55,7 +58,7 @@ export default class GenreModal extends React.Component<IProps, IState> {
 
                 <Modal.Footer>
                     <Button onClick = {this.props.onClose}>Close</Button>
-                    <Button onClick = {this.props.onSave} bsStyle="primary">Filter</Button>
+                    <Button onClick = {this.onFilter} bsStyle="primary">Filter</Button>
                 </Modal.Footer>
             </Modal>
         );

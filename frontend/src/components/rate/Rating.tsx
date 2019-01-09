@@ -4,7 +4,6 @@ import { IMovie } from 'src/utils/Typings';
 
 interface IProps{
     movie: IMovie;
-    a?: boolean;
 }
 
 interface IState {
@@ -49,25 +48,26 @@ export default class Rating extends React.Component<IProps, IState > {
     }
 
     public getRateForMovie(movieId: string) {  
-        fetch(`http://localhost:5000/api/users/get-rating?userId=${localStorage.getItem('id')}&movieId=${movieId}`, {
-            method: "GET", 
-            headers: {
-                "Content-Type": "application/json", 
-                "Authorization": `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-        .then(response => response.json())
-        .then((response: number) => {
-            this.setState({ 
-                movieId,
-                rate: response,
-                loading: false
-            }); 
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
-
+        if(movieId !== ''){
+            fetch(`http://localhost:5000/api/users/get-rating?userId=${localStorage.getItem('id')}&movieId=${movieId}`, {
+                method: "GET", 
+                headers: {
+                    "Content-Type": "application/json", 
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(response => response.json())
+            .then((response: number) => {
+                this.setState({ 
+                    movieId,
+                    rate: response,
+                    loading: false
+                }); 
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        }
     }
 
     public rate = (event: any) =>{

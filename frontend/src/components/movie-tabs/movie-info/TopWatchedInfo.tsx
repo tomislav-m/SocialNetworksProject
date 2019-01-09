@@ -127,7 +127,7 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                     {!this.state.loading && 
                         <div className = {movieInfoRating}>
                             <AverageRates movie={this.state.movie}/>
-                            <Rating movie={this.state.movie} a={true}/>
+                            <Rating movie={this.state.movie}/>
                         </div>
                     }
                 </div>
