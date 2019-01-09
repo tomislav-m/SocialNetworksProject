@@ -8,11 +8,11 @@ export default class MovieTabs extends React.Component {
     public render() {
         return (
             <Tabs defaultActiveKey={1} animation={false} id="noanim-tab-example" className="movieTabs">
-                <Tab eventKey={1} title="Top watched">
-                    <TopWatched/>
-                </Tab>
-                <Tab eventKey={2} title="Top rated">
+                <Tab eventKey={1} title="Top rated">
                     <TopRated/>
+                </Tab>
+                <Tab eventKey={2} title="Top watched">
+                    <TopWatched/>
                 </Tab>
                 <Tab eventKey={3} title="Recommended">
                     <Recommended/>

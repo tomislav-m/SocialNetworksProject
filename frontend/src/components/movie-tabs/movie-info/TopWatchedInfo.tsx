@@ -42,12 +42,12 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
     }
     public componentDidMount() {
         this.setState({ loading: true });
-        this.getMovieInfo();
-        this.getMovieRatings();
+        this.getMovieInfo()
+        .then(() => this.getMovieRatings());
     }
 
     public getMovieInfo(){
-        fetch(`https://api.themoviedb.org/3/movie/${this.props.movieID}?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US`)
+        return fetch(`https://api.themoviedb.org/3/movie/${this.props.movieID}?api_key=687a2e7fcee1a717e582f9665c5bf685&language=en-US`)
         .then(response => response.json())
         .then(response => {
             this.setState({
@@ -60,7 +60,7 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
     }
 
     public getMovieRatings(){
-        fetch(`http://localhost:5000/api/movies/${this.props.movieID}`)
+        return fetch(`http://localhost:5000/api/movies/${this.props.movieID}`)
         .then(r => r.json())
         .then(r => {
             this.setState( {

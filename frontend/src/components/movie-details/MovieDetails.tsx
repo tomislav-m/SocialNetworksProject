@@ -47,11 +47,21 @@ export default class MovieDetails extends React.Component<IProps, IState> {
 
     public componentDidMount(){
         this.setState({ loading: true });
-        this.getPeople('directors', this.props.location.state.movie.directorsIds)
-        this.getGenres(this.props.location.state.movie.genre_ids)
-        this.getPeople('actors', this.props.location.state.movie.actorsIds)
-        this.getSoundtrack(this.props.location.state.movie.id)
-        this.getTrailer(this.props.location.state.movie.title)
+        if(this.props.location.state.movie.directorsIds !== undefined){
+            this.getPeople('directors', this.props.location.state.movie.directorsIds)
+        }
+        if(this.props.location.state.movie.genre_ids !== undefined){
+            this.getGenres(this.props.location.state.movie.genre_ids)
+        }
+        if(this.props.location.state.movie.actorsIds !== undefined){
+            this.getPeople('actors', this.props.location.state.movie.actorsIds)
+        }
+        if(this.props.location.state.movie.id !== undefined){
+            this.getSoundtrack(this.props.location.state.movie.id)
+        }
+        if(this.props.location.state.movie.title !== undefined){
+            this.getTrailer(this.props.location.state.movie.title)
+        }
     }
 
     public getGenres(genreIds:string[]) {
@@ -140,7 +150,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                     <br/>
                     <div className = {trailer}>
                         <div>
-                            <MovieTrailer trailerID = {this.state.trailerID}/>
+                            { this.state.trailerID && <MovieTrailer trailerID = {this.state.trailerID}/> }
                             <div className = {overviewBox}>
                                 <b>Overview: </b>
                                 <br/>
@@ -151,8 +161,10 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                         </div>
                         <div> 
                             <br/>
-                            <MovieDirectors directors = {this.state.directors}/> <br/>
-                            <MovieActors actors = {this.state.actors}/> <br/>
+                            { this.state.directors && <MovieDirectors directors = {this.state.directors}/> }
+                            <br/>
+                            { this.state.actors && <MovieActors actors = {this.state.actors}/> } 
+                            <br/>
                         </div>
                     </div>
                 </div> 
