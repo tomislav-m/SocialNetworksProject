@@ -72,4 +72,9 @@
 }
 .header {
   margin-top: 1em;
+  margin-right: 3em;
+}
+.loginColor {
+  color: #C7C6C8;
+  font-weight: bold;
 }

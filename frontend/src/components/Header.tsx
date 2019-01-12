@@ -73,7 +73,7 @@ export default class Header extends React.Component<{}, IState> {
                                 </NavDropdown>
                             </Nav>
                             : <Nav className = "header"  pullRight={true}>
-                                <a href="https://localhost:3000/login">Login</a>
+                                <a className = "loginColor" href="https://localhost:3000/login">Login</a>
                             </Nav>
                         }   
                 </Navbar>
