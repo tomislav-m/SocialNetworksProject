@@ -184,11 +184,11 @@ namespace Utilities
         {
             var url = "http://www.omdbapi.com/?apikey=40c521a7&plot=full&i=";
             var movies = await client.GetStringAsync("http://localhost:5000/api/Movies?pageSize=6393");
-            foreach (var movie in JsonConvert.DeserializeObject<IEnumerable<MovieJson>>(movies).Where(x => x.VoteAverage == 0).OrderByDescending(x => x.Popularity))
+            foreach (var movie in JsonConvert.DeserializeObject<IEnumerable<MovieJson>>(movies).Where(x => x.VoteAverage == 0 && x.Title == "Memento").OrderByDescending(x => x.Popularity))
             {
                 try
                 {
-                    var response = await client.GetStringAsync(url + movie.IMDbId);
+                    var response = await client.GetStringAsync(url + "tt0209144");
                     var obj = JObject.Parse(response);
                     var omdMovie = JsonConvert.DeserializeObject<OMDMovie>(obj.ToString());
                     movie.IMDbId = omdMovie.ImdbId;
