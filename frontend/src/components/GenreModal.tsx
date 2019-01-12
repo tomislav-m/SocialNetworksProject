@@ -46,7 +46,7 @@ export default class GenreModal extends React.Component<IProps, IState> {
                             <div key={item.id}>
                                 <label>
                                     <Checkbox name={item.tmDbId} checked={!!this.state.checkedItems.get(item.tmDbId)} onChange={this.handleChange}>
-                                        {item.name} {item.tmDbId}
+                                        {item.name}
                                     </Checkbox>
                                 </label>
                             </div>
