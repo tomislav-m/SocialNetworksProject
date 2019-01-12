@@ -71,38 +71,41 @@ export default class Rating extends React.Component<IProps, IState > {
     }
 
     public rate = (event: any) =>{
-        if (localStorage.getItem('firstName') !== "") {
-            this.setState({ rate: event.rating }, () => {
-                const key = this.state.movieId;
-                const obj = {};
-                obj[key] = this.state.rate;
-                const data = JSON.stringify(obj);
-                fetch(`http://localhost:5000/api/users/add-ratings/${localStorage.getItem('id')}`, {
-                    method: "PUT", 
-                    headers: {
-                        "Content-Type": "application/json", 
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`
-                    },
-                    body: data
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
+        this.setState({ rate: event.rating }, () => {
+            const key = this.state.movieId;
+            const obj = {};
+            obj[key] = this.state.rate;
+            const data = JSON.stringify(obj);
+            fetch(`http://localhost:5000/api/users/add-ratings/${localStorage.getItem('id')}`, {
+                method: "PUT", 
+                headers: {
+                    "Content-Type": "application/json", 
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                },
+                body: data
             })
-        } else {
-            console.log("You are not logged in!")
-        }
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        })   
     }
 
     public render() {
         if (!this.state.loading) {
             return (
-                <div className = "ratingStars">
-                    Rate this movie:
-                    <div className="sizeStars"> 
-                        <Rater total={5} rating={this.state.rate} onRate={this.rate}/>  
+                <div>
+                {
+                    (localStorage.getItem('firstName') !== "")
+                    ? <div className = "ratingStars">
+                        Rate this movie:
+                        <div className="sizeStars"> 
+                            <Rater total={5} rating={this.state.rate} onRate={this.rate}/>  
+                        </div>
                     </div>
-                </div> 
+                    : <div>{}</div> 
+                }
+                </div>
+                
             );
         }
         return null
