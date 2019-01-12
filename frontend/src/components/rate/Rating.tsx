@@ -19,7 +19,7 @@ export default class Rating extends React.Component<IProps, IState > {
         this.state ={ 
             movieId: '',
             rate: 0,
-            loading: false
+            loading: false,
         };
     }
 
@@ -71,23 +71,27 @@ export default class Rating extends React.Component<IProps, IState > {
     }
 
     public rate = (event: any) =>{
-        this.setState({ rate: event.rating }, () => {
-            const key = this.state.movieId;
-            const obj = {};
-            obj[key] = this.state.rate;
-            const data = JSON.stringify(obj);
-            fetch(`http://localhost:5000/api/users/add-ratings/${localStorage.getItem('id')}`, {
-                method: "PUT", 
-                headers: {
-                    "Content-Type": "application/json", 
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                },
-                body: data
+        if (localStorage.getItem('firstName') !== "") {
+            this.setState({ rate: event.rating }, () => {
+                const key = this.state.movieId;
+                const obj = {};
+                obj[key] = this.state.rate;
+                const data = JSON.stringify(obj);
+                fetch(`http://localhost:5000/api/users/add-ratings/${localStorage.getItem('id')}`, {
+                    method: "PUT", 
+                    headers: {
+                        "Content-Type": "application/json", 
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: data
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
             })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-        })
+        } else {
+            console.log("You are not logged in!")
+        }
     }
 
     public render() {

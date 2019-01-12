@@ -15,7 +15,11 @@ export default class MovieTabs extends React.Component {
                     <TopWatched/>
                 </Tab>
                 <Tab eventKey={3} title="Recommended">
-                    <Recommended/>
+                    {
+                        (localStorage.getItem('firstName') !== "")
+                        ? <Recommended/>
+                        : <p>You have to <a href="https://localhost:3000/login">Login</a> first!</p>
+                    } 
                 </Tab>
             </Tabs>
         );

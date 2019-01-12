@@ -55,7 +55,7 @@ export default class Login extends React.Component<IProps, IState > {
             localStorage.setItem('id', res.id);
             localStorage.setItem('token', res.token);
             localStorage.setItem('movieRatings', res.movieRatings);
-            this.props.history.push("/movies");
+            this.props.history.push("/");
         })
         .catch((error) => {
             console.error("Error:", error);

@@ -14,8 +14,6 @@ export const movieInfoRating = css`
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding-top: 1.5em;
-    justify-self: center;
-    justify-content: center;
 `
 export const profileContainer = css`
     display: grid;

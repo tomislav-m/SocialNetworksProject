@@ -13,8 +13,8 @@ import { BrowserRouter } from 'react-router-dom';
 ReactDOM.render((
       <BrowserRouter>
           <div>
-            <Route exact path={"/"} component={Login}/>
-            <Route exact path={"/movies"} component={App}/>
+            <Route exact path={"/login"} component={Login}/>
+            <Route exact path={"/"} component={App}/>
             <Route exact path={"/movies/:movieID"} component={MovieDetails}/>
             <Route exact path={"/profile"} component={Profile}/>
             <Route exact path={"/error"} component={ErrorPage}/>
