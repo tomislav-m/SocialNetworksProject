@@ -37,12 +37,20 @@ namespace SocialNetworks
             services.AddAutoMapper();
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
+            //services.Configure<Settings>(options =>
+            //{
+            //    options.ConnectionString
+            //        = Configuration.GetSection("MongoConnection:ConnectionString").Value;
+            //    options.Database
+            //        = Configuration.GetSection("MongoConnection:Database").Value;
+            //    options.Secret = appSettingsSection.GetSection("Secret").Value;
+            //});
             services.Configure<Settings>(options =>
             {
                 options.ConnectionString
-                    = Configuration.GetSection("MongoConnection:ConnectionString").Value;
+                    = Configuration.GetSection("MongoConnection2:ConnectionString").Value;
                 options.Database
-                    = Configuration.GetSection("MongoConnection:Database").Value;
+                    = Configuration.GetSection("MongoConnection2:Database").Value;
                 options.Secret = appSettingsSection.GetSection("Secret").Value;
             });
 

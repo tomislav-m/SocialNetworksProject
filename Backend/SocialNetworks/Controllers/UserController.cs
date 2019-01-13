@@ -193,10 +193,19 @@ namespace SocialNetworks.Controllers
                     }
                 }
             }
-            var recommender = new UserBasedRecommender(users.ToDictionary(x => x.Id, y => y.MovieRatings), id, 0.2);
-            var recs = recommender.Recommend();
+            var similarityThreshold = 0.6;
+            var recommender = new UserBasedRecommender(users.ToDictionary(x => x.Id, y => y.MovieRatings), id, similarityThreshold);
+            var recs = new Dictionary<string, double>();
             var genresArray = genres == null ? new string[] { } : genres.Split(',');
-            var movies = (await _movieRepository.GetMoreMovies(recs.Select(x => x.Key), genresArray)).ToList();
+            var movies = new List<Movie>(); ;
+            while (movies.Count < 30)
+            {
+                recs = recommender.Recommend();
+                similarityThreshold -= 0.1;
+                recommender.SimilarityThreshold = similarityThreshold;
+                movies.AddRange(await _movieRepository.GetMoreMovies(recs.Select(x => x.Key), genresArray));
+                movies = movies.GroupBy(x => x.Id).Select(x => x.First()).ToList();
+            }
             try
             {
                 movies.Sort((x, y) => recs.Single(z => z.Key == y.Id).Value.CompareTo(recs.Single(z => z.Key == x.Id).Value));
