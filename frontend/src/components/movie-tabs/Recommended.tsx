@@ -72,7 +72,8 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
             )
             key++;
         });
-        return _.dropRight(movies, 20);
+        const moviesToBeDropped = movies.length >= 10 ? movies.length - 10 : 0;
+        return _.dropRight(movies, moviesToBeDropped);
     }
 
     public renderBetween = () => {
@@ -86,8 +87,9 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
             )
             key++;
         });
+        const moviesToBeDropped = movies.length >= 20 ? movies.length - 20 : 0;
         movies = _.drop(movies, 10)
-        return _.dropRight(movies, 10);
+        return _.dropRight(movies, moviesToBeDropped);
     }
 
     public renderLastTen = () => {
@@ -150,6 +152,7 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
     }
 
     public render() {
+        const movies = this.state.movies;
         return (
             <div>
                 <div className = {genreButton} >
@@ -157,15 +160,15 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
                 </div>
                 {this.state.showGenreModal && <GenreModal genres = {this.state.genres} onClose={this.closeGenreModal} onFilter={this.filter}/>}
                 { !this.state.loading && this.state.activePage === 1 && this.renderFirstTen()}
-                { !this.state.loading && this.state.activePage === 2 && this.renderBetween()}
-                { !this.state.loading && this.state.activePage === 3 && this.renderLastTen()}
+                { !this.state.loading && this.state.activePage === 2 && movies.length > 10 && this.renderBetween()}
+                { !this.state.loading && this.state.activePage === 3 && movies.length > 20 && this.renderLastTen()}
                 { !this.state.loading && 
                 <div className = {paginationBoxRecom}>
                     <Pagination
                         activePage={this.state.activePage}
                         itemsCountPerPage={10}
-                        totalItemsCount={30}
-                        pageRangeDisplayed={3}
+                        totalItemsCount={movies.length}
+                        pageRangeDisplayed={Math.ceil(movies.length/10)}
                         onChange={this.handlePageChange}
                     />
                 </div> }

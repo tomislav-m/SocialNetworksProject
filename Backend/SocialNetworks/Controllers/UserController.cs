@@ -198,7 +198,7 @@ namespace SocialNetworks.Controllers
             var recs = new Dictionary<string, double>();
             var genresArray = genres == null ? new string[] { } : genres.Split(',');
             var movies = new List<Movie>(); ;
-            while (movies.Count < 30)
+            while (movies.Count < 30 && similarityThreshold >= 0)
             {
                 recs = recommender.Recommend();
                 similarityThreshold -= 0.1;
