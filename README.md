@@ -9,6 +9,7 @@ SocialNetworksProject is a movie recommendation application created by:
 
 ## START DATABASE LOCALLY
 * Prerequisites: installed and started MongoDB
+If you run this application for the first time follow this steps:
 1) unzip sndb.zip
 2) Run this command: `mongorestore -d sndb <path>` , where path is path to unziped sndb.zip folder 
 
