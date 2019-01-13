@@ -1,30 +1,33 @@
 # SocialNetworksProject
 
-GET api/genres
-GET api/genres/{id}
+SocialNetworksProject is a movie recommendation application created by:
 
-GET api/movies?pageNum=1&pageSize=20 <br/>
-GET api/movies/{movieId} <br/>
-GET api/movies/search/{query}?pageNum=1&pageSize=20 <br/>
-GET api/movies/getRatings/{movieId}
+* Kurek Andrea
+* Maslač Tomislav
+* Šabić Marina
+* Vitas Valentina
 
-GET api/people?pageNum=1&pageSize=50 <br/>
-GET api/people/{id}
+## START BACKEND
+You need to be positioned in  `~/SocialNetworksProject/Backend/SocialNetworks`
 
-POST api/users/facebook <br/>
-POST api/users/google <br/>
-POST api/users/add-ratings/userId
-
-GET api/users/recommender/{userId}
-
-# START BACKEND
-cd ~/SocialNetworksProject/Backend/SocialNetworks
+Then run following command: 
+```
 dotnet run
+```
 
-# START FRONTEND
-cd ~/SocialNetworksProject/frontend
+## START FRONTEND
+You need to be positioned in `~/SocialNetworksProject/frontend`
+
+Then run following commands:
+```
 npm install
 npm start
+```
 
-# The movie dba
-dmFer2018
+## START DATABASE LOCALLY
+* Prerequisites: installed and started MongoDB
+1) unzip sndb.zip
+2) Run this command: `mongorestore -d sndb <path>` , where path is path to unziped sndb.zip folder 
+
+### START USING APPLICATION
+Go to: [https://localhost:3000](https://localhost:3000)
