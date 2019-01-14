@@ -162,7 +162,7 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
                 { !this.state.loading && this.state.activePage === 1 && this.renderFirstTen()}
                 { !this.state.loading && this.state.activePage === 2 && movies.length > 10 && this.renderBetween()}
                 { !this.state.loading && this.state.activePage === 3 && movies.length > 20 && this.renderLastTen()}
-                { !this.state.loading && 
+                { !this.state.loading && movies.length !== 0 &&
                 <div className = {paginationBoxRecom}>
                     <Pagination
                         activePage={this.state.activePage}
