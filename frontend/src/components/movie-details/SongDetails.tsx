@@ -24,7 +24,7 @@ export default class SongDetails extends React.Component<IProps, IState> {
                 ({
                     this.props.duration !== null && this.props.duration !== ""
                     ? this.props.duration
-                    : "no information"
+                    : "No information"
                 })
             </div>
         );

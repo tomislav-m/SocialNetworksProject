@@ -134,8 +134,8 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                             </div>
 
                             <div>
-                                Release date: <Moment format="D MMMM YYYY">{movie.release_date || "no information"}</Moment><br/>
-                                Runtime: {movie.runtime || "no information"} <br/>
+                                Release date: <Moment format="D MMMM YYYY">{movie.release_date || "No information"}</Moment><br/>
+                                Runtime: {movie.runtime || "No information"} <br/>
                                 <MovieGenres genres = {this.state.genres}/>
                             </div>
                         
@@ -154,7 +154,7 @@ export default class MovieDetails extends React.Component<IProps, IState> {
                             <div className = {overviewBox}>
                                 <b>Overview: </b>
                                 <br/>
-                                {movie.overview} 
+                                {movie.overview || "No information"} 
                             </div>
                             <br/>
                             <MovieSoundtrack soundtracks = {this.state.soundtracks} artists = {this.state.artists} soundtrackTitle = {this.state.soundtrackTitle}/>

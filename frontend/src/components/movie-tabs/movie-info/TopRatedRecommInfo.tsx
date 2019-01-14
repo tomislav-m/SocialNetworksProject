@@ -52,7 +52,7 @@ export default class TopRatedRecommInfo extends React.Component<IProps> {
                                 >Read more
                                 </Link>
                             </span>}>
-                            {this.props.movie.overview}
+                            {this.props.movie.overview || "No information"}
                         </Truncate> 
                     </div>
 

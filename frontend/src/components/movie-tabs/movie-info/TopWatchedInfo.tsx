@@ -120,7 +120,7 @@ export default class TopWatchedInfo extends React.Component<IProps, IState> {
                                 >Read more
                                 </Link>
                             </span>}>
-                            {this.state.movie.overview}
+                            {this.state.movie.overview || "No information"}
                         </Truncate> 
                         
                     </div>

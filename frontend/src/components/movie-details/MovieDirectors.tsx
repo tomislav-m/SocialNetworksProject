@@ -20,10 +20,10 @@ export default class MovieDirectors extends React.Component<IProps> {
                                 ? <img src = {`http://image.tmdb.org/t/p/w45${director.pictureUrl}`}/>
                                 : <img className = "altSize" src = {image}/>
                             }
-                            &nbsp;&nbsp;<h5 className = "personInfo">{director.name || "no information"}</h5>
+                            &nbsp;&nbsp;<h5 className = "personInfo">{director.name || "No information"}</h5>
                         </div>
                     ))
-                    : "no information"   
+                    : "No information"   
                 } 
             </div>
         );

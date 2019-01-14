@@ -15,7 +15,7 @@ export default class MovieSoundtrack extends React.Component<IProps> {
                     {
                         this.props.soundtrackTitle !== ""
                         ? this.props.soundtrackTitle
-                        : "no information"
+                        : "No information"
                     }   
                 </div>
                 
@@ -27,7 +27,7 @@ export default class MovieSoundtrack extends React.Component<IProps> {
                         ? this.props.artists.map((artist: any) => (
                             artist
                         ))
-                        : "no information"
+                        : "No information"
                     }
                 </div>
                 <div>
@@ -38,7 +38,7 @@ export default class MovieSoundtrack extends React.Component<IProps> {
                         ? this.props.soundtracks.map((soundtrack: any) => (
                             <SongDetails soundtrackTitle = {soundtrack.title} duration = {soundtrack.duration}/>
                         ))
-                        : "no information"
+                        : "No information"
                     }
                 </div>
             </div>

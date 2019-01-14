@@ -18,7 +18,7 @@ export default class MovieGenres extends React.Component<IProps> {
                             return(<h5 className = "genres" key={genre}>{genre}, &nbsp;</h5>)
                             
                         }) 
-                        : "no information"
+                        : "No information"
                 }
             </div>
         );

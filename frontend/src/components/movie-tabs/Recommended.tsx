@@ -172,6 +172,9 @@ export default class Recommended extends React.Component<{ history?: any }, ISta
                         onChange={this.handlePageChange}
                     />
                 </div> }
+                { !this.state.loading && movies.length === 0 &&
+                <p>You have to rate more movies!</p>
+                }
             </div>
         );
     }
